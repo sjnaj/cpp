@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>algorithms.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+@font-face{font-family:KaTeX_AMS;src:url(fonts/KaTeX_AMS-Regular.eot);src:url(fonts/KaTeX_AMS-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_AMS-Regular.woff2) format('woff2'),url(fonts/KaTeX_AMS-Regular.woff) format('woff'),url(fonts/KaTeX_AMS-Regular.ttf) format('ttf');font-weight:400;font-style:normal}@font-face{font-family:KaTeX_Caligraphic;src:url(fonts/KaTeX_Caligraphic-Bold.eot);src:url(fonts/KaTeX_Caligraphic-Bold.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Caligraphic-Bold.woff2) format('woff2'),url(fonts/KaTeX_Caligraphic-Bold.woff) format('woff'),url(fonts/KaTeX_Caligraphic-Bold.ttf) format('ttf');font-weight:700;font-style:normal}@font-face{font-family:KaTeX_Caligraphic;src:url(fonts/KaTeX_Caligraphic-Regular.eot);src:url(fonts/KaTeX_Caligraphic-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Caligraphic-Regular.woff2) format('woff2'),url(fonts/KaTeX_Caligraphic-Regular.woff) format('woff'),url(fonts/KaTeX_Caligraphic-Regular.ttf) format('ttf');font-weight:400;font-style:normal}@font-face{font-family:KaTeX_Fraktur;src:url(fonts/KaTeX_Fraktur-Bold.eot);src:url(fonts/KaTeX_Fraktur-Bold.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Fraktur-Bold.woff2) format('woff2'),url(fonts/KaTeX_Fraktur-Bold.woff) format('woff'),url(fonts/KaTeX_Fraktur-Bold.ttf) format('ttf');font-weight:700;font-style:normal}@font-face{font-family:KaTeX_Fraktur;src:url(fonts/KaTeX_Fraktur-Regular.eot);src:url(fonts/KaTeX_Fraktur-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Fraktur-Regular.woff2) format('woff2'),url(fonts/KaTeX_Fraktur-Regular.woff) format('woff'),url(fonts/KaTeX_Fraktur-Regular.ttf) format('ttf');font-weight:400;font-style:normal}@font-face{font-family:KaTeX_Main;src:url(fonts/KaTeX_Main-Bold.eot);src:url(fonts/KaTeX_Main-Bold.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Main-Bold.woff2) format('woff2'),url(fonts/KaTeX_Main-Bold.woff) format('woff'),url(fonts/KaTeX_Main-Bold.ttf) format('ttf');font-weight:700;font-style:normal}@font-face{font-family:KaTeX_Main;src:url(fonts/KaTeX_Main-Italic.eot);src:url(fonts/KaTeX_Main-Italic.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Main-Italic.woff2) format('woff2'),url(fonts/KaTeX_Main-Italic.woff) format('woff'),url(fonts/KaTeX_Main-Italic.ttf) format('ttf');font-weight:400;font-style:italic}@font-face{font-family:KaTeX_Main;src:url(fonts/KaTeX_Main-Regular.eot);src:url(fonts/KaTeX_Main-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Main-Regular.woff2) format('woff2'),url(fonts/KaTeX_Main-Regular.woff) format('woff'),url(fonts/KaTeX_Main-Regular.ttf) format('ttf');font-weight:400;font-style:normal}@font-face{font-family:KaTeX_Math;src:url(fonts/KaTeX_Math-Italic.eot);src:url(fonts/KaTeX_Math-Italic.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Math-Italic.woff2) format('woff2'),url(fonts/KaTeX_Math-Italic.woff) format('woff'),url(fonts/KaTeX_Math-Italic.ttf) format('ttf');font-weight:400;font-style:italic}@font-face{font-family:KaTeX_SansSerif;src:url(fonts/KaTeX_SansSerif-Regular.eot);src:url(fonts/KaTeX_SansSerif-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_SansSerif-Regular.woff2) format('woff2'),url(fonts/KaTeX_SansSerif-Regular.woff) format('woff'),url(fonts/KaTeX_SansSerif-Regular.ttf) format('ttf');font-weight:400;font-style:normal}@font-face{font-family:KaTeX_Script;src:url(fonts/KaTeX_Script-Regular.eot);src:url(fonts/KaTeX_Script-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Script-Regular.woff2) format('woff2'),url(fonts/KaTeX_Script-Regular.woff) format('woff'),url(fonts/KaTeX_Script-Regular.ttf) format('ttf');font-weight:400;font-style:normal}@font-face{font-family:KaTeX_Size1;src:url(fonts/KaTeX_Size1-Regular.eot);src:url(fonts/KaTeX_Size1-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Size1-Regular.woff2) format('woff2'),url(fonts/KaTeX_Size1-Regular.woff) format('woff'),url(fonts/KaTeX_Size1-Regular.ttf) format('ttf');font-weight:400;font-style:normal}@font-face{font-family:KaTeX_Size2;src:url(fonts/KaTeX_Size2-Regular.eot);src:url(fonts/KaTeX_Size2-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Size2-Regular.woff2) format('woff2'),url(fonts/KaTeX_Size2-Regular.woff) format('woff'),url(fonts/KaTeX_Size2-Regular.ttf) format('ttf');font-weight:400;font-style:normal}@font-face{font-family:KaTeX_Size3;src:url(fonts/KaTeX_Size3-Regular.eot);src:url(fonts/KaTeX_Size3-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Size3-Regular.woff2) format('woff2'),url(fonts/KaTeX_Size3-Regular.woff) format('woff'),url(fonts/KaTeX_Size3-Regular.ttf) format('ttf');font-weight:400;font-style:normal}@font-face{font-family:KaTeX_Size4;src:url(fonts/KaTeX_Size4-Regular.eot);src:url(fonts/KaTeX_Size4-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Size4-Regular.woff2) format('woff2'),url(fonts/KaTeX_Size4-Regular.woff) format('woff'),url(fonts/KaTeX_Size4-Regular.ttf) format('ttf');font-weight:400;font-style:normal}@font-face{font-family:KaTeX_Typewriter;src:url(fonts/KaTeX_Typewriter-Regular.eot);src:url(fonts/KaTeX_Typewriter-Regular.eot#iefix) format('embedded-opentype'),url(fonts/KaTeX_Typewriter-Regular.woff2) format('woff2'),url(fonts/KaTeX_Typewriter-Regular.woff) format('woff'),url(fonts/KaTeX_Typewriter-Regular.ttf) format('ttf');font-weight:400;font-style:normal}.katex-display{display:block;margin:1em 0;text-align:center}.katex-display>.katex{display:inline-block}.katex{font:400 1.21em KaTeX_Main;line-height:1.2;white-space:nowrap;text-indent:0}.katex .katex-html{display:inline-block}.katex .katex-mathml{position:absolute;clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden}.katex .base,.katex .strut{display:inline-block}.katex .mathit{font-family:KaTeX_Math;font-style:italic}.katex .mathbf{font-family:KaTeX_Main;font-weight:700}.katex .amsrm,.katex .mathbb{font-family:KaTeX_AMS}.katex .mathcal{font-family:KaTeX_Caligraphic}.katex .mathfrak{font-family:KaTeX_Fraktur}.katex .mathtt{font-family:KaTeX_Typewriter}.katex .mathscr{font-family:KaTeX_Script}.katex .mathsf{font-family:KaTeX_SansSerif}.katex .mainit{font-family:KaTeX_Main;font-style:italic}.katex .textstyle>.mord+.mop{margin-left:.16667em}.katex .textstyle>.mord+.mbin{margin-left:.22222em}.katex .textstyle>.mord+.mrel{margin-left:.27778em}.katex .textstyle>.mop+.mop,.katex .textstyle>.mop+.mord,.katex .textstyle>.mord+.minner{margin-left:.16667em}.katex .textstyle>.mop+.mrel{margin-left:.27778em}.katex .textstyle>.mop+.minner{margin-left:.16667em}.katex .textstyle>.mbin+.minner,.katex .textstyle>.mbin+.mop,.katex .textstyle>.mbin+.mopen,.katex .textstyle>.mbin+.mord{margin-left:.22222em}.katex .textstyle>.mrel+.minner,.katex .textstyle>.mrel+.mop,.katex .textstyle>.mrel+.mopen,.katex .textstyle>.mrel+.mord{margin-left:.27778em}.katex .textstyle>.mclose+.mop{margin-left:.16667em}.katex .textstyle>.mclose+.mbin{margin-left:.22222em}.katex .textstyle>.mclose+.mrel{margin-left:.27778em}.katex .textstyle>.mclose+.minner,.katex .textstyle>.minner+.mop,.katex .textstyle>.minner+.mord,.katex .textstyle>.mpunct+.mclose,.katex .textstyle>.mpunct+.minner,.katex .textstyle>.mpunct+.mop,.katex .textstyle>.mpunct+.mopen,.katex .textstyle>.mpunct+.mord,.katex .textstyle>.mpunct+.mpunct,.katex .textstyle>.mpunct+.mrel{margin-left:.16667em}.katex .textstyle>.minner+.mbin{margin-left:.22222em}.katex .textstyle>.minner+.mrel{margin-left:.27778em}.katex .mclose+.mop,.katex .minner+.mop,.katex .mop+.mop,.katex .mop+.mord,.katex .mord+.mop,.katex .textstyle>.minner+.minner,.katex .textstyle>.minner+.mopen,.katex .textstyle>.minner+.mpunct{margin-left:.16667em}.katex .reset-textstyle.textstyle{font-size:1em}.katex .reset-textstyle.scriptstyle{font-size:.7em}.katex .reset-textstyle.scriptscriptstyle{font-size:.5em}.katex .reset-scriptstyle.textstyle{font-size:1.42857em}.katex .reset-scriptstyle.scriptstyle{font-size:1em}.katex .reset-scriptstyle.scriptscriptstyle{font-size:.71429em}.katex .reset-scriptscriptstyle.textstyle{font-size:2em}.katex .reset-scriptscriptstyle.scriptstyle{font-size:1.4em}.katex .reset-scriptscriptstyle.scriptscriptstyle{font-size:1em}.katex .style-wrap{position:relative}.katex .vlist{display:inline-block}.katex .vlist>span{display:block;height:0;position:relative}.katex .vlist>span>span{display:inline-block}.katex .vlist .baseline-fix{display:inline-table;table-layout:fixed}.katex .msupsub{text-align:left}.katex .mfrac>span>span{text-align:center}.katex .mfrac .frac-line{width:100%}.katex .mfrac .frac-line:before{border-bottom-style:solid;border-bottom-width:1px;content:"";display:block}.katex .mfrac .frac-line:after{border-bottom-style:solid;border-bottom-width:.04em;content:"";display:block;margin-top:-1px}.katex .mspace{display:inline-block}.katex .mspace.negativethinspace{margin-left:-.16667em}.katex .mspace.thinspace{width:.16667em}.katex .mspace.mediumspace{width:.22222em}.katex .mspace.thickspace{width:.27778em}.katex .mspace.enspace{width:.5em}.katex .mspace.quad{width:1em}.katex .mspace.qquad{width:2em}.katex .llap,.katex .rlap{width:0;position:relative}.katex .llap>.inner,.katex .rlap>.inner{position:absolute}.katex .llap>.fix,.katex .rlap>.fix{display:inline-block}.katex .llap>.inner{right:0}.katex .rlap>.inner{left:0}.katex .katex-logo .a{font-size:.75em;margin-left:-.32em;position:relative;top:-.2em}.katex .katex-logo .t{margin-left:-.23em}.katex .katex-logo .e{margin-left:-.1667em;position:relative;top:.2155em}.katex .katex-logo .x{margin-left:-.125em}.katex .rule{display:inline-block;border-style:solid;position:relative}.katex .overline .overline-line{width:100%}.katex .overline .overline-line:before{border-bottom-style:solid;border-bottom-width:1px;content:"";display:block}.katex .overline .overline-line:after{border-bottom-style:solid;border-bottom-width:.04em;content:"";display:block;margin-top:-1px}.katex .sqrt>.sqrt-sign{position:relative}.katex .sqrt .sqrt-line{width:100%}.katex .sqrt .sqrt-line:before{border-bottom-style:solid;border-bottom-width:1px;content:"";display:block}.katex .sqrt .sqrt-line:after{border-bottom-style:solid;border-bottom-width:.04em;content:"";display:block;margin-top:-1px}.katex .sqrt>.root{margin-left:.27777778em;margin-right:-.55555556em}.katex .fontsize-ensurer,.katex .sizing{display:inline-block}.katex .fontsize-ensurer.reset-size1.size1,.katex .sizing.reset-size1.size1{font-size:1em}.katex .fontsize-ensurer.reset-size1.size2,.katex .sizing.reset-size1.size2{font-size:1.4em}.katex .fontsize-ensurer.reset-size1.size3,.katex .sizing.reset-size1.size3{font-size:1.6em}.katex .fontsize-ensurer.reset-size1.size4,.katex .sizing.reset-size1.size4{font-size:1.8em}.katex .fontsize-ensurer.reset-size1.size5,.katex .sizing.reset-size1.size5{font-size:2em}.katex .fontsize-ensurer.reset-size1.size6,.katex .sizing.reset-size1.size6{font-size:2.4em}.katex .fontsize-ensurer.reset-size1.size7,.katex .sizing.reset-size1.size7{font-size:2.88em}.katex .fontsize-ensurer.reset-size1.size8,.katex .sizing.reset-size1.size8{font-size:3.46em}.katex .fontsize-ensurer.reset-size1.size9,.katex .sizing.reset-size1.size9{font-size:4.14em}.katex .fontsize-ensurer.reset-size1.size10,.katex .sizing.reset-size1.size10{font-size:4.98em}.katex .fontsize-ensurer.reset-size2.size1,.katex .sizing.reset-size2.size1{font-size:.71428571em}.katex .fontsize-ensurer.reset-size2.size2,.katex .sizing.reset-size2.size2{font-size:1em}.katex .fontsize-ensurer.reset-size2.size3,.katex .sizing.reset-size2.size3{font-size:1.14285714em}.katex .fontsize-ensurer.reset-size2.size4,.katex .sizing.reset-size2.size4{font-size:1.28571429em}.katex .fontsize-ensurer.reset-size2.size5,.katex .sizing.reset-size2.size5{font-size:1.42857143em}.katex .fontsize-ensurer.reset-size2.size6,.katex .sizing.reset-size2.size6{font-size:1.71428571em}.katex .fontsize-ensurer.reset-size2.size7,.katex .sizing.reset-size2.size7{font-size:2.05714286em}.katex .fontsize-ensurer.reset-size2.size8,.katex .sizing.reset-size2.size8{font-size:2.47142857em}.katex .fontsize-ensurer.reset-size2.size9,.katex .sizing.reset-size2.size9{font-size:2.95714286em}.katex .fontsize-ensurer.reset-size2.size10,.katex .sizing.reset-size2.size10{font-size:3.55714286em}.katex .fontsize-ensurer.reset-size3.size1,.katex .sizing.reset-size3.size1{font-size:.625em}.katex .fontsize-ensurer.reset-size3.size2,.katex .sizing.reset-size3.size2{font-size:.875em}.katex .fontsize-ensurer.reset-size3.size3,.katex .sizing.reset-size3.size3{font-size:1em}.katex .fontsize-ensurer.reset-size3.size4,.katex .sizing.reset-size3.size4{font-size:1.125em}.katex .fontsize-ensurer.reset-size3.size5,.katex .sizing.reset-size3.size5{font-size:1.25em}.katex .fontsize-ensurer.reset-size3.size6,.katex .sizing.reset-size3.size6{font-size:1.5em}.katex .fontsize-ensurer.reset-size3.size7,.katex .sizing.reset-size3.size7{font-size:1.8em}.katex .fontsize-ensurer.reset-size3.size8,.katex .sizing.reset-size3.size8{font-size:2.1625em}.katex .fontsize-ensurer.reset-size3.size9,.katex .sizing.reset-size3.size9{font-size:2.5875em}.katex .fontsize-ensurer.reset-size3.size10,.katex .sizing.reset-size3.size10{font-size:3.1125em}.katex .fontsize-ensurer.reset-size4.size1,.katex .sizing.reset-size4.size1{font-size:.55555556em}.katex .fontsize-ensurer.reset-size4.size2,.katex .sizing.reset-size4.size2{font-size:.77777778em}.katex .fontsize-ensurer.reset-size4.size3,.katex .sizing.reset-size4.size3{font-size:.88888889em}.katex .fontsize-ensurer.reset-size4.size4,.katex .sizing.reset-size4.size4{font-size:1em}.katex .fontsize-ensurer.reset-size4.size5,.katex .sizing.reset-size4.size5{font-size:1.11111111em}.katex .fontsize-ensurer.reset-size4.size6,.katex .sizing.reset-size4.size6{font-size:1.33333333em}.katex .fontsize-ensurer.reset-size4.size7,.katex .sizing.reset-size4.size7{font-size:1.6em}.katex .fontsize-ensurer.reset-size4.size8,.katex .sizing.reset-size4.size8{font-size:1.92222222em}.katex .fontsize-ensurer.reset-size4.size9,.katex .sizing.reset-size4.size9{font-size:2.3em}.katex .fontsize-ensurer.reset-size4.size10,.katex .sizing.reset-size4.size10{font-size:2.76666667em}.katex .fontsize-ensurer.reset-size5.size1,.katex .sizing.reset-size5.size1{font-size:.5em}.katex .fontsize-ensurer.reset-size5.size2,.katex .sizing.reset-size5.size2{font-size:.7em}.katex .fontsize-ensurer.reset-size5.size3,.katex .sizing.reset-size5.size3{font-size:.8em}.katex .fontsize-ensurer.reset-size5.size4,.katex .sizing.reset-size5.size4{font-size:.9em}.katex .fontsize-ensurer.reset-size5.size5,.katex .sizing.reset-size5.size5{font-size:1em}.katex .fontsize-ensurer.reset-size5.size6,.katex .sizing.reset-size5.size6{font-size:1.2em}.katex .fontsize-ensurer.reset-size5.size7,.katex .sizing.reset-size5.size7{font-size:1.44em}.katex .fontsize-ensurer.reset-size5.size8,.katex .sizing.reset-size5.size8{font-size:1.73em}.katex .fontsize-ensurer.reset-size5.size9,.katex .sizing.reset-size5.size9{font-size:2.07em}.katex .fontsize-ensurer.reset-size5.size10,.katex .sizing.reset-size5.size10{font-size:2.49em}.katex .fontsize-ensurer.reset-size6.size1,.katex .sizing.reset-size6.size1{font-size:.41666667em}.katex .fontsize-ensurer.reset-size6.size2,.katex .sizing.reset-size6.size2{font-size:.58333333em}.katex .fontsize-ensurer.reset-size6.size3,.katex .sizing.reset-size6.size3{font-size:.66666667em}.katex .fontsize-ensurer.reset-size6.size4,.katex .sizing.reset-size6.size4{font-size:.75em}.katex .fontsize-ensurer.reset-size6.size5,.katex .sizing.reset-size6.size5{font-size:.83333333em}.katex .fontsize-ensurer.reset-size6.size6,.katex .sizing.reset-size6.size6{font-size:1em}.katex .fontsize-ensurer.reset-size6.size7,.katex .sizing.reset-size6.size7{font-size:1.2em}.katex .fontsize-ensurer.reset-size6.size8,.katex .sizing.reset-size6.size8{font-size:1.44166667em}.katex .fontsize-ensurer.reset-size6.size9,.katex .sizing.reset-size6.size9{font-size:1.725em}.katex .fontsize-ensurer.reset-size6.size10,.katex .sizing.reset-size6.size10{font-size:2.075em}.katex .fontsize-ensurer.reset-size7.size1,.katex .sizing.reset-size7.size1{font-size:.34722222em}.katex .fontsize-ensurer.reset-size7.size2,.katex .sizing.reset-size7.size2{font-size:.48611111em}.katex .fontsize-ensurer.reset-size7.size3,.katex .sizing.reset-size7.size3{font-size:.55555556em}.katex .fontsize-ensurer.reset-size7.size4,.katex .sizing.reset-size7.size4{font-size:.625em}.katex .fontsize-ensurer.reset-size7.size5,.katex .sizing.reset-size7.size5{font-size:.69444444em}.katex .fontsize-ensurer.reset-size7.size6,.katex .sizing.reset-size7.size6{font-size:.83333333em}.katex .fontsize-ensurer.reset-size7.size7,.katex .sizing.reset-size7.size7{font-size:1em}.katex .fontsize-ensurer.reset-size7.size8,.katex .sizing.reset-size7.size8{font-size:1.20138889em}.katex .fontsize-ensurer.reset-size7.size9,.katex .sizing.reset-size7.size9{font-size:1.4375em}.katex .fontsize-ensurer.reset-size7.size10,.katex .sizing.reset-size7.size10{font-size:1.72916667em}.katex .fontsize-ensurer.reset-size8.size1,.katex .sizing.reset-size8.size1{font-size:.28901734em}.katex .fontsize-ensurer.reset-size8.size2,.katex .sizing.reset-size8.size2{font-size:.40462428em}.katex .fontsize-ensurer.reset-size8.size3,.katex .sizing.reset-size8.size3{font-size:.46242775em}.katex .fontsize-ensurer.reset-size8.size4,.katex .sizing.reset-size8.size4{font-size:.52023121em}.katex .fontsize-ensurer.reset-size8.size5,.katex .sizing.reset-size8.size5{font-size:.57803468em}.katex .fontsize-ensurer.reset-size8.size6,.katex .sizing.reset-size8.size6{font-size:.69364162em}.katex .fontsize-ensurer.reset-size8.size7,.katex .sizing.reset-size8.size7{font-size:.83236994em}.katex .fontsize-ensurer.reset-size8.size8,.katex .sizing.reset-size8.size8{font-size:1em}.katex .fontsize-ensurer.reset-size8.size9,.katex .sizing.reset-size8.size9{font-size:1.19653179em}.katex .fontsize-ensurer.reset-size8.size10,.katex .sizing.reset-size8.size10{font-size:1.43930636em}.katex .fontsize-ensurer.reset-size9.size1,.katex .sizing.reset-size9.size1{font-size:.24154589em}.katex .fontsize-ensurer.reset-size9.size2,.katex .sizing.reset-size9.size2{font-size:.33816425em}.katex .fontsize-ensurer.reset-size9.size3,.katex .sizing.reset-size9.size3{font-size:.38647343em}.katex .fontsize-ensurer.reset-size9.size4,.katex .sizing.reset-size9.size4{font-size:.43478261em}.katex .fontsize-ensurer.reset-size9.size5,.katex .sizing.reset-size9.size5{font-size:.48309179em}.katex .fontsize-ensurer.reset-size9.size6,.katex .sizing.reset-size9.size6{font-size:.57971014em}.katex .fontsize-ensurer.reset-size9.size7,.katex .sizing.reset-size9.size7{font-size:.69565217em}.katex .fontsize-ensurer.reset-size9.size8,.katex .sizing.reset-size9.size8{font-size:.83574879em}.katex .fontsize-ensurer.reset-size9.size9,.katex .sizing.reset-size9.size9{font-size:1em}.katex .fontsize-ensurer.reset-size9.size10,.katex .sizing.reset-size9.size10{font-size:1.20289855em}.katex .fontsize-ensurer.reset-size10.size1,.katex .sizing.reset-size10.size1{font-size:.20080321em}.katex .fontsize-ensurer.reset-size10.size2,.katex .sizing.reset-size10.size2{font-size:.2811245em}.katex .fontsize-ensurer.reset-size10.size3,.katex .sizing.reset-size10.size3{font-size:.32128514em}.katex .fontsize-ensurer.reset-size10.size4,.katex .sizing.reset-size10.size4{font-size:.36144578em}.katex .fontsize-ensurer.reset-size10.size5,.katex .sizing.reset-size10.size5{font-size:.40160643em}.katex .fontsize-ensurer.reset-size10.size6,.katex .sizing.reset-size10.size6{font-size:.48192771em}.katex .fontsize-ensurer.reset-size10.size7,.katex .sizing.reset-size10.size7{font-size:.57831325em}.katex .fontsize-ensurer.reset-size10.size8,.katex .sizing.reset-size10.size8{font-size:.69477912em}.katex .fontsize-ensurer.reset-size10.size9,.katex .sizing.reset-size10.size9{font-size:.8313253em}.katex .fontsize-ensurer.reset-size10.size10,.katex .sizing.reset-size10.size10{font-size:1em}.katex .delimsizing.size1{font-family:KaTeX_Size1}.katex .delimsizing.size2{font-family:KaTeX_Size2}.katex .delimsizing.size3{font-family:KaTeX_Size3}.katex .delimsizing.size4{font-family:KaTeX_Size4}.katex .delimsizing.mult .delim-size1>span{font-family:KaTeX_Size1}.katex .delimsizing.mult .delim-size4>span{font-family:KaTeX_Size4}.katex .nulldelimiter{display:inline-block;width:.12em}.katex .op-symbol{position:relative}.katex .op-symbol.small-op{font-family:KaTeX_Size1}.katex .op-symbol.large-op{font-family:KaTeX_Size2}.katex .accent>.vlist>span,.katex .op-limits>.vlist>span{text-align:center}.katex .accent .accent-body>span{width:0}.katex .accent .accent-body.accent-vec>span{position:relative;left:.326em}.katex .mtable .vertical-separator{display:inline-block;margin:0 -.025em;border-right:.05em solid #000}.katex .mtable .arraycolsep{display:inline-block}.katex .mtable .col-align-c>.vlist{text-align:center}.katex .mtable .col-align-l>.vlist{text-align:left}.katex .mtable .col-align-r>.vlist{text-align:right}
+</style>
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family:   "HelveticaNeue-Light", sans-serif, "宋体","Segoe WPC", "Segoe UI", "SFUIText-Light","Droid Sans Fallback";
+	font-size: 18px;
+	padding: 0 12px;
+	line-height: 1.6;
+	word-wrap: break-word;
+	color: #333333;
+}
+
+.content-wrapper{
+	max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 30px 40px 30px;
+    padding-top: 20px;
+    padding-bottom: 100px;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom: 1px solid #eee;
+}
+
+
+h2{
+	padding-bottom: .3em;
+    font-size: 2em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+h3{
+	font-size: 1.75em;
+    line-height: 1.225;
+}
+
+h1, h2, h3 {
+	font-weight: bold;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/*
+
+Arduino® Light Theme - Stefania Mellai <s.mellai@arduino.cc>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #FFFFFF;
+}
+
+.hljs,
+.hljs-subst {
+  color: #434f54;
+}
+
+.hljs-keyword,
+.hljs-attribute,
+.hljs-selector-tag,
+.hljs-doctag,
+.hljs-name {
+  color: #00979D;
+}
+
+.hljs-built_in,
+.hljs-literal,
+.hljs-bullet,
+.hljs-code,
+.hljs-addition {
+  color: #D35400;
+}
+
+.hljs-regexp,
+.hljs-symbol,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: #00979D;
+}
+
+.hljs-type,
+.hljs-string,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-quote,
+.hljs-template-tag,
+.hljs-deletion {
+  color: #005C5F;
+}
+
+.hljs-title,
+.hljs-section {
+  color: #880000;
+  font-weight: bold;
+}
+
+.hljs-comment {
+  color: rgba(149,165,166,.8);
+}
+
+.hljs-meta-keyword {
+  color: #728E00;
+}
+
+.hljs-meta {
+  color: #434f54;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-function {
+  color: #728E00;
+}
+
+.hljs-number {
+  color: #8A7B52;  
+}
+
+</style>
+
+<style>
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+</head>
+<body>
+    <div class="content-wrapper">
+        <nav class="table-of-contents"><ol><li><a href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95">数据结构与算法</a><ol><li><a href="#%E7%BB%AA%E8%AE%BA">绪论</a><ol><li><a href="#%E5%9F%BA%E6%9C%AC%E6%9C%AF%E8%AF%AD">基本术语</a></li><li><a href="#c%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A1%A5%E5%85%85">C语言知识点补充</a><ol><li><a href="#%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%BC%A0%E5%8F%82">二维数组传参</a></li><li><a href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D">动态内存分配</a></li><li><a href="#a%26%26b%E5%92%8Ca%7C%7Cb%E7%9A%84%E7%9F%AD%E8%B7%AF%E8%A7%84%E5%88%99">A&amp;&amp;B和A||B的短路规则</a></li><li><a href="#%E6%9F%A5%E7%9C%8B%E5%87%BD%E6%95%B0%E4%B8%AD%E6%95%B0%E7%BB%84%E7%9A%84%E5%80%BC">查看函数中数组的值</a></li><li><a href="#%E5%88%A0%E9%99%A4%E5%AD%97%E7%AC%A6">删除字符</a></li><li><a href="#%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2">进制转换</a></li><li><a href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E6%B3%95%E5%B0%8F%E6%94%B9%E8%BF%9B">选择排序法小改进</a></li><li><a href="#%E8%8E%B7%E5%8F%96%E9%9A%8F%E6%9C%BA%E6%95%B0">获取随机数</a></li></ol></li><li><a href="#%E7%AE%97%E6%B3%95%E5%92%8C%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1">算法和算法设计</a><ol><li><a href="#%E7%AE%97%E6%B3%95%E7%9A%84%E7%89%B9%E6%80%A7%EF%BC%9A">算法的特性：</a></li><li><a href="#%E6%B5%8B%E9%87%8F%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4">测量程序运行时间</a></li><li><a href="#%E7%AE%97%E6%B3%95%E7%9A%84%E5%A4%8D%E6%9D%82%E5%BA%A6(complexity)whe.%2C%2Cs%E5%BA%A6%E9%87%8F%E5%92%8C%E9%97%AE%E9%A2%98%E8%A7%84%E6%A8%A1">算法的复杂度(complexity)whe.,,S度量和问题规模</a></li><li><a href="#%E6%B8%90%E8%BF%9B%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6">渐进的时间复杂度</a></li><li><a href="#%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F">数学公式</a></li><li><a href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%BE%8B%E9%A2%98%EF%BC%9A">时间复杂度例题：</a><ol><li><a href="#%E5%BE%AA%E7%8E%AF%E5%B5%8C%E5%A5%97">循环嵌套</a></li><li><a href="#binary-search(%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE)">Binary Search(二分查找)</a></li><li><a href="#%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%E5%92%8C%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E4%BB%A5%E5%8F%8A-%E4%BA%8C%E5%88%86%E6%B3%95%E6%B1%82%E6%A0%B9">最大公约数和最小公倍数以及 二分法求根</a></li><li><a href="#%E6%B1%89%E8%AF%BA%E5%A1%94">汉诺塔</a></li><li><a href="#%E9%9A%8F%E6%9C%BA%E7%BD%AE%E6%8D%A2%E6%95%B0%E7%BB%84">随机置换数组</a></li></ol></li></ol></li></ol></li><li><a href="#kmp">KMP</a></li><li><a href="#%E5%B9%BF%E4%B9%89%E8%A1%A8">广义表</a></li></ol></li></ol></nav><h1 id="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95" id="">数据结构与算法</h1>
+<h2 id="%E7%BB%AA%E8%AE%BA" id="">绪论</h2>
+<h3 id="%E5%9F%BA%E6%9C%AC%E6%9C%AF%E8%AF%AD" id="">基本术语</h3>
+<p><strong>数据</strong>分为<strong>数值性数据</strong>和<strong>非数值数据</strong>，其基本单位是<strong>数据元素</strong>，是计算机处理或访问的基本单位；</p>
+<p>一个数据元素可以由若干数据项组成，<strong>数据项</strong>又称<strong>属性，字段，域，<strong>分为</strong>初等项</strong>（不可分割）和<strong>组合项</strong>；</p>
+<p><strong>结构</strong>：<strong>数据元素之间的关系</strong>；</p>
+<p><strong>数据结构是由与特定问题相关的某一数据元素的集合(<em>对象</em>)(D)和该集合中数据元素之间的关系(R)组成的</strong>；分为<strong>静态数据结构</strong>和<strong>动态数据结构</strong>，舍弃了实际的物理背景，是通用型的定义；
+数据结构={D,R}</p>
+<p><strong>数据对象</strong>：<strong>狭义：具有一定关系的<em>相同性质</em>的数据元素的集合</strong>；<strong>广义：由数据抽象和处理数据构成的封装体</strong></p>
+<p><strong>数据类型</strong>：<strong>一个值的集合和定义在这个值集合上的一组操作的总称</strong>，分为<strong>内置数据类型（亦称基本数据类型或原子类型，可直接使用）<strong>和</strong>构造数据类型（由不同成分的内置数据类型子结构按照一定的规则组成，是用编程语言描述的数据结构的存储映像）</strong>，是<strong>数据结构的实例化</strong>；数据类型<strong>再实例化</strong>得到具体变量，如<strong>类与对象</strong>；</p>
+<p>抽象数据类型ADT（Abstract Data Type)：</p>
+<p><strong>抽象的本质就是抽取反映问题本质的东西，忽略非本质的细节</strong>；</p>
+<p>特性：<strong>使用与实现相分离</strong>，<strong>数据<em>封装</em>与<em>信息</em>隐蔽</strong>；</p>
+<p>在C++，java中用类描述。C中一般不使用ADT，数据和结构是分开的。</p>
+<p>数据结构：</p>
+<p>一，<strong>分解和抽象</strong>：1，<strong>数据分解划分出数据的层次，再抽象得到数据的<em>逻辑结构</em></strong>；2，<strong>处理分解划分成各种功能，再通过抽象得到算法的定义</strong>。这是一个从具体（具体问题）到抽象（数据结构与算法）的过程；进一步<strong>通过对实现细节的进一步考虑得到存储结构和实现运算，从而完成程序设计的任务</strong>，实现从数据结构到具体实现。</p>
+<p>二，逻辑结构和存储结构</p>
+<p><strong>数据的逻辑结构根据问题所要实现的功能建立（不考虑具体实现），存储结构根据问题所要的需求（响应速度，处理时间，等）来实现数据的逻辑结构。（数据结构一般指的就是逻辑结构，逻辑结构相同，即使存储结构不同也是相同的逻辑结构）；</strong></p>
+<p>逻辑结构的分类：</p>
+<p><strong>线性结构 ，树形结构 ，图结构， 集合结构。</strong></p>
+<p><strong>线性结构</strong>：元素之间的关系是<strong>一对一</strong>的，如线性表，向量，栈，队列，优先队列，字典等；</p>
+<p><strong>非线性结构</strong>：每个数据结构可能<strong>与零个或多个其他数据元素发生联系</strong>，分为树结构（一对多）和图结构（多对多）。
+如多维数组和广义表等；</p>
+<p><strong>集合结构的实现往往采用其他逻辑结构的存储表示。</strong></p>
+<p>数据结构的存储结构：</p>
+<p>存取结构根据存取方法的不同分为三类：</p>
+<p>1，<strong>直接存取结构</strong>（向量，多维数组，散列表）；</p>
+<p>2，<strong>顺序存取结构</strong>（各种链表，图的邻接表）；</p>
+<p>3，<strong>索引存取结构</strong>（线性索引，多叉查找树）；</p>
+<p>常用的四种存储结构</p>
+<p>1，<strong>顺序存储</strong>：元素之间的逻辑关系由<strong>存储单元的邻接位置关系体现</strong>，由此得到顺序存储结构，借助<strong>一维数组</strong>描述；</p>
+<p>2，<strong>链接存储</strong>：元素之间的逻辑关系由<strong>附加的链接指针指示</strong>，由此得到链表存储结构，借助<strong>指针类型</strong>描述；</p>
+<p>3，<strong>索引存储</strong>：在存储元素信息的同时还建立<strong>索引表</strong>，其中每一项称为<strong>索引项（包括关键码和地址）</strong>，按针对一个元素还是一组元素分为<strong>稠密索引和稀疏索引</strong>；按是一层还是多层分为线<strong>性索引和多级索引</strong>；</p>
+<p>4，<strong>散列存储</strong>：根据元素的关键码<strong>通过一个函数计算得到</strong>元素的存储地址。</p>
+<p>前两种在<strong>内存</strong>中，也是基本的<strong>两种物理存储结构</strong>。后两个在<strong>外存</strong>中。</p>
+<p>选择存储结构的要素有&lt;1&gt;<em>访问频率</em>，&lt;2&gt;<em>修改频率</em>，&lt;3&gt;<em>安全保密</em>；</p>
+<p>定义在数据结构上的操作：</p>
+<p><strong>1，创建；2，销毁；3，查找；4，插入；5，删除；6，排序</strong>。</p>
+<p>好的数据结构：<strong>可以通过某种“线性化”规则被转化为线性结构，通常对应好的算法</strong>；</p>
+<p>计算机本质上<strong>只能按照逻辑顺序处理指令和内存单元</strong>，例如图，树的遍历查找需要线性化。</p>
+<h3 id="c%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E8%A1%A5%E5%85%85" id="c">C语言知识点补充</h3>
+<h4 id="%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%BC%A0%E5%8F%82" id="">二维数组传参</h4>
+<p><strong>不常用</strong></p>
+<pre class='hljs'><code><div>
+不用区分行列遍历
+ <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Print</span><span class="hljs-params">(<span class="hljs-keyword">int</span> *p,<span class="hljs-keyword">int</span> n)</span><span class="hljs-comment">//或int p[];</span>
+ </span>{
+     <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)<span class="hljs-comment">//存储在一块连续的区域</span>
+     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>,p[i]);
+<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);
+ }
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">int</span> s[<span class="hljs-number">2</span>][<span class="hljs-number">3</span>]={<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>};
+<span class="hljs-built_in">Print</span>((<span class="hljs-keyword">int</span>*)s,<span class="hljs-number">6</span>);<span class="hljs-comment">//(int*)s==s[0];</span>
+<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Print</span><span class="hljs-params">(<span class="hljs-keyword">int</span> **p)</span>
+</span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span>; i++)
+    {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">3</span>; j++)
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, *(( <span class="hljs-keyword">int</span>* )p+ <span class="hljs-number">2</span>*i + j));<span class="hljs-comment">//编译器寻址方式，根据二级指针不能自动寻址</span>
+    }
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">int</span> s[<span class="hljs-number">2</span>][<span class="hljs-number">3</span>] = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>};
+    <span class="hljs-built_in">Print</span>((<span class="hljs-keyword">int</span> **)s);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+二维数组名的类型是<span class="hljs-built_in">type</span> (*)[n];是一个数组指针，可强制转换成type**和type*，地址是一样的
+ 
+</div></code></pre>
+<p>常用</p>
+<p><strong>int s[][n];n不能为空。一维数组也建议用int s[];较直观，便于与其他的指针区分。</strong></p>
+<h4 id="%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D" id="">动态内存分配</h4>
+<pre class='hljs'><code><div> <span class="hljs-keyword">int</span> **s = (<span class="hljs-keyword">int</span> **)<span class="hljs-built_in">malloc</span>(<span class="hljs-number">2</span> * <span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(<span class="hljs-keyword">int</span> *));
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span>; i++)
+        s[i] = (<span class="hljs-keyword">int</span> *)<span class="hljs-built_in">malloc</span>(<span class="hljs-number">3</span> * <span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(<span class="hljs-keyword">int</span>));
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt;<span class="hljs-number">2</span>;j++)
+        {
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>;k&lt;<span class="hljs-number">3</span>;k++)
+            s[j][k]=<span class="hljs-number">1</span>;
+        }
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt;<span class="hljs-number">2</span>;j++)<span class="hljs-comment">//逐层由内向外释放</span>
+        <span class="hljs-built_in">free</span>(s[j]);
+        <span class="hljs-built_in">free</span>(s);
+
+ <span class="hljs-keyword">int</span> *s[<span class="hljs-number">2</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span>; i++)
+        s[i] = (<span class="hljs-keyword">int</span> *)<span class="hljs-built_in">malloc</span>(<span class="hljs-number">3</span> * <span class="hljs-built_in"><span class="hljs-keyword">sizeof</span></span>(<span class="hljs-keyword">int</span>));
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt;<span class="hljs-number">2</span>;j++)
+        {
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>;k&lt;<span class="hljs-number">3</span>;k++)
+            s[j][k]=<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt;<span class="hljs-number">2</span>;j++)<span class="hljs-comment">//不用也不能释放s，它不是动态分配的</span>
+        <span class="hljs-built_in">free</span>(s[j]);
+</div></code></pre>
+<h4 id="a%26%26b%E5%92%8Ca%7C%7Cb%E7%9A%84%E7%9F%AD%E8%B7%AF%E8%A7%84%E5%88%99" id="abab">A&amp;&amp;B和A||B的短路规则</h4>
+<p>如果A为假，则A&amp;&amp;B短路，如果A为真，则A||B短路，不再判断B。</p>
+<p>应用：对于A||B如果A真时B可能溢出则A必须在前；</p>
+<h4 id="%E6%9F%A5%E7%9C%8B%E5%87%BD%E6%95%B0%E4%B8%AD%E6%95%B0%E7%BB%84%E7%9A%84%E5%80%BC" id="">查看函数中数组的值</h4>
+<p>1，*(type(*)[len])arrname;强制转换为数组指针（它的最本质类型），再取值。</p>
+<p>2,*(arrname)@len;用这个简单。</p>
+<h4 id="%E5%88%A0%E9%99%A4%E5%AD%97%E7%AC%A6" id="">删除字符</h4>
+<pre class='hljs'><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">delchar</span><span class="hljs-params">( <span class="hljs-keyword">char</span> *str, <span class="hljs-keyword">char</span> c )</span>
+</span>{
+    <span class="hljs-keyword">char</span> *p=str;<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>,j=<span class="hljs-number">0</span>;<span class="hljs-comment">//p和str指向同一条字符串，但p在str后面进行判断所以不受干扰</span>
+    <span class="hljs-keyword">while</span>(p[i])
+    {
+        <span class="hljs-keyword">if</span>(p[j]!=c)
+        str[i++]=p[j];
+        j++;
+    }
+}
+</div></code></pre>
+<h4 id="%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2" id="">进制转换</h4>
+<pre class='hljs'><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">ten2two</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span>
+</span>{
+<span class="hljs-keyword">if</span>(n&gt;<span class="hljs-number">0</span>)
+{
+<span class="hljs-built_in">ten2two</span>(n/<span class="hljs-number">2</span>);
+<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>,n%<span class="hljs-number">2</span>);	<span class="hljs-comment">//递归为逆序输出，故先写调用函数，后写printf</span>
+}
+<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">return</span>;
+</div></code></pre>
+<pre class='hljs'><code><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">convert</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span>
+</span>{
+    <span class="hljs-keyword">if</span>(n==<span class="hljs-number">0</span>||n==<span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> n;
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> n%<span class="hljs-number">10</span>+<span class="hljs-number">2</span>*<span class="hljs-built_in">convert</span>(n/<span class="hljs-number">10</span>);
+}
+</div></code></pre>
+<h4 id="%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E6%B3%95%E5%B0%8F%E6%94%B9%E8%BF%9B" id="">选择排序法小改进</h4>
+<pre class='hljs'><code><div>
+ <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>,index;j&lt;i<span class="hljs-number">-1</span>;j++)
+    {
+        index=j;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k=j+<span class="hljs-number">1</span>;k&lt;i<span class="hljs-number">-1</span>;k++)
+        {
+            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">strlen</span>(s[k])&lt;<span class="hljs-built_in">strlen</span>(s[index]))
+                index=k;
+        }
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s &quot;</span>,s[index]);<span class="hljs-comment">//如果只是要输出将最小的依次输出然后把最小值替换即可，不用交换</span>
+        <span class="hljs-built_in">strcpy</span>(s[index],s[j]);
+    }
+</div></code></pre>
+<h4 id="%E8%8E%B7%E5%8F%96%E9%9A%8F%E6%9C%BA%E6%95%B0" id="">获取随机数</h4>
+<p>从X到Y，有Y－X＋1个数，所以要产生从X到Y的数，只需要这样写：
+<em>k=rand()%(Y-X+1)+X;</em></p>
+<p>每次获取前运行<em>srand(time(NULL))</em>；改变随机数计算函数初值，在time.h下。</p>
+<p>y=x++和y=++x都是自增运算符。区别在于：y=x++是先把x的值赋给y，此时y的值为5。赋值给y后，x自增，即x=x+1，此时x的值就变成6了。y=++x是x自增，即x=x+1，此时x的值为6。自增完后，x的值赋给y，此时y的值就变成6了。综上来看，也就是y=x++相当于，y=x，x=x+1。y=++x相当于，x=x+1，y=x。（执行的先后顺序不一样）</p>
+<p>一字节（byte）等于八位（bit）；</p>
+<p>整数取值范围：\overbrace{100000....000}^{31}=-2^{31} 补码是源码<strong>除符号位</strong>外取反加一，逆推原码也是这样或者减一取反。\overbrace{01111111111111111}^{32} =2^31-1，具体值用<strong>pow表达式或者用确切值</strong>。</p>
+<p><strong>用C++写的时候可以用new和delete以及引用传参</strong></p>
+<h3 id="%E7%AE%97%E6%B3%95%E5%92%8C%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1" id="">算法和算法设计</h3>
+<p><strong>算法：一个有穷的指令集。</strong></p>
+<h4 id="%E7%AE%97%E6%B3%95%E7%9A%84%E7%89%B9%E6%80%A7%EF%BC%9A" id="">算法的特性：</h4>
+<p>1，有输入：可以通过输入语句<strong>由外部显式提供</strong>，也可以<strong>由赋值或定值语句隐式提供</strong>，即 <strong>“0个输入“</strong> 情况；
+2，有输出；
+3，确定性：每一步都确切，无歧义的定义，<strong>对于一组确定的输入对应一条确定的路径运算</strong>，如果会因系统状态而导致结果不一致，则只要对于每个系统状态有确定的处理手段就不影响确定性，没赋初值导致的结果不同没有对应不同状态的处理，违反确定性。
+4，有穷性：<strong>初值导致算法不收敛的与算法本身无关，不违反有穷性</strong>；
+5，可行性：每一条运算都足够基本（<strong>可以用基本操作或调用已实现的基本算法</strong>），都能精确执行，但<strong>并不一定都与机器指令有直接关系</strong>，并<strong>能在常数时间内完成</strong>。</p>
+<p>基本设计步骤：<strong>理解需求-&gt;设计思路-&gt;算法框架-&gt;程序实现</strong>；</p>
+<p>算法与程序的关系：
+(1)算法在描述上一般使用半形式化的语言，而程序是用形式化的计算机语言描述的。
+(2) 程序是计算机指令的有序集合。
+(3)程序并不都满足算法所要求的特征，例如操作系统，是一个在无限循环中执行的程序，因而不是一个算法。
+(4)一个算法可以用不同的编程语言编写出不同的程序。
+(5)算法是解决问题的步骤；程序是算法的代码实现。
+(6)算法要依靠程序来完成功能；程序需要算法作为灵魂。
+(7)程序=算法+数据结构。</p>
+<p>算法设计基本方法：</p>
+<p>1，穷举法（枚举法）：&lt;1&gt;按规则列举，&lt;2&gt;盲目列举，并检查之前的列举是否重复；</p>
+<p>2，迭代法（反复法）:iteration：不断用原值得到的新值代替原值，直到得到满意的解 ，新值与原值之间的关系用迭代公式表示，主要用于很难用或无法用解析法求解的计算问题，例如区间折半法求方程的根，也用来遍历表树图等数据结构。</p>
+<p>3，递推法：递归的递推求解使用递归法，自顶向下，非递归的递推求解使用迭代法，自底向上；</p>
+<p>4，递归法：包括自身的数据对象和调用本身的过程是递归的；递归从问题规模为n的场合开始，通过递归降低问题规模，直到递归出口，再倒推回来得到最初的值；递推是从已知条件出发；一般一个递推算法总可以转化为递归算法；例如二分法求根和求Fibonacci数两种方式的转换。但递归法不仅仅用于递推的实现（还有数据结构如链表，树图等的建立等等）。</p>
+<p>递归是算法设计的基本技术，是降低分析设计难度提高程序设计效率的重要手段和工具；迭代具有更高的时空效率。</p>
+<p>穷举过程中被穷举对象可能需要其他方法求解，各种方法是配合使用的。</p>
+<p>算法度量</p>
+<p>算法的评价标准：
+1，正确性；
+2，健壮性：在不正确输入条件下能自我保护，包括自动检错，报错，与用户对话来纠错；
+3，可读性；变量名，函数名要有实际意义，必须加入注释；
+4，高效性：主要指算法的时间代价和空间代价；
+5，简单性：主要用环路复杂度度量，等于程序中判断语句和子程序调用总数加一，软件工程要求不能超过10；</p>
+<p>算法分析的主要方法：<strong>事后<em>估算</em>法</strong>（插入<em>测量时间语句</em>来估算）和<strong>事前<em>统计</em>法</strong>（通过对<em>问题规模，执行频度，时间，空间复杂度</em>的进行估算。<strong>主要目的是分析算法的效率以求改进</strong>。<strong>主要方面是时间性能和空间性能</strong>。</p>
+<h4 id="%E6%B5%8B%E9%87%8F%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4" id="">测量程序运行时间</h4>
+<p>clock_t start_time, end_time;给两个变量赋给当时时间，它们的差就是它们之间程序的运行时间</p>
+<p>clock_t是长整形。</p>
+<p>用clock()(精确到豪秒）或者time(NULL/0)（精确到秒）</p>
+<p>用time直接作差即可，用clock的需要使用表达式(double)(end_time-start_time)/CLOCK_PER_SEC(每秒钟clock的增量，linux下为1000000，window下为1000)；</p>
+<p>特别的sleep(x)（unisted.h)下会使linux下的clock暂停(它返回的是CPU耗费在本程序上的时间。也就是说，途中sleep的话，由于CPU资源被释放，那段时间将不被计算在内。)等待输入时clock也会暂停，带有sleep的程序运行时间精度要求不高时只能用time；windows不会；</p>
+<p>window下sleep(n)单位是ms，linux下单位是s；linux下还有usleep(n),单位是um。里面乘以1000就等同于window下的sleep。</p>
+<p>精确计算运行时间</p>
+<pre class='hljs'><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/time.h&gt;</span> </span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">timeval</span>  <span class="hljs-title">start_time</span>,<span class="hljs-title">end_time</span>;</span>
+{
+ <span class="hljs-built_in">gettimeofday</span>(&amp;start_time,<span class="hljs-literal">NULL</span>);
+ <span class="hljs-comment">/*
+ 代码块
+      */</span> 
+<span class="hljs-built_in">gettimeofday</span>(&amp;end_time,<span class="hljs-literal">NULL</span>); 
+<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%lf&quot;</span>,(end_time.tv_sec-start_time.tv_sec)+(<span class="hljs-keyword">double</span>)(end_time.tv_usec-start_time.tv_usec)/CLOCKS_PER_SEC);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+}
+<span class="hljs-comment">/*
+gettimeofday()会把目前的时间用tv 结构体返回，当地时区的信息则放到tz所指的结构中。
+一般情况下 ，我们并不需要时区信息，所以第二个参数通常为空。
+timeStart.tv_sec 这个就是秒为单位的时间戳。(double)
+timeStart.tv_usec 这是当前秒中的毫秒数。(int,需要除以CLOCK_PER_SEC并转为double)；
+*/</span>
+</div></code></pre>
+<p>算法的计算量的大小称为算法的<em>复杂性</em>。</p>
+<h4 id="%E7%AE%97%E6%B3%95%E7%9A%84%E5%A4%8D%E6%9D%82%E5%BA%A6(complexity)whe.%2C%2Cs%E5%BA%A6%E9%87%8F%E5%92%8C%E9%97%AE%E9%A2%98%E8%A7%84%E6%A8%A1" id="complexitywhes">算法的复杂度(complexity)whe.,,S度量和问题规模</h4>
+<p>问题规模从问题的描述中找到：例如在n个学生中查找和求解n阶线性方程组的问题规模都是n；</p>
+<p>时间复杂度T(n)：当问题的规模从1增加到n时，解决问题的算法所耗费的时间也由1增加到T(n);</p>
+<p>空间复杂度S(n):空间由1到S(n)；</p>
+<p>两种度量都是问题规模n的函数，单位都是1，即单位时间(ont time unit)和单位空间都是1(ont space unit)；</p>
+<p>时间复杂度度量的计算</p>
+<p>算法的执行频度=每条语句的执行次数（频度）x该语句执行时间（每一条基本语句执行时间视为单位时间1，语句执行时间等于语句中基本运算语句数）=算法中所有<strong>运算语句</strong>执行频度的总和；</p>
+<p>for循环控制语句的执行次数为n+1,；单位执行时间（一次执行所需语句数）为2（不包括内部），执行频度（总次数）为2(n+1)(共执行n+1次表达式2，1次表达式1，n次表达式3），循环体执行次数是n；</p>
+<p>运算赋值语句是<strong>一个</strong>基本运算语句（<strong>加减乘除，转移，存取以及他们的复合</strong>），如a=b+c，return b+c，执行频度都是1；定义语句不是运算语句；</p>
+<p>递归算法的执行频度可通过写出T(n)的递推形式来计算；例如T(n)=2,n&lt;=0（if判断和return）;T(n)=2+T(n-1);n&gt;0;（比上次多两次执行（if和return加和，<strong>调用函数以及return的执行次数和加和合并了，还是1</strong>）；</p>
+<p>空间复杂度度量指算法所需附加存储空间，包括固定部分和可变部分（与问题规模有关）；</p>
+<p>阶乘的非递归实现中，只用了一个整数存放连乘结果，附加空间数为1，空间复杂度也为1；</p>
+<p>递归的空间复杂度=每次递归所要的辅助空间x递归深度；</p>
+<p>阶乘的递归i实现中每一层递归都需要三个栈空间来存放形式参数，返回值以及返回地址（一旦函数调用完成，程序应该知道返回的位置，即函数调用之前的点）</p>
+<p>递归深度是n，所以所需的栈空间是3n，空间复杂度为3n；</p>
+<p>动态分配所涉及的空间复杂度 等于malloc的空间减去free的空间；</p>
+<h4 id="%E6%B8%90%E8%BF%9B%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6" id="">渐进的时间复杂度</h4>
+<p>执行频度不能确切地反映运行时间，所以用其来比较两个程序结果不一定有价值，所以只需给出算法执行频度的数量级即可达到分析的目的。</p>
+<p>大<em>O</em>表示：当且仅当存在正整数c和n_0,使得T(n)&lt;=cxf(n)对所有的n&gt;=n_0成立，则称该算法的时间增长率在<em>O</em>(f(n))中，记为T(n)=<em>O</em>(f(n)).</p>
+<p>算法时间复杂度T(n)增长的上限为f(n);<em>Never to underestimate the runing time of the program.</em></p>
+<p>O  函数的渐近上界 upper bound
+Ω 函数的渐近下界 lower dound
+Θ  函数的准确界</p>
+<p>Θ(f(n))=T(n):存在正常数c1,c2和n0，使对所有的n⩾n0，有0⩽c1f(n)⩽T(n)⩽c2f(n) f(n)=2n^2+n,T(n)=n^2;(同阶)同速</p>
+<p>O(f(n))=T(n): 存在正常数c和n0，使对所有n⩾n0，有0⩽T(n)⩽cf(n) f(n)=n^2;T(n)=2n^2+n; f(n)_rate&gt;=T(n)_rate</p>
+<p>Ω(f(n))=T(n): 存在正常数c和n0，使对所有n ⩾ n0，有0⩽cf(n)⩽T(n) f(n)=n^2,T(n)=2n^2+n;f(n)_rate&lt;=T(n)_rate</p>
+<p>o(f(n))=T(n): 对任意正常数c，存在常数n0&gt;0，使对所有的n⩾n0，有0⩽T(n)⩽cf(n) T(n)=O(f(n))&amp;&amp;T(n)!=Ω(f(n));f(n)=2n^2+n;T(n)=2n;</p>
+<p>f(n)_rate&gt;T(n)_rate</p>
+<p>lim(T(n)/f(n))=<em>lim(T'(n)/f'(n))</em>(n-&gt;inf):1,==c:Θ(f(n))=T(n);2,-&gt;inf:o(T(n))=f(n);3,==0;o(f(n))=T(n);</p>
+<p>Thus T(n)=n^2=O(n^2)=O(n^3),the first option is the best answer.</p>
+<p>一般情况下O就是指Θ，前者范围更广所以一般用前者表示。</p>
+<p>If T(N)is a polynomial(/ˌpɑːliˈnoʊmiəl/ 多项式) of degree k(equal to k-order),then T(N)= Θ(N^k);</p>
+<p><strong>Lower-order terms</strong> can generally be ignored,and the <strong>constants</strong> can be throw away.</p>
+<p>If T1(n) = O(F(N)) and T2(N) = O(g(N)),then
+(a),T1(N)+T2(N) = max{O(f(N)),O(g(N))}
+(b),T1(N)*T2(N) = O(f(N)*g(N)).</p>
+<p>When n is sufficiently large, the growth of various functions has the following relationship:</p>
+<p>c &lt;      log2n &lt; (log2n)^k&lt;n &lt; nlog n &lt; n^2 &lt;    n^3 &lt; 2^n &lt; 3^n &lt;   n!  &lt;n^n</p>
+<p>Constant logarithmic      Linear     Quadratic   Cubic  Exponential  factorial
+/ˌekspəˈnenʃl/
+The logarithms grow very slowly.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>log</mi><mrow><msub><mi>k</mi><mn>1</mn></msub></mrow></msub><mi>n</mi><mo>&lt;</mo><msup><mi>n</mi><mrow><msub><mi>k</mi><mn>2</mn></msub></mrow></msup><mo>&lt;</mo><msup><mrow><msub><mi>k</mi><mn>3</mn></msub></mrow><mi>n</mi></msup><mo>(</mo><msub><mi>k</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>k</mi><mn>2</mn></msub><mo>&gt;</mo><mn>0</mn><mo separator="true">,</mo><msub><mi>k</mi><mn>3</mn></msub><mo>&gt;</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\log_{k_1} n&lt;n^{k_2}&lt;{k_3}^n(k_1,k_2&gt;0,k_3&gt;1)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.899108em;"></span><span class="strut bottom" style="height:1.248548em;vertical-align:-0.34944em;"></span><span class="base displaystyle textstyle uncramped"><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="vlist"><span style="top:0.24444em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="vlist"><span style="top:0.15em;margin-right:0.07142857142857144em;margin-left:-0.03148em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-scriptstyle scriptscriptstyle cramped"><span class="mord mathrm">1</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord mathit">n</span><span class="mrel">&lt;</span><span class="mord"><span class="mord mathit">n</span><span class="vlist"><span style="top:-0.413em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="vlist"><span style="top:0.15em;margin-right:0.07142857142857144em;margin-left:-0.03148em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-scriptstyle scriptscriptstyle cramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">&lt;</span><span class="mord"><span class="mord displaystyle textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03148em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">3</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span><span class="vlist"><span style="top:-0.413em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit">n</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03148em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">1</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mpunct">,</span><span class="mord"><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03148em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">&gt;</span><span class="mord mathrm">0</span><span class="mpunct">,</span><span class="mord"><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:-0.03148em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">3</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">&gt;</span><span class="mord mathrm">1</span><span class="mclose">)</span></span></span></span></span></p>
+<p>the rate of <strong>logarithm slower than power slower than exponient,there is no power function between n and nlogn.</strong></p>
+<p>such as :</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>N</mi><mrow><mn>1</mn><mo>+</mo><mfrac><mrow><mi>ε</mi></mrow><mrow><msqrt><mrow><mi>log</mi><mi>n</mi></mrow></msqrt></mrow></mfrac></mrow></msup><mo>&lt;</mo><mi>N</mi><mi>log</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">N^{1+\frac{\varepsilon}{\sqrt{\log n}}}&lt;N\log N
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.22383em;"></span><span class="strut bottom" style="height:1.41827em;vertical-align:-0.19444em;"></span><span class="base displaystyle textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="vlist"><span style="top:-0.7327499999999999em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:1em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathrm">1</span><span class="mbin">+</span><span class="mord reset-scriptstyle scriptstyle uncramped"><span class="sizing reset-size5 size5 reset-scriptstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.6357142857142858em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:1.4285714285714286em;">​</span></span><span class="reset-scriptstyle scriptscriptstyle cramped"><span class="mord scriptscriptstyle cramped"><span class="sqrt mord"><span class="sqrt-sign" style="top:0.07999999999999985em;"><span class="style-wrap reset-scriptscriptstyle scriptstyle uncramped">√</span></span><span class="vlist"><span style="top:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:2em;">​</span></span><span class="mord scriptscriptstyle cramped"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit">n</span></span></span><span style="top:-0.96em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:2em;">​</span></span><span class="reset-scriptscriptstyle textstyle uncramped sqrt-line"></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:2em;">​</span></span>​</span></span></span></span></span></span><span style="top:-0.22142857142857153em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:1.4285714285714286em;">​</span></span><span class="reset-scriptstyle textstyle uncramped frac-line"></span></span><span style="top:-0.394em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:1.4285714285714286em;">​</span></span><span class="reset-scriptstyle scriptscriptstyle uncramped"><span class="mord scriptscriptstyle uncramped"><span class="mord mathit">ε</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:1.4285714285714286em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-scriptstyle textstyle uncramped nulldelimiter"></span></span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:1em;">​</span></span>​</span></span></span><span class="mrel">&lt;</span><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit" style="margin-right:0.10903em;">N</span></span></span></span></span></p>
+<p><strong>O(log2n)可以简记为O(logn);由换底公式知不同底数的对数阶只差了常数倍，n(log2n)也满足</strong></p>
+<p><strong>for loop statement</strong>:The total running time of a statement（语句） inside a group of nested loops(嵌套循环) is the running time of statement multiplied by the product（乘积） of the size of all the for loops;</p>
+<p><strong>if/else statement</strong>:time of <em>test</em> plus the <em>lager</em> of the running time of S1 and S2.</p>
+<p>函数或语句嵌套的相乘，并列的取最大。</p>
+<p>计算递归的时间复杂度时，简单的可以直接当作for循环来看，复杂的通过递推式计算，结束递归那一步的执行频度如果是c可以简化为1，递推式中的常数必须严格按其执行频度来，例如裴波那契数列递归式是T(n)=T(n-1)+T(n-2)+2(if和return那一句)，n=1,2时看作1还是2无所谓。</p>
+<h4 id="%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F" id=""><a href="https://www.cnblogs.com/wuxero/p/14171220.html">数学公式</a></h4>
+<p><a href="https://latex.codecogs.com/eqneditor/editor.php">在线生成</a>
+一个行内，两个行外；<em>下标，^上标 逻辑上的括号:{}
+分数：\frac{}{}
+方程组：\start{cases} \ \ \ \end{cases}
+求和:\sum</em>{i=0}^k;
+换行\,空格;
+箭头\rightarrow
+自适应括号\left( \right)
+\sqrt{}
+\overbrace{a+\underbrace{b+c}_{1.0}+d}^{2.0}</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>缩写</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JavaScript</td>
+<td>js</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>py</td>
+</tr>
+<tr>
+<td>C++</td>
+<td>cpp</td>
+</tr>
+<tr>
+<td>“：”：决定对齐方式</td>
+<td></td>
+</tr>
+<tr>
+<td>题号</td>
+<td>标题</td>
+</tr>
+<tr>
+<td>:---</td>
+<td>---:</td>
+</tr>
+<tr>
+<td>1</td>
+<td>两数之和</td>
+</tr>
+<tr>
+<td>15</td>
+<td>三数之和</td>
+</tr>
+<tr>
+<td>262</td>
+<td>行程和用户</td>
+</tr>
+</tbody>
+</table>
+<h4 id="%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%BE%8B%E9%A2%98%EF%BC%9A" id="">时间复杂度例题：</h4>
+<h5 id="%E5%BE%AA%E7%8E%AF%E5%B5%8C%E5%A5%97" id="">循环嵌套</h5>
+<pre class='hljs'><code><div>{
+<span class="hljs-keyword">int</span>  i,j,k,x=<span class="hljs-number">0</span>,y=<span class="hljs-number">0</span>;
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">1</span>;j&lt;=i;j++)
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k=<span class="hljs-number">1</span>;k&lt;=j;k++)
+x=x+y;
+}
+</div></code></pre>
+T(n) = \sum_{i=1}^n \sum_{j=1}^i  \sum_{k=1}^j = \sum_{i=1}^n \sum_{j=1}^i j = \sum_{i=1}^n \frac{i(i+1)}{2} = \frac{1}{2}\times\frac{n(n+1)(2n+1)}{6}+\frac{1}{2}\times\frac{n(n+1)}{2} = \frac{n(n+1)(n+2)}{6}\\
+\sum_{i=1}^n i^2=\frac{n(n+1)(2n+1)}{6}\\ \sum_{i=1}^n i^3=\left(\sum_{i=1}^n i\right)^2;
+
+<pre class='hljs'><code><div>{
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">func</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span>
+    </span>{
+    <span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>,s=<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span>(s&lt;n)
+    s+=++i;
+    <span class="hljs-keyword">return</span> i
+    }
+}
+第一轮 ：s=<span class="hljs-number">1</span>+<span class="hljs-number">2</span>;第二轮：s=<span class="hljs-number">1</span>+<span class="hljs-number">2</span>+<span class="hljs-number">3</span>；第n轮：s=<span class="hljs-number">1</span>+<span class="hljs-number">2</span>+<span class="hljs-number">3</span>+...+i;
+</div></code></pre>
+跳出循环时，函数执行次数i满足 \frac{n(n- 1)}{2}\geq n;即 i^2-i-2n\geq0,解得i\geq\frac{1\pm\sqrt{1+8n}}{2}.故时间复杂度为O(\sqrt{n});
+
+<p>Find the maximum of subsequence(substring) sum in A[n]:{A0,A1,...An};</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mi>i</mi></mrow><mi>j</mi></msubsup><msub><mi>A</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">\sum_{k=i}^jA_k
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.8587770000000001em;"></span><span class="strut bottom" style="height:3.16089em;vertical-align:-1.302113em;"></span><span class="base displaystyle textstyle uncramped"><span class="mop op-limits"><span class="vlist"><span style="top:1.202113em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mrel">=</span><span class="mord mathit">i</span></span></span></span><span style="top:-0.000005000000000032756em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.297113em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord"><span class="mord mathit">A</span><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathit" style="margin-right:0.03148em;">k</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span></span></p>
+<pre class='hljs'><code><div>Algorithm <span class="hljs-number">1</span> 
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">MaxSubsequenceSum</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> A[],<span class="hljs-keyword">int</span> N)</span>
+</span>{
+    <span class="hljs-keyword">int</span> ThisSum,Maxsum,i,j,k;
+    Maxsum=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;N;i++)
+    <span class="hljs-keyword">for</span>(j=i;j&lt;N;j++)
+    {
+        ThisSum=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(k=i;k&lt;=j;k++)
+        ThisSum+=A[k];
+        <span class="hljs-keyword">if</span>(ThisSum&gt;Maxsum)
+        Maxsum=ThisSum;
+    }
+    <span class="hljs-keyword">return</span> Maxsum;
+}
+</div></code></pre>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mi>N</mi></msubsup><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mi>i</mi></mrow><mi>N</mi></msubsup><msubsup><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mi>i</mi></mrow><mi>j</mi></msubsup><mo>=</mo><mfrac><mrow><msup><mi>N</mi><mn>3</mn></msup><mo>+</mo><mn>3</mn><msup><mi>N</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>N</mi></mrow><mrow><mn>6</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\sum_{i=0}^N \sum_{j=i}^N \sum_{k=i}^j = \frac{N^3+3N^2+2N}{6}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.8587770000000001em;"></span><span class="strut bottom" style="height:3.272554em;vertical-align:-1.4137769999999998em;"></span><span class="base displaystyle textstyle uncramped"><span class="mop op-limits"><span class="vlist"><span style="top:1.1776689999999999em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mrel">=</span><span class="mord mathrm">0</span></span></span></span><span style="top:-0.000005000000000143778em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.2500050000000003em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.10903em;">N</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mop op-limits"><span class="vlist"><span style="top:1.1776689999999999em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit" style="margin-right:0.05724em;">j</span><span class="mrel">=</span><span class="mord mathit">i</span></span></span></span><span style="top:-0.000005000000000254801em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.2500050000000005em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.10903em;">N</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mop op-limits"><span class="vlist"><span style="top:1.202113em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mrel">=</span><span class="mord mathit">i</span></span></span></span><span style="top:-0.000005000000000032756em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.297113em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mrel">=</span><span class="mord reset-textstyle displaystyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.686em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle cramped"><span class="mord textstyle cramped"><span class="mord mathrm">6</span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.677em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">3</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord mathrm">3</span><span class="mord"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord mathrm">2</span><span class="mord mathit" style="margin-right:0.10903em;">N</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span></span></p>
+<p>evaluated inside out（由内到外计算）</p>
+<p>求内层变量和时外层的变量当常量对待。</p>
+<p><strong>时间复杂度为O(n^3);不需要精确计算时可以通过三层循环的次数都小于等于n得到结果；</strong></p>
+<pre class='hljs'><code><div>Algorithm2:
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">MaxSubsequenceSum</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> A[],<span class="hljs-keyword">int</span> N)</span>
+</span>{
+    <span class="hljs-keyword">int</span> ThisSum,Maxsum,i,j,k;
+    Maxsum=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;N;i++)
+    {
+        ThisSum=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(j=i;j&lt;N;j++)
+    {
+       ThisSum+=A[j]；
+        <span class="hljs-keyword">if</span>(ThisSum&gt;Maxsum)
+        Maxsum=ThisSum;
+    }
+    }
+    <span class="hljs-keyword">return</span> Maxsum;
+}
+<span class="hljs-function">clearly is <span class="hljs-title">O</span><span class="hljs-params">(n^<span class="hljs-number">2</span>)</span>；
+</span></div></code></pre>
+<pre class='hljs'><code><div>Algorithm3:
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Max3</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b, <span class="hljs-keyword">int</span> c)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">MaxSubSum</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> A[], <span class="hljs-keyword">int</span> Left, <span class="hljs-keyword">int</span> Right)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">int</span> a[<span class="hljs-number">5</span>] = {<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">-5</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-8</span>};
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>, <span class="hljs-built_in">MaxSubSum</span>(a, <span class="hljs-number">0</span>, <span class="hljs-number">4</span>));
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Max3</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b, <span class="hljs-keyword">int</span> c)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (a &gt; b)
+        <span class="hljs-keyword">return</span> a;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c &gt; b)
+        <span class="hljs-keyword">return</span> c;
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> b;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">MaxSubSum</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> A[], <span class="hljs-keyword">int</span> Left, <span class="hljs-keyword">int</span> Ri ght)</span>
+</span>{
+    <span class="hljs-keyword">int</span> MaxLeftSum, MaxRightSum;
+    <span class="hljs-keyword">int</span> MaxLeftBorderSum, MaxRightBorderSum;
+    <span class="hljs-keyword">int</span> LeftBorderSum, RightBorderSum;
+    <span class="hljs-keyword">int</span> Center, i;
+    <span class="hljs-keyword">if</span> (Left == Right)<span class="hljs-comment">//递归返回终点</span>
+        <span class="hljs-keyword">if</span> (A[Left] &gt; <span class="hljs-number">0</span>)
+            <span class="hljs-keyword">return</span> A[Left];
+        <span class="hljs-keyword">else</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    Center = (Left + Right) / <span class="hljs-number">2</span>;
+    MaxLeftSum = <span class="hljs-built_in">MaxSubSum</span>(A, Left, Center);<span class="hljs-comment">//递归计算两边的最大子列和，分治思想体现。</span>
+    MaxRightSum = <span class="hljs-built_in">MaxSubSum</span>(A, Center + <span class="hljs-number">1</span>, Right);
+    MaxLeftBorderSum = <span class="hljs-number">0</span>;
+    LeftBorderSum = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (i = Center; i &gt;= Left; i--)
+    {
+        LeftBorderSum += A[i];
+        <span class="hljs-keyword">if</span> (LeftBorderSum &gt; MaxLeftBorderSum)
+            MaxLeftBorderSum = LeftBorderSum;
+    }
+    MaxRightBorderSum = <span class="hljs-number">0</span>;
+    RightBorderSum = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (i = Center + <span class="hljs-number">1</span>; i &lt;= Right; i++)
+    {
+        RightBorderSum += A[i];
+        <span class="hljs-keyword">if</span> (RightBorderSum &gt; MaxRightBorderSum)
+            MaxRightBorderSum = RightBorderSum;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Max3</span>(MaxLeftSum, MaxRightSum, MaxLeftBorderSum + MaxRightBorderSum);
+               <span class="hljs-comment">// 最大值在这三个值里产生</span>
+}
+</div></code></pre>
+<p>The algorithm uses a &quot;divide-and-conqure&quot;(分治) strategy.The idea is spit the problem into two roughly equal subproblems,which are the solved recursively.</p>
+<p>An Algorithm is<strong>O(log(N))<strong>if it takes constant(O(1))time to <strong>cut the problem size by a <em>fraction</em></strong>(which is usually 1/2).On the other hand,if constant time is required to merely <strong>reduce the problem by a <em>constant amount</em></strong>(such as make the problem smaller by 1),then the algorithm is</strong>O(N)</strong>.</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mo fence="true">{</mo><mtable><mtr><mtd><mrow><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mi>T</mi><mo>(</mo><mi>n</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo>)</mo><mo>+</mo><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>→</mo><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mi>k</mi><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo><mi>log</mi><mi>n</mi><mo>=</mo><mi>O</mi><mo>(</mo><mi>log</mi><mi>n</mi><mo>)</mo></mrow></mtd></mtr><mtr><mtd><mrow><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mn>2</mn><mo>(</mo><mi>T</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo>)</mo><mo>+</mo><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>→</mo><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><msup><mn>2</mn><mi>k</mi></msup><mo>+</mo><mi>k</mi><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mi>n</mi><mo>+</mo><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo><mi>log</mi><mi>n</mi><mo>=</mo><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow></mtd></mtr><mtr><mtd><mrow><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mn>2</mn><mo>(</mo><mi>T</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo>)</mo><mo>+</mo><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>→</mo><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><msup><mn>2</mn><mi>k</mi></msup><mo>+</mo><mi>n</mi><mo>×</mo><mi>k</mi><mo>=</mo><mi>n</mi><mo>+</mo><mi>n</mi><mi>log</mi><mi>n</mi><mo>=</mo><mi>O</mi><mo>(</mo><mi>n</mi><mi>log</mi><mi>n</mi><mo>)</mo></mrow></mtd></mtr><mtr><mtd><mrow></mrow></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\begin{cases} T(n)=T(n/2)+O(1)\rightarrow T(n)=kO(1)=O(1)\log n=O(\log n)\\ T(n)=2(T/2)+O(1)\rightarrow T(n)=2^k+kO(1)=n+O(1)\log n=O(n)\\ T(n)=2(T/2)+O(n)\rightarrow T(n)=2^k+n\times k=n+n\log n=O(n\log n)\\ \end{cases}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:3.1300000000000003em;"></span><span class="strut bottom" style="height:5.76em;vertical-align:-2.63em;"></span><span class="base displaystyle textstyle uncramped"><span class="minner displaystyle textstyle uncramped"><span class="style-wrap reset-textstyle textstyle uncramped"><span class="delimsizing mult"><span class="vlist"><span style="top:1.5500099999999999em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:1.5500099999999999em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:1.2500099999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:0.9500099999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-0.000010000000000287557em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-1.1500100000000002em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-1.4500100000000002em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-1.7500100000000003em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-2.0500200000000004em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist"><span style="top:-2.1220000000000003em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="mord displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mord mathrm">/</span><span class="mord mathrm">2</span><span class="mclose">)</span><span class="mbin">+</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span><span class="mrel">→</span><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit">n</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit">n</span><span class="mclose">)</span></span></span><span style="top:-0.6820000000000005em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="mord displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathrm">2</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mord mathrm">/</span><span class="mord mathrm">2</span><span class="mclose">)</span><span class="mbin">+</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span><span class="mrel">→</span><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.413em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.03148em;">k</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathit">n</span><span class="mbin">+</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathrm">1</span><span class="mclose">)</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit">n</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span><span style="top:0.7579999999999995em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="mord displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathrm">2</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mord mathrm">/</span><span class="mord mathrm">2</span><span class="mclose">)</span><span class="mbin">+</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">→</span><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.413em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.03148em;">k</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord mathit">n</span><span class="mbin">×</span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mrel">=</span><span class="mord mathit">n</span><span class="mbin">+</span><span class="mord mathit">n</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit">n</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit">n</span><span class="mclose">)</span></span></span><span style="top:2.198em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="mord displaystyle textstyle uncramped"></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span></span></p>
+<p>Simple intuition obviates the need for a brute-force approach.</p>
+<p><em>接收n个数据至少需要O(N)的复杂度，故O(logN)是针对对应函数而不是程序整体说的。</em></p>
+<p><strong>分治法的设计思想是：将一个难以直接解决的大问题，分割成一些规模较小的相同问题，以便各个击破，分而治之。</strong></p>
+<p>分治策略是：对于一个规模为n的问题，若该问题可以容易地解决（比如说规模n较小）则直接解决，否则将其分解为k个规模较小的子问题，这些子问题互相独立且与原问题形式相同，递归地解这些子问题，然后将各子问题的解合并得到原问题的解这种算法设计策略叫做分治法。</p>
+<p>如果原问题可分割成k个子问题，1&lt;k≤n，且这些子问题都可解并可利用这些子问题的解求出原问题的解，那么这种分治法就是可行的。由分治法产生的子问题往往是原问题的较小模式，这就为使用递归技术提供了方便。在这种情况下，反复应用分治手段，可以使子问题与原问题类型一致而其规模却不断缩小，最终使子问题缩小到很容易直接求出其解。这自然导致递归过程的产生。分治与递归像一对孪生兄弟，经常同时应用在算法设计之中，并由此产生许多高效算法。</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mo fence="true">{</mo><mtable><mtr><mtd><mrow><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mi>n</mi><mo>=</mo><mn>1</mn></mrow></mtd></mtr><mtr><mtd><mrow><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mn>2</mn><mo>∗</mo><mi>T</mi><mo>(</mo><mi>n</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo>)</mo><mo>+</mo><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo separator="true">,</mo><mi>n</mi><mo>&gt;</mo><mn>1</mn></mrow></mtd></mtr><mtr><mtd><mrow></mrow></mtd></mtr></mtable></mrow><mi>i</mi><mi>f</mi><mspace width="0.277778em"></mspace><mi>n</mi><mo>=</mo><msup><mn>2</mn><mi>k</mi></msup><mo separator="true">,</mo><mi>t</mi><mi>h</mi><mi>e</mi><mi>n</mi><mspace width="0.277778em"></mspace><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><msup><mn>2</mn><mi>k</mi></msup><mo>+</mo><mi>n</mi><mo>×</mo><mi>k</mi><mo>=</mo><mi>n</mi><mo>+</mo><mi>n</mi><msub><mi>log</mi><mn>2</mn></msub><mi>n</mi><mo>=</mo><mi>O</mi><mo>(</mo><mi>N</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\begin{cases} T(n)=1,n=1\\ T(n)=2*T(n/2)+O(n),n&gt;1\\ \end{cases}
+if\;n=2^k,then\;T(n)=2^k+n\times k=n+n\log_2 n=O(Nlog n)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:2.41em;"></span><span class="strut bottom" style="height:4.32em;vertical-align:-1.9099999999999997em;"></span><span class="base displaystyle textstyle uncramped"><span class="minner displaystyle textstyle uncramped"><span class="style-wrap reset-textstyle textstyle uncramped"><span class="delimsizing mult"><span class="vlist"><span style="top:0.9500099999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:0.9500099999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-0.000010000000000287557em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-1.1500100000000002em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-1.4500200000000003em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist"><span style="top:-1.4020000000000001em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="mord displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathrm">1</span><span class="mpunct">,</span><span class="mord mathit">n</span><span class="mrel">=</span><span class="mord mathrm">1</span></span></span><span style="top:0.0379999999999997em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="mord displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathrm">2</span><span class="mbin">∗</span><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mord mathrm">/</span><span class="mord mathrm">2</span><span class="mclose">)</span><span class="mbin">+</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mord mathit">n</span><span class="mrel">&gt;</span><span class="mord mathrm">1</span></span></span><span style="top:1.4779999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="mord displaystyle textstyle uncramped"></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span><span class="mord mathit">i</span><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mspace thickspace"></span><span class="mord mathit">n</span><span class="mrel">=</span><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.413em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.03148em;">k</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mpunct">,</span><span class="mord mathit">t</span><span class="mord mathit">h</span><span class="mord mathit">e</span><span class="mord mathit">n</span><span class="mord mspace thickspace"></span><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.413em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.03148em;">k</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord mathit">n</span><span class="mbin">×</span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mrel">=</span><span class="mord mathit">n</span><span class="mbin">+</span><span class="mord mathit">n</span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="vlist"><span style="top:0.24444em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord mathit">n</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="mord mathit" style="margin-right:0.01968em;">l</span><span class="mord mathit">o</span><span class="mord mathit" style="margin-right:0.03588em;">g</span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span></span></p>
+<pre class='hljs'><code><div><span class="hljs-function">Algorithm4
+<span class="hljs-keyword">int</span> <span class="hljs-title">MaxSubsequenceSum</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> A[],<span class="hljs-keyword">int</span> N)</span>
+</span>{
+    <span class="hljs-keyword">int</span> ThisSum,Maxsum,j;
+    ThisSum=MaxSum=<span class="hljs-number">0</span>;Maxsum=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(j=<span class="hljs-number">0</span>;j&lt;N;j++){
+        ThisSum+=A[j];
+        <span class="hljs-keyword">if</span>(ThisSum&gt;MaxSum)
+        MaxSum= ThisSum;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(ThisSum&lt;<span class="hljs-number">0</span>)<span class="hljs-comment">//越过分界点时ThisSum归零，计算下一段的最长字列和</span>
+        ThisSum=<span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">return</span> Maxsum;
+}
+
+</div></code></pre>
+<p>首先假设我们已经找到了最大连续和子串在数组中的起始位置（i）和结束位置（j），其中i &lt;= j，即最大和maxSum = a[i] + a[i + 1] + ... + a[j]，我们来看看这个子串有什么性质：
+a[i] &gt; 0，否则我们完全可以去掉a[i]这个元素 而得到一个更大的和；
+i &gt; 0且a[i - 1] &lt; 0 或 i == 0，下面假设i &gt; 0，这一条性质也是因为如果a[i - 1] &gt; 0的话我们求和时可以加上a[i - 1]这个元素得到一个更大的和；
+元素a[i - 1]与它之前的任一元素之间的子串之和sum &lt; 0 ，即对于任何一个m(0 &lt;= m &lt; i -  1)，则有a[m] + a[m+ 1] + ... + a[i - 1] &lt; 0，（<strong>最大序列和不可能越过分界点，并且前面的最大字列的终点一定是m-1（如果存在非零子列和的话）一定会被记在MaxNum里</strong>），这条性质同样可以用反证法证明。</p>
+<p>只要找到分界点 a[i - 1]，最大和的子串要么就在a[i - 1]元素之后，要么就在a[i - 1]之前，最大和的子串不可能跨过a[i - 1]这个点；一个数组中可能有多个这种分界点，但每个分界点都可以把前后完全分开，可以单独算分界点之间的最大和，然后在这些最大和之间取最大值。  假设对于数组a，我们找到了两个分界点a[i]和a[j],那么整个数组的最大字串和就是max(sum(a[0]...a[i-1]), sum(a[i+1]...a[j-1]), sum(a[j+1]...a[len-1]))。</p>
+<h5 id="binary-search(%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE)" id="binary-search">Binary Search(二分查找)</h5>
+<pre class='hljs'><code><div><span class="hljs-comment">//A[N] has presorted（一次排序，永远方便，需要多次查找的都可以这样搞）</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">BinarySearch</span><span class="hljs-params">(Const ElementType A[],ElementType X,<span class="hljs-keyword">int</span> N)</span>
+</span>{
+    <span class="hljs-keyword">int</span> Low,Mid,High;
+    Low=<span class="hljs-number">0</span>;High=N<span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">while</span>(Low&lt;=High)
+    {
+        Mid=(Low+High)/ <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span>(X&gt;A[Mid])
+        Low=Mid+<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">if</span>(X&lt;A[Mid])
+        High=Mid<span class="hljs-number">-1</span>;
+        <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> Mid;<span class="hljs-comment">//Found</span>
+    }
+    <span class="hljs-keyword">return</span> NotFound<span class="hljs-comment">//is defined as -1;</span>
+}
+每次循环使问题的规模减小一倍，故时间复杂度是<span class="hljs-built_in">O</span>(logn);
+</div></code></pre>
+<h5 id="%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%E5%92%8C%E6%9C%80%E5%B0%8F%E5%85%AC%E5%80%8D%E6%95%B0%E4%BB%A5%E5%8F%8A-%E4%BA%8C%E5%88%86%E6%B3%95%E6%B1%82%E6%A0%B9" id="">最大公约数和最小公倍数以及 二分法求根</h5>
+<pre class='hljs'><code><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">GCD</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a , <span class="hljs-keyword">int</span> b )</span><span class="hljs-comment">//辗转相除法(Greatest Common Divisor)</span>
+</span>{
+    <span class="hljs-keyword">int</span> temp;
+    <span class="hljs-keyword">if</span>(!(a%b))
+    { <span class="hljs-keyword">return</span> b;<span class="hljs-keyword">break</span>;}
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">GCD</span>(b,a%b);<span class="hljs-comment">//除数除余数</span>
+}
+<span class="hljs-comment">//都不用判断a，b大小，如果a&lt;b,第一次递归或迭代会交换他们。</span>
+迭代写法（推荐）：
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">GCD</span><span class="hljs-params">(<span class="hljs-keyword">int</span> M, <span class="hljs-keyword">int</span> N)</span> <span class="hljs-comment">//(Euclid&#x27;s algorithm)</span>
+</span>{
+    <span class="hljs-keyword">int</span> Rem;
+    <span class="hljs-keyword">while</span>(N&gt;<span class="hljs-number">0</span>)
+    {
+        Rem=M%N;
+        M=N;
+        N=Rem;
+    }
+    <span class="hljs-keyword">return</span> M;
+}
+
+</div></code></pre>
+<p><strong>if M&gt;N,then M mod N &lt; M/2;(If N&lt;=M/2,then remainder is smaller than N;if N&gt;M/2,then remainder is M-Nalso smaller than M/2);</strong></p>
+<p>考虑(a,b)<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.36687em;"></span><span class="strut bottom" style="height:0.36687em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mrel">→</span></span></span></span>(b,a mod b)这个迭代，有两种情况：
+1，如果a&gt;b,那么迭代两次后得到(a mod b,b mod (a mod b)),
+有a mod b &lt; <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mrow><mi>a</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.695392em;"></span><span class="strut bottom" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="base textstyle uncramped"><span class="mord reset-textstyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.345em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathrm">2</span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.394em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathit">a</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span>, b mod (a mod b) &lt; <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mrow><mi>b</mi></mrow><mrow><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{b}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8801079999999999em;"></span><span class="strut bottom" style="height:1.2251079999999999em;vertical-align:-0.345em;"></span><span class="base textstyle uncramped"><span class="mord reset-textstyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.345em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathrm">2</span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.394em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathit">b</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span>,
+即迭代两次后问题的规模减小一倍；
+2，如果a&gt;b,迭代一次后归入情况a，至多出现一次，可以忽略。
+故其时间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mi>log</mi><mi>n</mi><mo>=</mo><mi>O</mi><mo>(</mo><mi>log</mi><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">2\log n=O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">2</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit">n</span><span class="mrel">=</span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit">n</span><span class="mclose">)</span></span></span></span>;</p>
+<pre class='hljs'><code><div>
+}
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> m,<span class="hljs-keyword">int</span> n)</span>更相减损术
+</span>{
+    <span class="hljs-keyword">if</span>(m&gt;n)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">gcd</span>(m-n,n);
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(n&gt;m)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">gcd</span>(m,n-m);<span class="hljs-comment">//大数减小数</span>
+    <span class="hljs-keyword">else</span> 
+    <span class="hljs-keyword">return</span> m;
+}
+</div></code></pre>
+<p>设gcd(a,b)=c,lcm(a,b)=d，即ab的最大公因数为c，最小公倍数为d，则一定有a=k1<em>c ， b=k2</em>c （1）      a=d/t1       b=d/t2   （2）,其中k1,k2必然互质（反证法：假设k1，k2不互质，则必定有一个大于1的最大公因数，设其为x，则有a=k1/x * xc, b=k2/x * xc,此时k1/x和k2/x已经互质，但是明显a和b有一个公因数xc,又因为x&gt;1，则xc&gt;c，和前提ab的最大公因数c矛盾，则k1,k2必然互质，同理可证t1,t2互质）</p>
+<p>对于（1）式，可有b/a=k2/k1.对于（2）式，可有b/a=t1/t2,即k2/k1=t1/t2,定有常数y,使得k2=y<em>t1,k1=y</em>t2,即k2/k1=y<em>t1/y</em>t2=t1/t2,</p>
+<p>而k2和k1是互质的，y只能为1，所以k2=t1,k1=t2,而k1=a/c,t2=d/b,所以a/c=d/b,即ab=cd，证毕</p>
+<pre class='hljs'><code><div><span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-keyword">double</span> x)</span>
+</span>{
+    <span class="hljs-keyword">return</span> a3*(x)*(x)*(x)+a2*(x)*(x)+a1*(x)+a0;
+}
+<span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">isroot</span><span class="hljs-params">(<span class="hljs-keyword">double</span> a,<span class="hljs-keyword">double</span>  b)</span>
+</span>{
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">fabs</span>(<span class="hljs-built_in">f</span>((a+b)/<span class="hljs-number">2</span>))&lt;<span class="hljs-number">1e-6</span>)<span class="hljs-comment">//也可用区间长度作为控制精度结束条件</span>
+        <span class="hljs-keyword">return</span> (a+b)/<span class="hljs-number">2</span>;
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">f</span>((a+b)/<span class="hljs-number">2</span>)*<span class="hljs-built_in">f</span>(a)&lt;<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">isroot</span>(a,(a+b)/<span class="hljs-number">2</span>);
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">isroot</span>((a+b)/<span class="hljs-number">2</span>,b);
+  
+}
+
+</div></code></pre>
+<pre class='hljs'><code><div><span class="hljs-comment">//Exponentiation:</span>
+<span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span> <span class="hljs-title">Pow</span><span class="hljs-params">(<span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span> x,<span class="hljs-keyword">int</span> N)</span>
+</span>{
+    <span class="hljs-keyword">if</span>(N==<span class="hljs-number">0</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(N==<span class="hljs-number">1</span>)<span class="hljs-comment">//unneceaaary</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">IsEven</span>(N))
+    <span class="hljs-function">retuen <span class="hljs-title">Pow</span><span class="hljs-params">(x*x,N/<span class="hljs-number">2</span>)</span></span>;
+    <span class="hljs-keyword">else</span>
+    retuen <span class="hljs-built_in">Pow</span>(x*x,N/<span class="hljs-number">2</span>)*x;
+}
+<span class="hljs-built_in">O</span>(log N)
+
+
+</div></code></pre>
+<h5 id="%E6%B1%89%E8%AF%BA%E5%A1%94" id="">汉诺塔</h5>
+<pre class='hljs'><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">hanoi</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">char</span> A, <span class="hljs-keyword">char</span> B, <span class="hljs-keyword">char</span> C)</span><span class="hljs-comment">//盘子数量，初始轴，中间轴，目标轴；</span>
+</span>{
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>)<span class="hljs-comment">//!最频繁的操作，是两个递归调用的终止条件</span>
+    {
+        <span class="hljs-built_in">move</span>(<span class="hljs-number">1</span>,A, C);
+        <span class="hljs-keyword">return</span>;<span class="hljs-comment">//或else</span>
+    }
+    <span class="hljs-built_in">hanoi</span>(n - <span class="hljs-number">1</span>, A, C, B);<span class="hljs-comment">//将A上面n-1个移动到B</span>
+    <span class="hljs-built_in">move</span>(n,A, C);<span class="hljs-comment">//将A上最后一个最大的移动到C，也是移动每个子递归上最大的；</span>
+    <span class="hljs-built_in">hanoi</span>(n - <span class="hljs-number">1</span>, B, A, C);<span class="hljs-comment">//将中间轴B上的移动到C</span>
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">move</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n,<span class="hljs-keyword">char</span> A, <span class="hljs-keyword">char</span> C)</span>
+</span>{
+    cout &lt;&lt; m++&lt;&lt;<span class="hljs-string">&#x27;:&#x27;</span>&lt;&lt;n&lt;&lt;<span class="hljs-string">&quot;from&quot;</span> &lt;&lt; A &lt;&lt; <span class="hljs-string">&quot; to&quot;</span> &lt;&lt; C &lt;&lt; endl;
+}
+</div></code></pre>
+<p><img src="https://pic2.zhimg.com/80/v2-0f0904276be548357ae841fe137230d1_1440w.jpg" alt="a">
+先从左边三号节点进入，到最左边的一号节点开始逐层退出递归，全部退出后执行节点4，然后从右边三号节点进入到其左下角的一号节点开始逐层退出递归。</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>T</mi><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>+</mo><mi>k</mi><mo>→</mo><mi>T</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">T(n)=2T(n-1)+k\rightarrow T(n)=2^n
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base displaystyle textstyle uncramped"><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord mathrm">2</span><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mbin">−</span><span class="mord mathrm">1</span><span class="mclose">)</span><span class="mbin">+</span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mrel">→</span><span class="mord mathit" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord"><span class="mord mathrm">2</span><span class="vlist"><span style="top:-0.413em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit">n</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span></span></p>
+<h5 id="%E9%9A%8F%E6%9C%BA%E7%BD%AE%E6%8D%A2%E6%95%B0%E7%BB%84" id="">随机置换数组</h5>
+<pre class='hljs'><code><div>Algorithm1:
+<span class="hljs-keyword">int</span> A[MAXN] = {<span class="hljs-number">0</span>},i,j,temp;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAXN; )
+    {
+        <span class="hljs-built_in">srand</span>(<span class="hljs-built_in">time</span>(<span class="hljs-literal">NULL</span>));
+        temp = <span class="hljs-built_in">rand</span>() % <span class="hljs-number">10</span> + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; i; j++)
+        {
+            <span class="hljs-keyword">if</span> (temp == A[j])
+                <span class="hljs-keyword">break</span>;
+        }
+        <span class="hljs-keyword">if</span>(j==i)
+        A[i++]=temp;
+    }
+
+</div></code></pre>
+<p>The expected number of random numbers that need to be tried is N/(N-i), This is obtained as follows: i of the N numbers would be duplicates.Thus the probability of success is N-i/N(if成功的概率); Thus the expected number of independent trials  is N/N-i（if 成功一次所需的次数）;在x次独立重复事件中，该事件发生xp次；所以该事件发生一次的概率是1/p（两边同除以xp)
+The time bound is thus:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mfrac><mrow><mi>N</mi><mi>i</mi></mrow><mrow><mi>N</mi><mo>−</mo><mi>i</mi></mrow></mfrac><mo>&lt;</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mfrac><mrow><msup><mi>N</mi><mn>2</mn></msup></mrow><mrow><mi>N</mi><mo>−</mo><mi>i</mi></mrow></mfrac><mo>=</mo><msup><mi>N</mi><mn>2</mn></msup><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mfrac><mrow><mn>1</mn></mrow><mrow><mi>N</mi><mo>−</mo><mi>i</mi></mrow></mfrac><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><mfrac><mrow><mn>1</mn></mrow><mrow><mi>j</mi></mrow></mfrac><mo>=</mo><msup><mi>N</mi><mn>2</mn></msup><mi>log</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">\sum_{i=0}^{i-1} \frac{Ni}{N-i} &lt; \sum_{i=0}^{N-1} \frac{N^2}{N-i}=N^2\sum_{i=0}^{N-1} \frac{1}{N-i}=\sum_{j=1}^N \frac{1}{j}=N^2\log N
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.8283360000000006em;"></span><span class="strut bottom" style="height:3.2421130000000007em;vertical-align:-1.4137769999999998em;"></span><span class="base displaystyle textstyle uncramped"><span class="mop op-limits"><span class="vlist"><span style="top:1.1776689999999999em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mrel">=</span><span class="mord mathrm">0</span></span></span></span><span style="top:-0.000005000000000143778em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.2500050000000003em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathit">i</span><span class="mbin">−</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord reset-textstyle displaystyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.686em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle cramped"><span class="mord textstyle cramped"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="mbin">−</span><span class="mord mathit">i</span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.677em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="mord mathit">i</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span><span class="mrel">&lt;</span><span class="mop op-limits"><span class="vlist"><span style="top:1.1776689999999999em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mrel">=</span><span class="mord mathrm">0</span></span></span></span><span style="top:-0.000005000000000143778em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.2500050000000003em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="mbin">−</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord reset-textstyle displaystyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.686em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle cramped"><span class="mord textstyle cramped"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="mbin">−</span><span class="mord mathit">i</span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.677em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="vlist"><span style="top:-0.363em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span><span class="mrel">=</span><span class="mord"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="vlist"><span style="top:-0.413em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mop op-limits"><span class="vlist"><span style="top:1.1776689999999999em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit">i</span><span class="mrel">=</span><span class="mord mathrm">0</span></span></span></span><span style="top:-0.000005000000000143778em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.2500050000000003em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="mbin">−</span><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord reset-textstyle displaystyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.686em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle cramped"><span class="mord textstyle cramped"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="mbin">−</span><span class="mord mathit">i</span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.677em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span><span class="mrel">=</span><span class="mop op-limits"><span class="vlist"><span style="top:1.1776689999999999em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="mord mathit" style="margin-right:0.05724em;">j</span><span class="mrel">=</span><span class="mord mathrm">1</span></span></span></span><span style="top:-0.000005000000000254801em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span><span class="op-symbol large-op mop">∑</span></span></span><span style="top:-1.2500050000000005em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathit" style="margin-right:0.10903em;">N</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mord reset-textstyle displaystyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.6860000000000002em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle cramped"><span class="mord textstyle cramped"><span class="mord mathit" style="margin-right:0.05724em;">j</span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.677em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathrm">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span><span class="mrel">=</span><span class="mord"><span class="mord mathit" style="margin-right:0.10903em;">N</span><span class="vlist"><span style="top:-0.413em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mord mathit" style="margin-right:0.10903em;">N</span></span></span></span></span></p>
+<p>The time bound is thus</p>
+<pre class='hljs'><code><div>Algorithm2:
+
+<span class="hljs-keyword">int</span> A[MAXN] = {<span class="hljs-number">0</span>},Used[MAXN]={<span class="hljs-number">0</span>},i,j,temp;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAXN; )
+    {
+        <span class="hljs-built_in">srand</span>(<span class="hljs-built_in">time</span>(<span class="hljs-literal">NULL</span>));
+       temp=<span class="hljs-built_in">rand</span>()%MAXN+<span class="hljs-number">1</span>;
+       <span class="hljs-keyword">if</span>(!Used[temp<span class="hljs-number">-1</span>])
+       {
+           A[i++]=temp;Used[temp<span class="hljs-number">-1</span>]=<span class="hljs-number">1</span>;
+       }
+      
+    }
+</div></code></pre>
+<p>Obviously time complexity is O(nlogn);</p>
+<pre class='hljs'><code><div>
+</div></code></pre>
+<h2 id="kmp" id="kmp">KMP</h2>
+<p>P 的 next 数组定义为：next[i] 表示 P[0] ~ P[i-1] 这一个子串，使得 前k个字符恰等于后k个字符 的最大的k. 特别地，k不能取i+1（因为这个子串一共才 i+1 个字符，自己肯定与自己相等，就没有意义了）。</p>
+<p>性质：P[0] 到 P[i] 这一段子串中，前next[i]个字符与后next[i]个字符一模一样。既然如此，如果失配在 P[r], 那么P[0]~P[r-1]这一段里面，前next[r]个字符恰好和后next[r]个字符相等——也就是说，我们可以拿长度为 next[r] 的那一段前缀，来顶替当前后缀的位置，让匹配继续下去.</p>
+<p>主串影响失配的位置和多少，模式串影响回溯的步数（普通算法就是回溯到串首）</p>
+<p>求next数组的过程完全可以看成字符串匹配的过程，即以模式字符串为主字符串，以模式字符串的前缀为目标字符串，一旦字符串匹配成功，那么当前的next值就是匹配成功的字符串的长度。具体来说，就是从模式字符串的第一位(注意，不包括第0位)开始对自身进行匹配运算。 在任一位置，能匹配的最长长度就是当前位置的next值。最大步增为1，最小值为0；</p>
+<p><img src="https://pic2.zhimg.com/80/18a9ee17b0eebabab0672687b721aee1_1440w.png" alt="a" title="配合"></p>
+<p><img src="https://pic3.zhimg.com/80/f37911dc3ace184a393f359f04944e06_1440w.png" alt="a" title="失配"></p>
+<pre class='hljs'><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">getNext</span><span class="hljs-params">(<span class="hljs-keyword">char</span> * p, <span class="hljs-keyword">int</span> * next)</span>
+</span>{
+	next[<span class="hljs-number">0</span>] = <span class="hljs-number">-1</span>;
+	<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>, j = <span class="hljs-number">-1</span>;
+
+	<span class="hljs-keyword">while</span> (i &lt; <span class="hljs-built_in">strlen</span>(p))
+	{
+		<span class="hljs-keyword">if</span> (j == <span class="hljs-number">-1</span> || p[i] == p[j])
+		{
+			++i;
+			++j;
+			next[i] = j;
+		}
+		<span class="hljs-keyword">else</span>
+			j = next[j];
+	}
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">KMP</span><span class="hljs-params">(<span class="hljs-keyword">char</span> * t, <span class="hljs-keyword">char</span> * p)</span> 
+</span>{
+	<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; 
+	<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;
+
+	<span class="hljs-keyword">while</span> (i &lt; <span class="hljs-built_in">strlen</span>(t) &amp;&amp; j &lt; <span class="hljs-built_in">strlen</span>(p))
+	{
+		<span class="hljs-keyword">if</span> (j == <span class="hljs-number">-1</span> || t[i] == p[j]) <span class="hljs-comment">//除了初始状态，当p[0]与失配的t[i]匹配不上时j会等于-1，然后p[0]将于失配处的下一个字符进行匹配，特别的i从来不会回退，也不需要回退，next数组的本质就是利用已经配对过的部分控制模式串的偏移量</span>
+		{
+			i++;
+           		j++;
+		}
+	 	<span class="hljs-keyword">else</span> 
+           		j = next[j];
+    	}
+
+    <span class="hljs-keyword">if</span> (j == <span class="hljs-built_in">strlen</span>(p))
+       <span class="hljs-keyword">return</span> i - j;模式串的位置
+    <span class="hljs-keyword">else</span> 
+       <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+}
+
+
+
+</div></code></pre>
+<h2 id="%E5%B9%BF%E4%B9%89%E8%A1%A8" id="">广义表</h2>
+<p>广义表，又称列表，也是一种线性存储结构。同数组类似，广义表中既可以存储不可再分的元素，也可以存储广义表，记作：</p>
+<p>LS = (a1,a2,…,an)</p>
+<p>其中，LS 代表广义表的名称，an 表示广义表存储的数据。广义表中每个 ai 既可以代表单个元素，也可以代表另一个广义表。</p>
+<p>通常，广义表中存储的单个元素称为 &quot;原子&quot;，而存储的广义表称为 &quot;子表&quot;。</p>
+<p>例如创建一个广义表 LS = {1,{1,2,3}}，我们可以这样解释此广义表的构成：广义表 LS 存储了一个原子 1 和子表 {1,2,3}。</p>
+<p>以下是广义表存储数据的一些常用形式：
+A = ()：A 表示一个广义表，只不过表是空的。
+B = (e)：广义表 B 中只有一个原子 e。
+C = (a,(b,c,d)) ：广义表 C 中有两个元素，原子 a 和子表 (b,c,d)。
+D = (A,B,C)：广义表 D 中存有 3 个子表，分别是A、B和C。这种表示方式等同于 D = ((),(e),(b,c,d)) 。
+E = (a,E)：广义表 E 中有两个元素，原子 a 和它本身。这是一个递归广义表，等同于：E = (a,(a,(a,…)))。</p>
+<p>注意，A = () 和 A = (()) 是不一样的。前者是空表，而后者是包含一个子表的广义表，只不过这个子表是空表。</p>
+<p>当广义表不是空表时，称<strong>第一个数据（原子或子表）为&quot;表头&quot;，剩下的数据构成的新广义表为&quot;表尾&quot;</strong>。</p>
+<p>强调一下，除非广义表为空表，否则广义表一定具有表头和表尾，且广义表的表尾一定是一个广义表。</p>
+<p>例如在广义表中 LS={1,{1,2,3},5} 中，表头为原子 1，表尾为子表 {1,2,3} 和原子 5 构成的广义表，即 {{1,2,3},5}。</p>
+<p>再比如，在广义表 LS = {1} 中，表头为原子 1 ，但由于广义表中无表尾元素，因此该表的表尾是一个空表，用 {} 表示。</p>
+<p>tag 标记位用于区分此节点是原子还是子表，通常<strong>原子的 tag 值为 0，子表的 tag 值为 1</strong>。子表节点中的 <strong>hp 指针用于连接本子表中存储的原子或子表，tp 指针用于连接广义表中下一个原子或子表</strong>。</p>
+<p><img src="http://c.biancheng.net/uploads/allimg/190427/2-1Z42F93F23F.gif" alt="a"></p>
+<pre class='hljs'><code><div><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">GLNode</span>{</span>
+    <span class="hljs-keyword">int</span> tag;<span class="hljs-comment">//标志域</span>
+    <span class="hljs-class"><span class="hljs-keyword">union</span>{</span>
+        <span class="hljs-keyword">int</span> atom;<span class="hljs-comment">//原子结点的值域</span>
+        <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">GLNode</span> *<span class="hljs-title">hp</span>;</span><span class="hljs-comment">//子表结点的指针域，hp指向表头</span>
+    };<span class="hljs-comment">//共用体不用命名，直接引用其中成员即可</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">GLNode</span> * <span class="hljs-title">tp</span>;</span><span class="hljs-comment">//这里的tp相当于链表的next指针，用于指向下一个数据元素</span>
+}*Glist;
+</div></code></pre>
+<pre class='hljs'><code><div><span class="hljs-function">Glist <span class="hljs-title">creatGlist</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>{
+   Glist C = <span class="hljs-keyword">new</span> GLNode;
+    C-&gt;tag=<span class="hljs-number">1</span>;
+    C-&gt;hp=<span class="hljs-keyword">new</span> GLNode;
+    C-&gt;tp=<span class="hljs-literal">NULL</span>;
+    <span class="hljs-comment">//表头原子a</span>
+    C-&gt;hp-&gt;tag=<span class="hljs-number">0</span>;
+    C-&gt;hp-&gt;atom=<span class="hljs-string">&#x27;a&#x27;</span>;
+    C-&gt;hp-&gt;tp=<span class="hljs-keyword">new</span> GLNode;
+    C-&gt;hp-&gt;tp-&gt;tag=<span class="hljs-number">1</span>;
+    C-&gt;hp-&gt;tp-&gt;hp=<span class="hljs-keyword">new</span> GLNode;
+    C-&gt;hp-&gt;tp-&gt;tp=<span class="hljs-literal">NULL</span>;
+    <span class="hljs-comment">//原子b</span>
+    C-&gt;hp-&gt;tp-&gt;hp-&gt;tag=<span class="hljs-number">0</span>;
+    C-&gt;hp-&gt;tp-&gt;hp-&gt;atom=<span class="hljs-string">&#x27;b&#x27;</span>;
+    C-&gt;hp-&gt;tp-&gt;hp-&gt;tp=<span class="hljs-keyword">new</span> GLNode;
+    <span class="hljs-comment">//原子c</span>
+    C-&gt;hp-&gt;tp-&gt;hp-&gt;tp-&gt;tag=<span class="hljs-number">0</span>;
+    C-&gt;hp-&gt;tp-&gt;hp-&gt;tp-&gt;atom=<span class="hljs-string">&#x27;c&#x27;</span>;
+    C-&gt;hp-&gt;tp-&gt;hp-&gt;tp-&gt;tp=<span class="hljs-keyword">new</span> GLNode;
+    <span class="hljs-comment">//原子d</span>
+    C-&gt;hp-&gt;tp-&gt;hp-&gt;tp-&gt;tp-&gt;tag=<span class="hljs-number">0</span>;
+    C-&gt;hp-&gt;tp-&gt;hp-&gt;tp-&gt;tp-&gt;atom=<span class="hljs-string">&#x27;d&#x27;</span>;
+    C-&gt;hp-&gt;tp-&gt;hp-&gt;tp-&gt;tp-&gt;tp=<span class="hljs-literal">NULL</span>;
+    <span class="hljs-keyword">return</span> C;
+}
+</div></code></pre>
+<p>由于广义表中可以同时存储原子和子表两种类型的数据，因此在计算广义表的长度时规定，<strong>广义表中存储的每个原子算作一个数据，同样每个子表也只算作是一个数据。</strong></p>
+<p>例如，在广义表 {a,{b,c,d}} 中，它包含一个原子和一个子表，因此该广义表的长度为 2。</p>
+<p>再比如，广义表 {{a,b,c}} 中只有一个子表 {a,b,c}，因此它的长度为 1。</p>
+<p>前面我们用 LS={a1,a2,...,an} 来表示一个广义表，其中每个 ai 都可用来表示一个原子或子表，其实它还可以表示广义表 LS 的长度为 n。
+广义表规定，空表 {} 的长度为 0。</p>
+<p><img src="http://data.biancheng.net/uploads/allimg/181225/2-1Q22520131H15.gif" alt="a"></p>
+<p><strong>第一种将原子也看作字表，通过字表互相连接；第二种将两者区分开，同级的互相连接</strong></p>
+<p>对于图 1a) 来说，只需计算最顶层（红色标注）含有的节点数量，即可求的广义表的长度。<strong>C指向表头</strong></p>
+<p>同理，对于图 1b) 来说，由于其最顶层（蓝色标注）表示的此广义表，而第二层（红色标注）表示的才是该广义表中包含的数据元素，因此可以通过计算第二层中包含的节点数量，即可求得广义表的长度。<strong>C指向整体这个表</strong>；</p>
+<pre class='hljs'><code><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">GlistLength</span><span class="hljs-params">(Glist C)</span></span>{
+    <span class="hljs-keyword">int</span> Number=<span class="hljs-number">0</span>;
+    Glist P=C-&gt;hp;<span class="hljs-comment">//第一种这里是C</span>
+    <span class="hljs-keyword">while</span>(P){
+        Number++;
+        P=P-&gt;tp;
+    }
+    <span class="hljs-keyword">return</span> Number;
+}
+</div></code></pre>
+
+    </div>
+</body>
+</html>
