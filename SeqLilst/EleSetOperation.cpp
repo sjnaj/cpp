@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-07-12 16:32:25
- * @LastEditTime: 2021-07-12 20:44:49
+ * @LastEditTime: 2021-07-15 21:47:54
  */
 #include <iostream>
 #include "SeqList.h"
@@ -19,6 +19,8 @@ int main()
     InitList(B, MAXN);
     InitVal(A, Length);
     InitVal(B, Length);
+    MemReSet(A);
+    JudgeOrder(A);
     DeepCopy(CpA, A);
     DeepCopy(CpB, B);
     if (!Intersection(CpA, CpB))
