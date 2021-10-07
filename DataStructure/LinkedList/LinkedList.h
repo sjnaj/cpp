@@ -1,9 +1,10 @@
 /*
  * @Author: fengsc
  * @Date: 2021-07-21 21:11:45
- * @LastEditTime: 2021-08-11 22:34:29
+ * @LastEditTime: 2021-10-05 23:20:10
  */
 //使用时链接LinkedList.cpp即可，这样可以不用修改编译命令
+#pragma once
 #include <iostream>
 #include <stdlib.h>
 #include <iomanip>

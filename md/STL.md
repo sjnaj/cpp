@@ -1,8 +1,24 @@
 <!--
  * @Author: fengsc
  * @Date: 2021-08-02 18:59:05
- * @LastEditTime: 2021-08-24 19:49:43
+ * @LastEditTime: 2021-09-18 15:48:20
 -->
+
+- [STL](#stl)
+  - [基本](#基本)
+  - [序列式容器](#序列式容器)
+    - [array](#array)
+    - [vector](#vector)
+    - [deque](#deque)
+    - [list](#list)
+  - [容器适配器](#容器适配器)
+    - [stack](#stack)
+    - [queue](#queue)
+    - [priority_queue](#priority_queue)
+    - [pair and make_pair](#pair-and-make_pair)
+  
+# STL
+
 ## 基本
 
 STL，英文全称 **standard template library**，中文可译为**标准模板库或者泛型库**，其包含有大量的模板类和模板函数，是 C++ 提供的一个基础模板的集合，用于完成诸如输入/输出、数学计算等功能。
@@ -232,12 +248,14 @@ void assign ( size_type n, const T& u );*/
          vector<ListNode *> list2(Second, Last);
 
 
+vector<int> nums1(nums.begin(), nums.begin()+nums.size()/2);
+
 /*访问元素方式同array*/
 //[],at,data,*iter，std::get<>()等等
 
 /*尾部添加元素*/
 values.push_back(1);
-values.emplace_back(2);
+values.emplace_back(2);//string没有这个,只有push_back()
 /*emplace_back() 和 push_back() 的区别，就在于底层实现的机制不同。push_back() 向容器尾部添加元素时，首先会创建这个元素，然后再将这个元素拷贝或者移动到容器中（如果是拷贝的话，事后会自行销毁先前创建的这个元素）；而 emplace_back() 在实现时，则是直接在容器尾部创建这个元素，省去了拷贝或移动元素的过程。*/
 /*emplace_back() 的执行效率比 push_back() 高。因此，在实际使用时，优先选用 emplace_back()(C++11)。*/
 
@@ -307,6 +325,10 @@ swap和remove是标准库函数，其它是成员函数
  demo.shrink_to_fit();使capacity和size一样
 
  demo.reverse(demo.begin(), demo.end());//逆置
+
+ return vector<string>(0);//返回空的vector,0可以省略
+//或
+ return {};//注意冒号
 
   ```
 
@@ -510,3 +532,43 @@ public:
     }
 };
 ```
+
+### pair and make_pair
+
+主要的作用是将两个数据组合成一个数据，两个数据可以是同一类型或者不同类型
+
+一般make_pair都使用在需要pair做参数的位置，可以直接调用make_pair生成pair对象很方便，代码也很清晰。 另一个使用的方面就是pair可以接受隐式的类型转换，这样可以获得更高的灵活度。
+
+例：
+std::make_pair(42, '@');
+而不必费力写成：
+std::pair<int, char>(42, '@')；
+
+```cpp
+ template<typename _T1, typename _T2>
+    struct pair
+    : private __pair_base<_T1, _T2>
+    {
+      typedef _T1 first_type;    /// @c first_type is the first bound type
+      typedef _T2 second_type;   /// @c second_type is the second bound type
+
+      _T1 first;                 /// @c first is a copy of the first object
+      _T2 second;                /// @c second is a copy of the second object
+
+#include <utility>
+pair<string, double> product1("tomatoes", 3.25);
+    pair<string, double> product2;
+    pair<string, double> product3;
+
+    product2.first = "lightbulbs"; // type of first is string
+    product2.second = 0.99;        // type of second is double
+
+    product3 = make_pair("shoes", 20.00);
+
+    cout << "The price of " << product1.first << " is $" << product1.second << "\n";
+    cout << "The price of " << product2.first << " is $" << product2.second << "\n";
+    cout << "The price of " << product3.first << " is $" << product3.second << "\n";
+    return 0;
+```
+
+

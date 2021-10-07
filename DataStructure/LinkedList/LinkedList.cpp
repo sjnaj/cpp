@@ -1,8 +1,9 @@
 /*
  * @Author: fengsc
  * @Date: 2021-07-21 18:44:52
- * @LastEditTime: 2021-08-11 22:32:24
+ * @LastEditTime: 2021-10-05 23:21:33
  */
+#include <list>
 #ifndef _LinkedList_H
 #include "LinkedList.h"
 #endif // !_LinkedList_H

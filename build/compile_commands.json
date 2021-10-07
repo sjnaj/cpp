@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/fengsc/Desktop/cpp/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9    -g   -o CMakeFiles/class.dir/main.cpp.o -c /home/fengsc/Desktop/cpp/main.cpp",
+  "file": "/home/fengsc/Desktop/cpp/main.cpp"
+}
+]
