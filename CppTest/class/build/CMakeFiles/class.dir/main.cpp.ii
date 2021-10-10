@@ -28626,6 +28626,9 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 }
 # 7 "../main.cpp" 2
+
+
+
 # 1 "../src/func.h" 1
 
 
@@ -28633,9 +28636,9 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
        
-# 8 "../main.cpp" 2
+# 11 "../main.cpp" 2
 
-# 8 "../main.cpp"
+# 11 "../main.cpp"
 enum Example : unsigned char
 {
   a = 10,
@@ -28647,43 +28650,64 @@ enum Example : unsigned char
   g,
   h
 };
-class Entity
+class Virtual
 {
 public:
+  virtual ~Virtual() = default;
+  virtual void func() = 0;
+};
+class Entity : public Virtual
+{
+protected:
   int a, b;
+public:
   Entity(int x, int y) : a(x), b(y) {}
-  Entity(){std::cout<<"lalala"<<std::endl;}
-  void func() { std::cout << "NULL FUNC" << std::endl; }
+  Entity() { std::cout << "lalala" << std::endl; }
+  void func() override { std::cout << a << ' ' << "This is Entity" << std::endl; }
   void func(int x) { std::cout << x << std::endl; }
-
-  static int x, y;
+  static const int x=1, y=2;
   static void Print()
   {
     std::cout << x << ' ' << y << std::endl;
   }
+  virtual ~Entity() = default;
 };
 class Derive : public Entity
 {
+private:
+  int x, y;
+
 public:
+mutable int x1;
   using Entity::func;
   void func(int x) { std::cout << x + 1 << std::endl; }
-  void func() { std::cout << a << std::endl; }
-  Derive(int x, int y) {a=x;}
+  void func() override { std::cout << a << ' ' << "This is Derive" << std::endl; }
+  int getVal()const
+  {
+    return a;
+    x1=2;
+  }
+  Derive(int x, int y)
+  {
+    this->x = x;
+    this->y = y;
+    a = 10;
+  }
+  Derive(int x) { a = x; }
+  Derive() = default;
 };
-int Entity::x, Entity::y;
+
 int main()
 {
-  Example p = a;
-  std::cout << p << std::endl;
-  Entity entity{1, 2};
-  entity.x = 10;
-  entity.y = 20;
+# 83 "../main.cpp"
+  const Derive derive(3);
+  std::cout<<derive.getVal()<<std::endl;
+  Derive derive1(4);
+  std::cout<<derive1.getVal()<<std::endl;
+  const volatile int x=1;
 
-  Derive derive{3, 4};
-  derive.func(2);
-  derive.func();
-  Entity::Print();
-  Entity::x = 15;
-  Entity::y = 25;
-  entity.Print();
+  int *p=(int*)&x;
+  *p=10;
+  std::cout <<x<<std::endl;
+# 109 "../main.cpp"
 }
