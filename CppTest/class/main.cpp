@@ -24,37 +24,49 @@ class Virtual
 public:
   virtual ~Virtual() = default;
   virtual void func() = 0;
+  virtual void func2()=0;
+  virtual void func3()=0;
 };
 class Entity : public Virtual
 {
 protected:
   int a, b;
+  const double d = 1.0;
+
 public:
   Entity(int x, int y) : a(x), b(y) {}
   Entity() { std::cout << "lalala" << std::endl; }
   void func() override { std::cout << a << ' ' << "This is Entity" << std::endl; }
   void func(int x) { std::cout << x << std::endl; }
-  static const int x=1, y=2;
+  void func2(){std::cout <<"func2()" << std::endl;}
+  void func3(){std::cout <<"func3()" << std::endl;}
+  static const int x = 1, y = 2;
+  const float z = 1.0;
+  const static int w = 1;
+  static constexpr float w1 = 1;
+  constexpr static int z1 = 1;
+  int array[z1];
   static void Print()
   {
     std::cout << x << ' ' << y << std::endl;
   }
   virtual ~Entity() = default;
 };
+
 class Derive : public Entity
 {
 private:
   int x, y;
   //int a;
 public:
-mutable int x1;
+  mutable int x1;
   using Entity::func;
   void func(int x) { std::cout << x + 1 << std::endl; }
   void func() override { std::cout << a << ' ' << "This is Derive" << std::endl; }
-  int getVal()const
+  int getVal() const
   {
     return a;
-    x1=2;
+    x1 = 2;
   }
   Derive(int x, int y)
   {
@@ -67,6 +79,7 @@ mutable int x1;
 };
 //int Entity::x, Entity::y;
 int main()
+
 {
   /*Example p = a;
   std::cout << p << std::endl;*/
@@ -80,25 +93,33 @@ int main()
   /*  std::cout << *(int *)&entity << std::endl;
     std::cout << *(int *)((char*)&entity+sizeof(int)) << std::endl;*/
   //std::cout << entity.a << ' ' << entity.b << std::endl;
-  const Derive derive(3);
-  std::cout<<derive.getVal()<<std::endl;
+  /*const Derive derive(3);
+  std::cout << derive.getVal() << std::endl;
   Derive derive1(4);
-  std::cout<<derive1.getVal()<<std::endl;
+  std::cout << derive1.getVal() << std::endl;*/
 
- /* Derive derive{3, 4};
+  Derive derive{3, 4};
   derive.func(2);
   derive.func();
   Virtual *p = new Entity(1, 2);
+  void* vptr=(void*)*(int64_t*)p;
+  //std::cout <<sizeof p<<std::endl;
   p->func();
   p = new Derive(3, 4);
+    void* vptr1=(void*)*(unsigned long*)p;
+   // std::cout <<sizeof p<<std::endl;
   Derive *q = new Derive(5, 6);
+    std::cout <<sizeof q<<std::endl;
   p->func();
-  const std::type_info &Info(typeid(p->func()));
+  /*const std::type_info &Info(typeid(p->func()));
   std::cout << Info.name() << '\t' << Info.hash_code() << std::endl;
   float a;
   const std::type_info &Info1(typeid(a));
   std::cout << Info1.name() << '\t' << Info1.hash_code() << std::endl;
   const std::type_info &Info2(typeid(derive));
   std::cout << Info2.name() << '\t' << Info2.hash_code() << std::endl;
-  delete p;*/
+  */
+  delete p;
+  delete q;
 }
+ 
