@@ -46,6 +46,10 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "bit": "cpp"
-    }
+        "bit": "cpp",
+        "complex": "cpp",
+        "iomanip": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Disabled",
+    "C_Cpp.default.configurationProvider": "go2sh.cmake-integration"
 }

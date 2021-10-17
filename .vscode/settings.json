@@ -23,5 +23,6 @@
         "system_error": "cpp",
         "exception": "cpp",
         "stack": "cpp"
-    }
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

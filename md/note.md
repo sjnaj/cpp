@@ -11,40 +11,53 @@
     - [inline内联函数](#inline内联函数)
     - [函数的默认参数](#函数的默认参数)
     - [函数重载和其二义性](#函数重载和其二义性)
+    - [从assert到static_assert](#从assert到static_assert)
     - [C和C++混合编程](#c和c混合编程)
   - [类和对象](#类和对象)
     - [类的定义和对象的创建](#类的定义和对象的创建)
     - [类成员访问权限](#类成员访问权限)
     - [全局函数](#全局函数)
-    - [类型成员(typedef和using)](#类型成员typedef和using)
     - [类的作用域](#类的作用域)
     - [C++程序编译原理和man和exec](#c程序编译原理和man和exec)
     - [内存四区](#内存四区)
     - [构造函数及其初始化列表和对象数组](#构造函数及其初始化列表和对象数组)
+    - [自定义列表参数(initalizer_list)](#自定义列表参数initalizer_list)
     - [复制构造函数](#复制构造函数)
     - [析构函数](#析构函数)
-    - [default和delete](#default和delete)
     - [this指针](#this指针)
-    - [静态成员变量和静态成员函数](#静态成员变量和静态成员函数)
+    - [static关键字以及静态成员变量和静态成员函数](#static关键字以及静态成员变量和静态成员函数)
     - [const成员变量和成员函数（常成员函数）](#const成员变量和成员函数常成员函数)
-    - [constexpr和static const](#constexpr和static-const)
-    - [const](#const)
-    - [C++成员对象和封闭类和封闭类](#c成员对象和封闭类和封闭类)
+    - [const和static成员函数都可以通过参数访问私有变量，限制只是局限于它们的默认调用](#const和static成员函数都可以通过参数访问私有变量限制只是局限于它们的默认调用)
+    - [从枚举到枚举类](#从枚举到枚举类)
+    - [C++成员对象和封闭类](#c成员对象和封闭类)
     - [友元函数和友元类](#友元函数和友元类)
     - [结构体和对象的异同](#结构体和对象的异同)
-    - [C++string](#cstring)
-    - [操作string中的字符](#操作string中的字符)
-    - [字符串字面量(String literal)](#字符串字面量string-literal)
-      - [getline and stringstream](#getline-and-stringstream)
-  - [C++引用](#c引用)
+    - [位域和union](#位域和union)
+  - [重要关键字和部分C++11的特性](#重要关键字和部分c11的特性)
+    - [default和delete](#default和delete)
+    - [constexpr和static const](#constexpr和static-const)
+    - [const和volatile](#const和volatile)
+    - [\#define,using和typedef的一些补充](#defineusing和typedef的一些补充)
+    - [decltype](#decltype)
+    - [列表初始化](#列表初始化)
+    - [返回数组指针和函数指针](#返回数组指针和函数指针)
+    - [lambda匿名函数](#lambda匿名函数)
+  - [C++string](#cstring)
     - [基本](#基本)
+    - [\<cctype\>](#cctype)
+    - [size_type](#size_type)
+    - [字符串字面量(String literal)](#字符串字面量string-literal)
+    - [getline and stringstream](#getline-and-stringstream)
+  - [C++引用](#c引用)
+    - [基本()](#基本-1)
     - [返回引用](#返回引用)
     - [指针与引用](#指针与引用)
     - [临时变量、引用参数和const引用](#临时变量引用参数和const引用)
     - [右值引用和移动构造函数](#右值引用和移动构造函数)
+    - [引用限定符](#引用限定符)
     - [移动构造函数](#移动构造函数)
   - [继承和派生](#继承和派生)
-    - [基本](#基本-1)
+    - [基本(a)](#基本a)
     - [基类和派生类构造和析构函数](#基类和派生类构造和析构函数)
     - [多继承](#多继承)
     - [借助指针访问非public变量](#借助指针访问非public变量)
@@ -52,13 +65,35 @@
     - [虚继承的构造函数](#虚继承的构造函数)
     - [向上转型](#向上转型)
   - [多态和虚函数](#多态和虚函数)
-    - [基本](#基本-2)
+    - [基本(2)](#基本2)
     - [虚析构函数的必要性](#虚析构函数的必要性)
     - [纯虚函数和抽象类](#纯虚函数和抽象类)
+    - [虚函数的私有](#虚函数的私有)
     - [vtable and vptr](#vtable-and-vptr)
     - [typeid运算符：获取类型信息](#typeid运算符获取类型信息)
+    - [sizeof获取类的大小](#sizeof获取类的大小)
     - [RTTI](#rtti)
   - [运算符重载](#运算符重载)
+    - [基本(3)](#基本3)
+    - [实例](#实例)
+    - [函数对象](#函数对象)
+  - [异常处理](#异常处理)
+    - [基本(4)](#基本4)
+    - [catch](#catch)
+    - [throw exceptionData](#throw-exceptiondata)
+    - [exception类](#exception类)
+    - [noexcept](#noexcept)
+  - [动态内存与智能指针](#动态内存与智能指针)
+    - [allocator类](#allocator类)
+    - [shared_ptr类](#shared_ptr类)
+    - [直接管理内存](#直接管理内存)
+  - [模板](#模板)
+    - [基本(5)](#基本5)
+      - [函数模板](#函数模板)
+      - [类模板](#类模板)
+      - [模板编译](#模板编译)
+      - [强类型，弱类型](#强类型弱类型)
+    - [模板的重载](#模板的重载)
   
 # cpp
 
@@ -76,7 +111,7 @@
 
 ![a](http://c.biancheng.net/uploads/allimg/190212/100PJ491-0.png)
 
-![](http://c.biancheng.net/uploads/allimg/190212/100PK0J-1.png)
+![b](http://c.biancheng.net/uploads/allimg/190212/100PK0J-1.png)
 
 ---
 
@@ -87,8 +122,39 @@
 namespace 是C++中的关键字，用来定义一个命名空间，语法格式为：
 
 ```cpp
-namespace name{
-//variables, functions, classes
+#include <iostream>
+#define isNs1 1
+//#define isGlobal 2
+using namespace std;
+void func() 
+{
+    cout<<"::func"<<endl;
+}
+
+namespace ns1 {
+    void func()
+    {
+        cout<<"ns1::func"<<endl; 
+    }
+}
+
+namespace ns2 {
+#ifdef isNs1 
+    using ns1::func;    /// ns1中的函数
+#elif isGlobal
+    using ::func; /// 全局中的函数
+#else
+    void func() 
+    {
+        cout<<"other::func"<<endl; 
+    }
+#endif
+}
+
+int main() 
+{
+    ns2::func(); // 会根据当前环境定义宏的不同来调用不同命名空间下的func()函数
+    return 0;
 }
 ```
 
@@ -122,6 +188,7 @@ using namespace std;，它声明了命名空间 std，后续如果有未指定�
 变量adj+n;函数v+n
 
 简单变量用小写单词，类名和全局函数名首字母大写，成员函数和复杂变量名首字母小写，常量（define,const）全大写（MAXN），静态变量前加s_,全局变量前加g_,类的数据成员加前缀m_
+
 ### 输入输出cin，cout
 
 使用 cout 进行输出时需要紧跟<<运算符，使用 cin 进行输入时需要紧跟>>运算符，这两个运算符可以自行分析所处理的数据类型.
@@ -130,6 +197,7 @@ using namespace std;，它声明了命名空间 std，后续如果有未指定�
 cin>>a>>b;
     cout<<a<<b<<endl;//count<<x<<'\n';//count<<"a is :\n"<<a;
 ```
+
 控制符是在头文件**iomanip**中定义的，因此用控制符时，必须包含iomanip头文件。cout流的成员函数是在头文件iostream 中定义的
 
 
@@ -137,7 +205,7 @@ cin>>a>>b;
 
 ```cpp
 #include <iostream>
-#include <iomanip>//不要忘记包含此头文件
+#include <iomanip>
 using namespace std;
 int main()
 {
@@ -151,26 +219,26 @@ int main()
    cout<<setw(10)<<pt<<endl;  //指定域宽为,输出字符串
    cout<<setfill('*')<<setw(10)<<pt<<endl;  //指定域宽,输出字符串,空白处以'*'填充
    double pi=22.0/7.0;  //计算pi值
-   //按指数形式输出,8位小数
+   //按指数形式输出,8位精度
    cout<<setiosflags(ios::scientific)<<setprecision(8);
    cout<<"pi="<<pi<<endl;  //输出pi值
-   cout<<"pi="<<setprecision(4)<<pi<<endl;  //改为位小数
+   cout<<"pi="<<setprecision(4)<<pi<<endl;  //4位精度
    cout<<"pi="<<setiosflags(ios::fixed)<<pi<<endl;  //改为小数形式输出
    return 0;
 }
 ```
 
 
-| 流成员函数 |	与之作用相同的控制符 |	作用 |    
-|----------|--------------|--------------------------|
-| precision(n) |	setprecision(n)| 	设置实数的精度为n位 | 
-| width(n)	|setw(n)	 | 设置字段宽度为n位，**右对齐** | 
-| fill(c)	|setfill(c)	| 设置填充宇符c | 
-| setf() |	setiosflags() |	设置输出格式状态，括号中应给出**格式状态**，内容与控制符setiosflags括号中的内容相同  |
-| unsetf() |	resetioflags()	 |终止已设置的输出格式状态，在括号中应指定内容 |
+| 流成员函数   | 与之作用相同的控制符 | 作用                                                                                |
+| ------------ | -------------------- | ----------------------------------------------------------------------------------- |
+| precision(n) | setprecision(n)      | 设置实数的精度为n位                                                                 |
+| width(n)     | setw(n)              | 设置字段宽度为n位，**右对齐**                                                       |
+| fill(c)      | setfill(c)           | 设置填充宇符c                                                                       |
+| setf()       | setiosflags()        | 设置输出格式状态，括号中应给出**格式状态**，内容与控制符setiosflags括号中的内容相同 |
+| unsetf()     | resetioflags()       | 终止已设置的输出格式状态，在括号中应指定内容                                        |
 
 
-**设置字段宽度和填充字符的函数或控制符只对其后的第一个输出项有效**
+**设置字段宽度和填充字符的函数或控制符只对其后的第一个输出项有效**.
 
 流成员函数setf和控制符setiosflags括号中的参数表示格式状态，它是通过格式标志来指定的。格式标志在类ios中被定义为枚举值。因此在引用这些格式标志时要在前面加上**类名ios和域运算符“::”**
 
@@ -207,43 +275,41 @@ int main( )
    cout.width(12);               //指定域宽为
    cout.setf(ios::showpos);      //正数输出“+”号
    cout.setf(ios::internal);     //数符出现在左侧
-   cout.precision(6);            //保留位小数
+   cout.precision(6);            //6位精度
    cout<<pi<<endl;               //输出pi,注意数符“+”的位置
    return 0;
 }
-```
+```  
+
 系统默认指定为dec，因此要改变为hex或oct，也应当先用unsetf 函数终止原来设置。
 
-如果两个相互矛盾的标志同时被设置，如先设置 setiosflags(ios::fixed)，然后又设置 setiosflags(ios::scientific)，那么结果可能就是两个标志都不起作用。因此，在设置了某标志，又要设置其他与之矛盾的标志时，就应该用 **reset或unsetf**清除原先的标志。
+如果两个相互矛盾的标志同时被设置，如先设置 setiosflags(ios::fixed)，然后又设置 setiosflags(ios::scientific)，那么结果可能就是两个标志都不起作用。因此，在设置了某标志，又要设置其他与之矛盾的标志时，就应该用 **unset或resetiosflag**清除原先的标志。
 
 用setf 函数设置格式状态时，可以包含两个或多个格式标志，由于这些格式标志在ios类中被定义为枚举值，每一个格式标志以一个二进位代表，因此可以用位或运算符“|”组合多个格式标志。如倒数第5、第6行可以用下面一行代替：
-    cout.setf(ios::internal I ios::showpos);  //包含两个状态标志，用"|"组合；
+    cout.setf(ios::internal | ios::showpos);  //包含两个状态标志，用"|"组合；
 
  控制格式组合： cout<<setiosflags(ios::fixed)<<setiosflags(ios::right)<<setprecision(2);
 
  cout>>setw(12)>>setprecision(6)==cout.width(12);cout.precision(6);
 
- **组合控制各个控制符或函数的顺序不特定**
+ **组合控制各个控制符或函数的顺序不特定**.
 
-
-| 格式标志 |	作用|
-|------------|-------------------------------------|
-| ios::left	| 输出数据在本域宽范围内向左对齐 |
-| ios::right |	输出数据在本域宽范围内向右对齐 |
-| ios::internal|	数值的符号位在域宽内左对齐，数值右对齐，中间由填充字符填充 |
-| ios::dec	|设置整数的基数为10 |
-| ios::oct|	设置整数的基数为8 |
-| ios::hex |	设置整数的基数为16 |
-| ios::showbase	| 强制输出整数的基数(八进制数以0打头，十六进制数以0x打头) |
-| ios::showpoint|	强制输出浮点数的小点和尾数0 |
-| ios::uppercase |	在以科学记数法格式E和以**十六进制**输出字母时以大写表示 |
-| ios::showpos |	对正数显示“+”号 |
-| ios::scientific |	浮点数以科学记数法格式输出 |
-| ios::fixed |	浮点数以定点格式(小数形式)输出 |
-| ios::unitbuf |	每次输出之后刷新所有的流 |
-| ios::stdio |	每次输出之后清除stdout, stderr |
-
-
+| 格式标志        | 作用                                                       |
+| --------------- | ---------------------------------------------------------- |
+| ios::left       | 输出数据在本域宽范围内向左对齐                             |
+| ios::right      | 输出数据在本域宽范围内向右对齐                             |
+| ios::internal   | 数值的符号位在域宽内左对齐，数值右对齐，中间由填充字符填充 |
+| ios::dec        | 设置整数的基数为10                                         |
+| ios::oct        | 设置整数的基数为8                                          |
+| ios::hex        | 设置整数的基数为16                                         |
+| ios::showbase   | 强制输出整数的基数(八进制数以0打头，十六进制数以0x打头)    |
+| ios::showpoint  | 强制输出浮点数的小点和尾数0                                |
+| ios::uppercase  | 在以科学记数法格式E和以**十六进制**输出字母时以大写表示    |
+| ios::showpos    | 对正数显示“+”号                                            |
+| ios::scientific | 浮点数以科学记数法格式输出                                 |
+| ios::fixed      | 浮点数以定点格式(小数形式)输出                             |
+| ios::unitbuf    | 每次输出之后刷新所有的流                                   |
+| ios::stdio      | 每次输出之后清除stdout, stderr                             |
 
 ### bool and const
 
@@ -259,7 +325,7 @@ extern const int n = 10;
 
 这样 n 的可见范围就变成了整个程序，在其他文件中使用 extern 声明后就可以使用了。不过这种方式只适用于 GCC，不适用于 VS/VC。
 
-#define 定义的常量仅仅是字符串的替换，不会进行类型检查，而 const 定义的常量是有类型的，编译器会进行类型检查，相对来说比 #define 更安全，所以鼓励使用 const 代#define。
+\#define 定义的常量仅仅是字符串的替换，**不会进行类型检查**，而 const 定义的常量是有类型的，编译器会进行类型检查，相对来说比 #define 更安全，所以鼓励使用 const 代#define。
 
 const int n = 10;
 
@@ -301,8 +367,19 @@ malloc 申请完空间之后不会对内存进行必要的初始化，而 new �
 
 string *ps = new string("hello world");
 
-new int()是创建一个int型数，并且用()括号中的数据进行初始化,例如：
-int *p = new int(10); // p指向一个值为10的int数。
+new的初始化
+
+```cpp
+int* buffer = new int(); // 分配的一个int初始化为0
+int* buffer = new int(0); // 分配的一个int初始化为0
+int* buffer = new int[512](); // 分配的512个int都初始化为0
+int* buffer = new int[512](0); // 语法错误！！！
+int* buffer = new int[512](5); // 语法错误！！！
+//使用初始化列表，C++11
+int* buffer = new int[512]{}; // 512个int都初始化为0
+int* buffer = new int[512]{5}; // 第一个int初始化为5，其余初始化为0
+int* buffer = new int[512]{1, 2, 3, 4}; // 前4个int分别初始化为1、2、3、4，其余int初始化为0
+```
 
 ```cpp
 void *operator new(size_t);     //allocate an object
@@ -355,16 +432,16 @@ typedef struct _CrtMemBlockHeader
 ```cpp
 +--------------------------------------------------------------------------+
 |   +--------------------------+              +--------------------------+ |
-+-> | pHead = pBlockHeaderNext | -----------> | pBlockHeaderNext = NULL  | |
-    |--------------------------|              |--------------------------| |
-    | pBlockHeaderPrev = NULL  |              | pBlockHeaderPrev      ->-|-+
-    |--------------------------|              |--------------------------|
-    |          ......          |              |          ......          |
-    |--------------------------|              |--------------------------|
-    |gap: FDFDFDFD             |              |gap: FDFDFDFD             |
-    |--------------------------|              |--------------------------|
-    |pA: CDCDCDCD              |              |pB: CDCDCDCD              |
-    |--------------------------|              |--------------------------|
+| +-> | pHead = pBlockHeaderNext | -----------> | pBlockHeaderNext = NULL |  |
+| --- ||--------------------------| |
+    | pBlockHeaderPrev = NULL |  | pBlockHeaderPrev      ->- | -+ |
+    | ----------------------- ||--------------------------|
+    | ...... |  | ...... |
+    | ------ ||--------------------------|
+    | gap: FDFDFDFD |  | gap: FDFDFDFD |
+    | ------------- ||--------------------------|
+    | pA: CDCDCDCD |  | pB: CDCDCDCD |
+    | ------------ ||--------------------------|
     |anotherGap: FDFDFDFD      |              |anotherGap: FDFDFDFD      |
     +--------------------------+              +--------------------------+
 ```
@@ -404,9 +481,6 @@ delete PaA会先执行PaA（+0）的析构函数后直接将指针前的八个�
 0x55555556aec8:	0x41	0xf1	0x00	0x00	0x00	0x00	0x00	0x00
 0x55555556aed0:	0x00	0x00
 
-
-
-
 ```
 
 总的来说，记住一点即可：**new/delete、new[]/delete[] 要配套使用总是没错的**！
@@ -415,13 +489,13 @@ delete PaA会先执行PaA（+0）的析构函数后直接将指针前的八个�
 
 ### C和C++结构体的差异
 
-C的结构体内不允许有函数存在，C++允许有内部成员函数，且允许该函数是虚函数。所以C的结构体是没有构造函数、析构函数、和this指针的。
-
-C的结构体对内部成员变量的访问权限只能是public，而C++允许public,protected,private三种。
-
-C语言的结构体是不可以继承的，C++的结构体是可以从其他的结构体或者类继承过来的。
-
-C++的结构体定义时不用写struct，也就**不用别名**
+| C                                                      | C++                                                            |
+| ------------------------------------------------------ | -------------------------------------------------------------- |
+| 不能将函数放在结构体声明                               | 能将函数放在结构体声明                                         |
+| 在C结构体声明中不能使用C++访问修饰符。                 | public、protected、private 在C++中可以使用。                   |
+| 在C中定义结构体变量，如果使用了下面定义必须加struct。  | 可以不加struct                                                 |
+| 结构体不能继承（没有这一概念）。                       | 可以继承                                                       |
+| 若结构体的名字与函数名相同，可以正常运行且正常的调用！ | 若结构体的名字与函数名相同，使用结构体，只能使用带struct定义！ |
 
 ### inline内联函数
 
@@ -457,7 +531,7 @@ int main(){
 
 对函数作 inline 声明只是程序员对编译器提出的一个建议，而不是强制性的，并非一经指定为 inline 编译器就必须这样做。编译器有自己的判断能力，它会根据具体情况决定是否这样做。
 
-#define SQ(y) ( (y)*(y) )
+\#define SQ(y) ( (y)*(y) )
 
 发生函数调用时，编译器会先对实参进行计算，再将计算的结果传递给形参，并且函数执行完毕后会得到一个值，而不是得到一个表达式，这和简单的字符串替换相比省去了很多麻烦，所以在编写C++代码时推荐**使用内联函数来替换带参数的宏**。
 
@@ -465,9 +539,9 @@ int main(){
 
 内联函数虽然叫做函数，在定义和声明的语法上也和普通函数一样，但它已经失去了函数的本质。函数是一段可以重复使用的代码，它位于虚拟地址空间中的代码区，也占用可执行文件的体积，而内联函数的代码在编译后就被消除了，不存在于虚拟地址空间中，没法重复使用。
 
-在多文件编程时，我建议将内联函数的定义直接放在头文件中，并且禁用内联函数的声明（声明是多此一举）。
+在多文件编程时,可以将内联函数的定义直接放在头文件中，并且禁用内联函数的声明（声明是多此一举）。
 
-### 函数的默认参数
+### 函数的默认参数  
 
 在C++中，定义函数时可以给形参指定一个默认的值，这样调用函数时如果没有给这个形参赋值（没有对应的实参），那么就使用这个默认的值。也就是说，调用函数时可以省略有默认值的参数。如果用户指定了参数的值，那么就使用用户指定的值，否则使用参数的默认值。
 
@@ -553,6 +627,24 @@ C++代码在编译时会根据参数列表对函数进行重命名，例如void 
 
 3.类型型相关歧义（较深内容，先放下）
 
+### 从assert到static_assert
+
+```cpp
+assert 宏的原型定义在 <assert.h>（C）、（C++）中。其作用是如果它的条件返回错误，则终止程序执行。
+
+//在发布模式下，我们不应该再依赖 assert() 宏，因为程序一旦出错，assert() 会抛出一段用户看不懂的提示信息，并毫无预警地终止程序执行，这样会严重影响软件的用户体验，所以在发布模式下应该让 assert() 失效。
+#define NDEBUG          // 加上这行，则 assert 不可用
+
+
+```
+
+```cpp
+static_assert()接受两个参数。第1个参数是整型常量表达式，第2个参数是一个字符串。如果第 1 个表达式求值为 0（或_False），编译器会显示字符 串，而且不编译该程序。
+static_assert(sizeof(double) == 2 * sizeof(int), "double not twice int size");
+```
+
+assert()可以导致正在运行的程序中止，而static_assert()可以导致程序无法通过编译。
+
 ### C和C++混合编程
 
 直接混合会出问题
@@ -617,7 +709,6 @@ C中的某些库在C++中被改编。并去掉.h加上c:stdlib.h->cstdlib
 
 ## 类和对象
 
-
 ### 类的定义和对象的创建
 
 类的**成员变量**称为**类的属性（Property）**，将 类的**成员函数**称为**类的方法（Method）**。在面向对象的编程语言中，经常把**函数（Function）称为方法（Method**）。
@@ -678,12 +769,12 @@ Student *pStu = new Student;//堆上创建
 
 ### 类成员访问权限
 
-
 c++通过 **public、protected、private 三个关键字来控制成员变量和成员函数的访问权限，它们分别表示公有的、受保护的、私有的，被称为成员访问限定符**。所谓访问权限，就是你能不能使用该类中的成员
 
 在**类的内部（定义类的代码内部）**，无论成员被声明为 public、protected 还是 private，**都是可以互相访问的**，**没有访问权限的限制**。
 
 在类的外部（定义类的代码之外），只能通过对象访问成员，并且**通过对象只能访问 public 属性的成员**，不能访问 private、protected 属性的成员。
+
 
 **类的声明和成员函数的定义都是类定义的一部分**，在实际开发中，我们通常将类的声明放在头文件中，而将成员函数的定义放在源文件中。
 
@@ -720,22 +811,6 @@ int func::m_m=1;//静态变量还要在类外定义；
 
 **类和全局函数可以直接互相访问，前提是对方已声明**；
 
-### 类型成员(typedef和using)
-
-  比如string::size_type就是string类中的某一个类型成员，是类自定义的某种类型在类中的别名。
-
-```cpp
-class Screen {
-public:
-    typedef std::string::size_type pos;    //使用typedef 进行定义
-    using   pos = std::string::size_type;  //使用using
- 
-private:
-    pos cursor = 0;
-    pos height = 0, width = 0;
-    std::string contents;
-};
-```
 ### 类的作用域
 
 类类型（类或结构体）用作用域运算符访问，其它用成员访问运算符。
@@ -872,6 +947,8 @@ int main()
 
 ### 构造函数及其初始化列表和对象数组
 
+类中定义了五种特殊的成员函数来控制对象的拷贝、移动、赋值和销毁操作，包括拷贝构造函数、拷贝赋值运算符、移动构造函数、移动赋值运算符和析构函数，统称为**拷贝控制操作**。
+
 **它的名字和类名相同，没有返回值，不需要用户显式调用（用户也不能调用），而是在创建对象时自动执行。这种特殊的成员函数就是构造函数（Constructor）**。
 
 在栈上创建对象时，实参位于对象名后面，例如**Student stu("小明", 15, 92.5f)**；在堆上创建对象时，实参位于类名后面，例如**Student *pstu=new Student("李华", 16, 96)**。
@@ -886,8 +963,7 @@ int main()
 
 一个类必须有构造函数，**要么用户自己定义，要么编译器自动生成**。一旦用户自己定义了构造函数，不管有几个，也不管形参如何(**可以重载构造函数从而选择初始化方式,例如定义一个无参一个有参**），编译器都不再自动生成.
 
-
-Student stu()或Student stu，在堆上创建对象可以写作Student *pstu = new Student()或Student *pstu = new Student，它们都会调用构造函数 Student()。**创建对象时都没有写括号，其实是调用了默认的构造函数。**
+Student stu()或Student stu，在堆上创建对象可以写作Student\*pstu = new Student()或Student \*pstu = new Student，它们都会调用构造函数 Student()。**创建对象时都没有写括号，其实是调用了默认的构造函数。**
 
 ```cpp
 class Student{
@@ -902,13 +978,15 @@ public:
 //采用初始化列表
 Student::Student(char *name, int age, float score): m_name(name), m_age(age), m_score(score){
     //TODO:
-m_elem(new xxx)//分配内存语句也可以
+seq(new DataType[size]());//分配内存语句也可以
 }
 ```
 
 定义构造函数时并没有在函数体中对成员变量一一赋值，**其函数体为空（当然也可以有其他语句）**，而是**在函数首部与函数体之间添加了一个冒号:**，后面紧跟 **m_name(name), m_age(age), m_score(score)** 语句，这个语句的意思相当于函数体内部的m_name = name; m_age = age; m_score = score;语句，也是赋值的意思。
 
 **同名也没有问题，但不直观，括号内的始终是传进来的参数**；
+
+*特别的，如果要初始化的对象包含类类型，则如果不在初始化列表初始化，则会在函数体内初始化之前调用一次该类的默认构造函数，造成性能浪费，所以应一直使用初始化列表初始化成员*。
 
 初始化列表可以用于全部成员变量，也可以只用于部分成员变量。**成员变量的初始化顺序与初始化列表中列出的变量的顺序无关，它只与成员变量在类中声明的顺序有关**.
 
@@ -921,8 +999,6 @@ func(char C) : m_C(C), m_B(m_C) {m_A='A';}//在类外的话前面要加类名fun
 }
 func *p = new func('C');
 B是乱码，初始化顺序是m_A,m_B,m_C;
-
-**const成员变量只能用构造函数的初始化列表来初始化**。
 
 模拟变长数组
 
@@ -951,6 +1027,85 @@ Student Stud[3]={ //定义对象数组
 等价于
 Student *stud=new Student[3]{Student(1001,18,87),Student(1002,19,76),Student(1003,18,72)};
 delete []stud;
+```
+
+### 自定义列表参数(initalizer_list)
+
+必须保证参数的类型是一致的。
+
+```cpp
+vector(initializer_list<_Ty> _Ilist, const _Alloc& _Al = _Alloc())
+        : _Mybase(_Al)
+{   // construct from initializer_list, optional allocator
+    Range_construct_or_tidy(_Ilist.begin(), _Ilist.end(), random_access_iterator_tag{});
+}
+template<typename _Tp>
+    _GLIBCXX14_CONSTEXPR
+    inline _Tp
+    max(initializer_list<_Tp> __l)
+    { return *std::max_element(__l.begin(), __l.end()); }
+
+  template<typename _Tp, typename _Compare>
+    _GLIBCXX14_CONSTEXPR
+    inline _Tp
+    max(initializer_list<_Tp> __l, _Compare __comp)
+    { return *std::max_element(__l.begin(), __l.end(), __comp); }
+
+  template<typename _Tp>
+    _GLIBCXX14_CONSTEXPR
+    inline pair<_Tp, _Tp>
+    minmax(initializer_list<_Tp> __l)
+    {
+      pair<const _Tp*, const _Tp*> __p =
+    std::minmax_element(__l.begin(), __l.end());
+      return std::make_pair(*__p.first, *__p.second);
+    }
+
+```
+
+这种类型是编译器自动构造的
+
+```cpp
+auto il = { 10, 20, 30 };  // the type of il is an initializer_list
+```
+
+提供的操作接口
+
+![a](https://img-blog.csdnimg.cn/20191219094533668.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpYW5nYmFvaHVp,size_16,color_FFFFFF,t_70)
+
+```cpp
+initializer_list<T> lst; 
+//默认初始化；T类型元素的空列表
+initializer_list<T> lst{a,b,c...};
+//lst的元素数量和初始值一样多；lst的元素是对应初始值的副本
+lst2(lst)   
+lst2=lst  
+//拷贝或赋值一个initializer_list对象不会拷贝列表中的元素；拷贝后，原始列表和副本元素共享
+lst.size()  //列表中的元素数量
+lst.begin()  //返回指向lst中首元素的指针
+lst.end()   //返回指向lst中尾元素下一位置的指针
+
+```
+
+**可以用迭代器遍历,可以用在函数特别是构造函数上，使它们能用初始化列表传参**。
+
+```cpp
+void error_msg(initializer_list<string> il)
+{
+   for(auto beg=il.begin();beg!=il.end();++beg)
+      cout<<*beg<<" ";
+   cout<<endl;
+}
+
+void msg(initializer_list<const char*> li)
+{
+        for (auto s: li)
+                cout << s << endl;
+}
+int main(int argc, char* argv[])
+{
+        msg({"hello", "world", "message"});
+        return 0;
 ```
 
 ### 复制构造函数
@@ -1025,7 +1180,7 @@ Complex (Complex c) {...}
 
    **如果要确保实参的值不会改变，又希望避免复制构造函数带来的开销，解决办法就是将形参声明为对象的 const 引用。**
    以const Complex & c形式作为函数形参；不可改变c的成员的值
-3) 如果函数的返冋值是类 A 的对象，则函数返冋时，类 A 的复制构造函数被调用。换言之，作为函数返回值的对象是用复制构造函数初始化 的，而调用复制构造函数时的实参，就是 return 语句所返回的对象。
+3) 如果函数的返冋值是类 A 的对象，则函数返冋时，类 A 的复制构造函数被调用。换言之，作为函数返回值的对象是用**复制构造函数初始化** 的，而调用复制构造函数时的实参，就是 return 语句所返回的对象。
 
 ### 析构函数
 
@@ -1098,25 +1253,9 @@ main
 
 非静态成员变量并不能决定自身的存储空间位置。**决定存储位置的是对象的创建方式**。
 
-### default和delete
-
-(1) defaulted 函数特性仅用于类的*特殊成员函数*，且该特殊成员函数没有默认参数;
-
-(2) 既可以在类体里定义(inline),也可以在类体外(out-of-line)定义。
-
-“=default”说明符到函数声明的末尾，以将该函数声明为显示默认构造函数。这就使得编译器为显示默认函数生成了默认实现，它**比手动编程函数更加有效**。
-
-
-(1) 必须在函数第一次声明的时候将其声明为 deleted 函数
-
-(2) 不同于default，*delete没有限制为特殊成员函数*才能使用delete
-
-删除特殊成员函数提供了一种更简洁的方法来防止编译器生成我们不想要的特殊成员函数。（如“禁用拷贝构造函数”示例中所示）。
-删除正常成员函数或非成员函数可防止有问题的类型导致调用非预期函数（如“禁用不需要的参数转换”示例中所示）。
-
 ### this指针
 
-this 是 C++ 中的一个**关键字**，也是一个 **const 指针**，它指向当前对象，通过**它可以访问当前对象的所有成员。**
+this 是 C++ 中的一个**关键字**，也是一个 **const 指针(className *const this)**，它指向当前对象，通过**它可以访问当前对象的所有成员。**
 
 所谓当前对象，是指正在使用的对象。例如对于stu.show();，stu 就是当前对象，this 就指向 stu。
 
@@ -1134,7 +1273,15 @@ this 作为*隐式形参*，**本质上是成员函数的局部变量，所以�
 
 成员函数最终被编译成与对象无关的普通函数，**除了成员变量，会丢失所有信息**，所以编译时要在成员函数中添加一个额外的参数，把当前对象的首地址传入，以此来关联成员函数和成员变量。这个额外的参数，实际上就是 this，**它是成员函数和成员变量关联的桥梁**。
 
-### 静态成员变量和静态成员函数
+*this==&Obj*.
+
+### static关键字以及静态成员变量和静态成员函数
+
+>static的第一种含义：修饰全局变量时，表明一个全局变量只对定义在同一文件中的函数可见。
+>static的第二种含义：修饰局部变量时，表明该变量的值不会因为函数终止而丢失。
+>static的第三种含义：修饰函数时，表明该函数只在同一文件中调用。
+>static的第四种含义：修饰类的数据成员，表明对该类所有对象这个数据成员都只有一个实例。即该实例归 所有>对象共有。
+>static的第五种含义：修饰类成员函数。
 
 在C++中，我们可以**使用静态成员变量来实现多个对象共享数据的目标**。静态成员变量是一种特殊的成员变量，它被关键字static修饰。
 
@@ -1154,9 +1301,14 @@ type类似于函数的返回值
 
 static 成员变量既可以通过对象来访问，也**可以通过类来访问**。非静态函数一般都要this指针，需要**实体调用**。
 
+**static 成员函数不能加类型限定符如 const**。
+
+ 不能用const的原因：
+     这是C++的规则，const修饰符用于表示函数不能修改成员变量的值，该函数必须是含有this指针的类成员函数，函数调用方式为thiscall，而类中的static函数本质上是全局函数，调用规约是__cdecl或__stdcall,不能用const来修饰它。一个静态成员函数访问的值是其参数、静态数据成员和全局变量，而这些数据都不是对象状态的一部分。而对成员函数中使用关键字const是表明：函数不会修改该函数访问的目标对象的数据成员。既然一个静态成员函数根本不访问非静态数据成员，那么就没必要使用const了。
+
 类的静态成员函数没有 this 指针，这导致：
 
-1、不能直接存取类的非静态成员变量，调用非静态成员函数。
+1、不能直接存取类的非静态成员变量，调用非静态成员函数.
 2、不能被声明为 virtual。
 
 ```cpp
@@ -1170,13 +1322,39 @@ Student *pstu = new Student("李华", 16, 96);
 pstu -> m_total = 20;
 ```
 
-static 成员变量**不占用对象的内存，而是在所有对象之外开辟内存**，**即使不创建对象也可以访问**,具体来说，static 成员变量和普通的 static 变量类似，都在内存分区中的全局数据区分配内存,初始化时可以赋初值，也可以不赋值。如果不赋值，那么会被默认初始化为 0。
+static 成员变量**不占用对象的内存，而是在所有对象之外开辟内存**，**即使不创建对象也可以访问**,具体来说，static 成员变量和普通的 static 变量类似，都在内存分区中的全局数据区分配内存,初始化时可以赋初值，也可以不赋值。如果不赋值，那么会被**默认初始化为 0**。
 
 编译器在编译一个普通成员函数时，会隐式地增加一个形参 this，并把当前对象的地址赋值给 this，所以普通成员函数只能在创建对象后通过对象来调用，因为它需要当前对象的地址。而**静态成员函数可以通过类来直接调用，编译器不会为它增加形参 this，它不需要当前对象的地址，所以不管有没有创建对象，都可以调用静态成员函数。**
 
-在C++中，静态成员函数的**主要目的是访问静态成员**。当然**也可以声明为普通成员函数，但是它们都只对静态成员进行操作，加上 static 语义更加明确**。
+**一个静态成员函数访问的值是其参数、静态数据成员和全局变量**.
 
 和静态成员变量类似，静态成员函数在声明时要加 static，在定义时不能加 static（与非静态函数一样）。**静态成员函数可以通过类来调用**（一般都是这样做），也可以通过对象来调用.
+
+不传参访问非静态变量
+
+```cpp
+class A
+{
+public:
+    A()
+    {
+        m_gA = this;
+        m_a = 999;
+    }
+    static void test()
+    {
+        m_gA->m_a += 1;
+    }
+    void hello()
+    {
+    }
+private:
+    static int m_staticA;
+    static A *m_gA;
+    int m_a;
+};
+
+```
 
 ### const成员变量和成员函数（常成员函数）
 
@@ -1187,7 +1365,7 @@ C++11以后可以在类内初始化。
 **初始化还是和构造函数绑定**，只是记法不同，更方便。如果未调用构造函数，则不会初始化这些值。
 如果调用构造函数，则使用类内初始化（如果存在）来初始化这些值，或者构造函数可以使用自己的初始化覆盖它。初始化的路径本质上是一样的，就是通过构造函数
 
-const 成员函数**可以使用类中的所有成员变量，但是不能修改它们的值，** 这种措施主要还是为了保护数据而设置的。const 成员函数也称为**常成员函数**。
+const 成员函数**可以使用类中的所有成员变量，但是不能修改它们的值，** 这种措施主要还是为了**保护数据**而设置的。const 成员函数也称为**常成员函数**。
 
 我们通常将 get 函数设置为常成员函数。读取成员变量的函数的名字通常以get开头，后跟成员变量的名字，所以通常将它们称为 get 函数。
 
@@ -1212,7 +1390,7 @@ void Student::show(){
     cout<<m_name<<"的年龄是"<<m_age<<"，成绩是"<<m_score<<endl;
 }
 //定义常成员函数
-char * Student::getname() const{//记住get函数形式
+char * Student::getname() const{
     return m_name;
 }
 int Student::getage() const{
@@ -1225,131 +1403,91 @@ float Student::getscore() const{
 
 需要强调的是，必须在成员函数的声明和定义处同时加上 const 关键字。char \*getname() const和char \*getname()是两个不同的函数原型，如果只在一个地方加 const 会导致声明和定义处的函数原型冲突。
 
-最后再来区分一下 const 的位置：
 **函数开头的 const 用来修饰函数的返回值**，表示返回值是 const 类型，也就是不能被修改，例如const char \* getname()。
 
 **函数头部的结尾加上 const 表示常成员函数**，这种函数只能读取成员变量的值，而不能修改成员变量的值，例如char \* getname() const。
 
-**常成员函数可以修改被mutable修饰的变量**。
+**const函数可以修改被mutable修饰的变量**，可以用来计数const函数被调用的次数(可以赋初值)。
 
-**对于不需要修改对象成员变量的成员函数且需要传入对象的函数，应该将其声明和定义为常成员函数**，因为这种情况下向某个需要读取对象的函数传递参数时一般用常引用形式(不用复制，并确保不会被修改)，在该函数中调用非常成员函数是不允许的.
+**对于不需要修改对象成员变量的成员函数，应该将其声明和定义为常成员函数(返回成员变量或者输出函数)**，因为这种情况下向某个**需要读取对象**的函数传递参数时一般用常引用形式(不用复制，并确保不会被修改)，在该函数中调用非常成员函数是不允许的,**const 对象不能访问非const成员**。
 
-1.**对于非内部数据类型的输入参数，应该将“值传递”的方式改为“const 引用传递”**，目的是提高效率。例如将void func(A a) 改为void func(const A &a)。
+const引用传参：
 
-2.**对于内部数据类型的输入参数，不要将“值传递”的方式改为“const 引用传递”**。否则既达不到提高效率的目的，又降低了函数的可理解性。例如void func(int x) 不应该改为void func(const int &x)。
+1.**对于非内部数据类型的输入参数（复制代价大），应该将“值传递”的方式改为“const 引用传递”**，目的是提高效率。例如将void func(A a) 改为void func(const A &a)。一个额外的好处是这样**可以接收右值**，例如临时对象。
 
-### constexpr和static const 
+2.**对于内部数据类型的输入参数（复制代价小），不要将“值传递”的方式改为“const 引用传递”**。否则既达不到提高效率的目的，又降低了函数的可理解性。例如void func(int x) 不应该改为void func(const int &x)。
+
+### const和static成员函数都可以通过参数访问私有变量，限制只是局限于它们的默认调用
+
+### 从枚举到枚举类
+
+枚举有如下问题：
+
+- 作用域不受限,会容易引起命名冲突。例如下面无法编译通过的：
 
 ```cpp
-constexpr int limit = mf + 1
-constexpr double Abs(double x)
+#include <iostream>
+using namespace std;
+
+enum Color {RED,BLUE};
+enum Feeling {EXCITED,BLUE};
+
+int main() 
 {
-    return (x > 0.0 ? x : -x);
-}
-constexpr double Sqrt_impl(double y, double x1, double x2, double eps)
-{
-    return (Abs(x1 -x2) < eps ? x2 : Sqrt_impl(y, x2, (x2+y/x2)*0.5, eps));
-}
- 
-constexpr double Sqrt(double y) 
-{
-    return Sqrt_impl(y, 0, y*0.5 + 1.0, 1e-10);
-}
-constexpr double SinCos_impl(double x2, double n, double u)
-{
-    return (Abs(u) < 1e-10 ? u : u + SinCos_impl(x2, n+2.0, -u*x2/(n * (n + 1))));
-}
- 
-constexpr double Cos(double x);
- 
-constexpr double Sin(double x)
-{
-    return (Abs(x) < 0.5 ? SinCos_impl(x*x, 2.0, x) : 2 * Sin(x * 0.5) * Cos(x * 0.5));
-}
- 
-constexpr double Sqr(double x)
-{
-    return x*x;
-}
- 
-constexpr double Cos(double x)
-{
-    return (Abs(x) < 0.5 ? SinCos_impl(x*x, 1.0, 1.0) : Sqr(Cos(x * 0.5)) - Sqr(Sin(x * 0.5)));
+    return 0;
 }
 ```
 
-为了解决 const 关键字的双重语义问题，保留了 const 表示“只读”的语义，而将“常量”的语义划分给了新添加的 constexpr 关键字。因此 C++11 标准中，建议将 const 和 constexpr 的功能区分开，**即凡是表达“只读”语义的场景都使用 const，表达“常量”语义的场景都使用 constexpr**。
+- 会隐式转换为int
+- 用来表征枚举变量的实际类型不能明确指定，从而无法支持枚举类型的前向声明。(**C++的枚举可以指定类型**)
 
-constexpr 关键字则用于指明其后是一个常量（或者常量表达式），编译器在编译程序时可以顺带将其结果计算出来，而无需等到程序运行阶段，这样的优化极大地提高了程序的执行效率。所有计算都在编译时完成(The values are guaranteed to be available at compile time.)。像溢出这样错误也会在编译时被检出。
-
-```cpp
-class test {
-    public:
-static int si; // 静态成员变量
-  const double x=0;
-  //constexpr double y=0;//error,
-    //static int si2 = 100; // error: 只有静态常量成员变量，才可以这样初始化
-    static const int csi; // 静态常量成员变量
-    static const int csi2 = 100; // 静态常量成员变量的初始化(Integral type) (1)
-    static constexpr double csc= 100;//和上面的式子等价，都可以用来作为数组的大小。
-    //较老的编译器可能不支持上述两种方式，可以借助共用体实现类内初始化常量。
-      enum { n = 27, m = 51, p = -82 };
-    static const double csd; // 静态常量成员变量(non-Integral type)
-    //staticconst double csd2 = 99.9; // error: 只有静态常量整型数据成员才可以在类中初始化
-
-}
-```
-
-### const
-
-const int *p1;
-int const *p2;
-
-int * const p3;
-在最后一种情况下，指针是只读的，也就是 p3 本身的值不能被修改；在前面两种情况下，指针所指向的数据是只读的，也就是 p1、p2 本身的值可以修改（指向不同的数据），但它们指向的数据不能被修改。
-
-当然，指针本身和它指向的数据都有可能是只读的，下面的两种写法能够做到这一点：
+解决第一个问题的经典做法
 
 ```cpp
-const int * const p4;
-int const * const p5;
-
-修饰const后面的所有部分；
-
-const  class  object(params);
-
-class const object(params);
-
-const 指针：
-const class *p = new class(params);
-
-class const *p = new class(params);
-
+namespace Color //1
+{
+    enum Type
+    {
+        RED=15,
+        YELLOW,
+        BLUE
+    };
+};
+struct Color1//2
+{
+    enum Type
+    {
+        RED=102,
+        YELLOW,
+        BLUE
+    };
+};
 ```
 
-用指针可以修改const变量，但const全局变量存储在全局存储空间，而且是只读的，因此试图修改会出现段错误。一般的const变量只是在编译期的常量。它类似于一种承诺，但可以不遵守。
-
-不建议修改const变量的值，即使修改也要熟悉当前使用的编译器对于该未定义行为 是如何解释的。(其实只有devc++不行，加了volatile还要多管闲事)
+枚举类
 
 ```cpp
-const volatile int x=1;//volatile告诉编译器不要优化（C++中的常量折叠：指const变量（即常量）值放在编译器的符号表中，计算时编译器直接从表中取值，省去了访问内存的时间，从而达到了优化。）
-  int *p=(int*)&x;//必须强制类型转换
-  *p=10;
-  std::cout <<x<<std::endl;
+enum class Color3:char;  // 前向声明
 
+// 定义
+enum class Color3:char 
+{
+    RED='r',
+    BLUE
+};
+char c3 = static_cast<char>(Color3::RED);//必须转换，并且不同枚举类的变量它们属于不同的类型，无法直接比较
 ```
 
-一旦将对象定义为常对象之后，不管是哪种形式，**该对象就只能访问被 const 修饰的成员函数了，因为非 const 成员函数可能会修改对象的数据（编译器也会这样假设），可以访问没被const修饰的public变量，但不能修改**。
+### C++成员对象和封闭类
 
-### C++成员对象和封闭类和封闭类
+一个类的成员变量如果是另一个类的对象，就称之为“成员对象”。包含成员对象的类叫封闭类（enclosed class）。
 
-一个类的成员变量如果是另一个类（**平行关系**）的对象，就称之为“成员对象”。包含成员对象的类叫封闭类（enclosed class）。
-
-
+```cpp
 类名::构造函数名(参数表): 成员变量1(参数表), 成员变量2(参数表), ...
 {
 ...
 }
+```
 
 。对于成员对象，初始化列表的“参数表”中存放的是构造函数的参数（它指明了该成员对象如何初始化）。对于基本类型成员变量，“参数表”中就是一个初始值。
 
@@ -1639,7 +1777,660 @@ Question q=new Question();
 
 19，两个结构必须以成员对成员的比较方式来执行相等比较。两个对象变量可以使用Equals方法来加以比较。**Equals会判断两个变量是否指向相同的实例**
 
-### C++string
+**总的来说，struct 更适合看成是一个数据结构的实现体，class 更适合看成是一个对象的实现体**。
+
+### 位域和union
+
+- 位域在内存中的布局是与机器有关的
+- 位域的类型必须是整型或枚举类型，带符号类型中的位域的行为将因具体实现而定
+- 取地址运算符（&）不能作用于位域，任何指针都无法指向类的位域
+- 类和对象都支持
+
+```cpp
+struct bit_field_name
+{
+    type member_name : width;
+};
+```
+
+| Elements       | Description                                                   |
+| -------------- | ------------------------------------------------------------- |
+| bit_field_name | 位域结构名                                                    |
+| type           | 位域成员的类型，必须为 int、signed int 或者 unsigned int 类型 |
+| member_name    | 位域成员名                                                    |
+| width          | 规定成员所占的位数                                            |
+
+值时要注意值的大小不能超过位域成员的容量，2bit最大存储3(11)
+
+```cpp
+struct box 
+{
+    unsigned int a: 1;
+    unsigned int  : 3;
+    unsigned int b: 4;
+};
+```
+
+该位域结构体中间有一个未命名的位域，占据 3 Bits，仅起填充作用，并无实际意义。 填充使得该结构总共使用了 8 Bits.位域是以unsigned int的大小为基本单位的。
+
+一个位域成员不允许跨越两个 unsigned int 的边界，如果成员声明的总位数超过了一个 unsigned int 的大小， 那么编辑器会自动移位位域成员。
+
+也可以使用一个宽度为 0 的未命名位域成员令下一位域成员与下一个整数对齐。
+
+```cpp
+struct stuff 
+{
+    unsigned int field1: 30;
+    unsigned int       : 2;
+    unsigned int field2: 4;
+    unsigned int       : 0;
+    unsigned int field3: 3; 
+};
+```
+
+这里 stuff.field1 与 stuff.field2 之间有一个 2 Bits 的空隙，stuff.field3 则存储在下一个 unsigned int 中，该结构现在大小为 3 * 32 = 96 Bits。
+
+位域的重映射
+
+```cpp
+struct box {
+    unsigned int ready:     2;
+    unsigned int error:     2;
+    unsigned int command:   4;
+    unsigned int sector_no: 24;
+}b1;
+```
+
+ 利用重映射将位域归零
+
+```cpp
+int* p = (int *) &b1;  // 将 "位域结构体的地址" 映射至 "整形（int*) 的地址" 
+*p = 0;                // 清除 s1，将各成员归零
+```
+
+利用联合 (union) 将 32 Bits 位域 重映射至 unsigned int 型
+
+> “联合” 是一种特殊的类，也是一种构造类型的数据结构。在一个 “联合” 内可以定义多种不同的数据类型， 一个被说明为该 “联合” 类型的变量中，允许装入该 “联合” 所定义的任何一种数据，这些数据共享同一段内存，以达到节省空间的目的
+>
+> “联合” 与 “结构” 有一些相似之处。但两者有本质上的不同。在结构中各成员有各自的内存空间， 一个结构变量的总长度是各成员长度之和（空结构除外，同时不考虑边界调整）。而在 “联合” 中，各成员共享一段内存空间， 一个联合变量的长度等于各成员中最长的长度。应该说明的是， 这里所谓的共享不是指把多个成员同时装入一个联合变量内， 而是指该联合变量可被赋予任一成员值，但每次只能赋一种值， 赋入新值则冲去旧值。
+> union的特点：
+>> 默认访问控制符为 public
+>> 可以含有构造函数、析构函数
+>> 不能含有引用类型的成员
+>> 不能继承自其他类，不能作为基类
+>> 不能含有虚函数
+>> 匿名 union 在定义所在作用域可直接访问 union 成员
+>> 匿名 union 不能包含 protected 成员或 private 成员
+>> 全局匿名联合必须是静态（static）的
+
+我们可以声明以下联合:
+
+```cpp
+union u_box {
+  struct box st_box;     
+  unsigned int ui_box;
+};
+```
+
+x86 系统中 unsigned int 和 box 都为 32 Bits, 通过该联合使 st_box 和 ui_box 共享一块内存。具体位域中哪一位与 unsigned int 哪一位相对应，取决于编译器和硬件。
+利用联合将位域归零，代码如下：
+
+```cpp
+union u_box u;
+u.ui_box = 0;
+```
+
+## 重要关键字和部分C++11的特性
+
+### default和delete
+
+(1) defaulted 函数特性仅用于类的*特殊成员函数*，且该特殊成员函数没有默认参数;
+
+(2) 既可以在类体里定义(inline),也可以在类体外(out-of-line)定义。
+
+“=default”说明符到函数声明的末尾，以将该函数声明为显示默认构造函数。这就使得编译器为显示默认函数生成了默认实现，它**比手动编程函数更加有效**。
+
+(1) 必须在函数第一次声明的时候将其声明为 deleted 函数
+
+(2) 不同于default，*delete没有限制为特殊成员函数*才能使用delete
+
+删除特殊成员函数提供了一种更简洁的方法来防止编译器生成我们不想要的特殊成员函数。（如“禁用拷贝构造函数”示例中所示）。
+删除正常成员函数或非成员函数可防止有问题的类型导致调用非预期函数（如“禁用不需要的参数转换”示例中所示）。
+
+### constexpr和static const
+
+```cpp
+constexpr int limit = mf + 1
+constexpr double Abs(double x)
+{
+    return (x > 0.0 ? x : -x);
+}
+constexpr double Sqrt_impl(double y, double x1, double x2, double eps)
+{
+    return (Abs(x1 -x2) < eps ? x2 : Sqrt_impl(y, x2, (x2+y/x2)*0.5, eps));
+}
+ 
+constexpr double Sqrt(double y) 
+{
+    return Sqrt_impl(y, 0, y*0.5 + 1.0, 1e-10);
+}
+constexpr double SinCos_impl(double x2, double n, double u)
+{
+    return (Abs(u) < 1e-10 ? u : u + SinCos_impl(x2, n+2.0, -u*x2/(n * (n + 1))));
+}
+ 
+constexpr double Cos(double x);
+ 
+constexpr double Sin(double x)
+{
+    return (Abs(x) < 0.5 ? SinCos_impl(x*x, 2.0, x) : 2 * Sin(x * 0.5) * Cos(x * 0.5));
+}
+ 
+constexpr double Sqr(double x)
+{
+    return x*x;
+}
+ 
+constexpr double Cos(double x)
+{
+    return (Abs(x) < 0.5 ? SinCos_impl(x*x, 1.0, 1.0) : Sqr(Cos(x * 0.5)) - Sqr(Sin(x * 0.5)));
+}
+```
+
+为了解决 const 关键字的双重语义问题，保留了 const 表示“只读”的语义，而将“常量”的语义划分给了新添加的 constexpr 关键字。因此 C++11 标准中，建议将 const 和 constexpr 的功能区分开，**即凡是表达“只读”语义的场景都使用 const，表达“常量”语义的场景都使用 constexpr**。
+
+constexpr 关键字则用于指明其后是一个常量（或者常量表达式），编译器在编译程序时可以顺带将其结果计算出来，而无需等到程序运行阶段，这样的优化极大地提高了程序的执行效率。所有计算都在编译时完成(The values are guaranteed to be available at compile time.)。像溢出这样错误也会在编译时被检出。
+
+```cpp
+class test {
+    public:
+static int si; // 静态成员变量
+  const double x=0;
+  //constexpr double y=0;//error,
+    //static int si2 = 100; // error: 只有静态常量成员变量，才可以这样初始化
+    static const int csi; // 静态常量成员变量
+    static const int csi2 = 100; // 静态常量成员变量的初始化(Integral type) (1)
+    static constexpr double csc= 100;//和上面的式子等价，都可以用来作为数组的大小。
+    //较老的编译器可能不支持上述两种方式，可以借助共用体实现类内初始化常量。
+      enum { n = 27, m = 51, p = -82 };
+    static const double csd; // 静态常量成员变量(non-Integral type)
+    //staticconst double csd2 = 99.9; // error: 只有静态常量整型数据成员才可以在类中初始化
+
+}
+```
+
+### const和volatile
+
+```cpp
+const int *p1;
+int const *p2;
+int * const p3;
+```
+
+在最后一种情况下，指针是只读的，也就是 p3 本身的值不能被修改；在前面两种情况下，指针所指向的数据是只读的，也就是 p1、p2 本身的值可以修改（指向不同的数据），但它们指向的数据不能被修改。
+
+当然，指针本身和它指向的数据都有可能是只读的，下面的两种写法能够做到这一点：
+
+```cpp
+const int * const p4;
+int const * const p5;
+
+修饰const后面的所有部分；
+
+const  class  object(params);
+
+class const object(params);
+
+const 指针：
+const class *p = new class(params);
+
+class const *p = new class(params);
+
+```
+
+用指针可以修改const变量，但const全局变量存储在全局存储空间，而且是只读的，因此试图修改会出现段错误。一般的const变量只是在编译期的常量。它类似于一种承诺，但可以不遵守。
+
+不建议修改const变量的值，即使修改也要熟悉当前使用的编译器对于该未定义行为 是如何解释的。(其实只有devc++不行，加了volatile还要多管闲事)
+
+```cpp
+const volatile int x=1;//volatile告诉编译器不要优化（C++中的常量折叠：指const变量（即常量）值放在编译器的符号表中，计算时编译器直接从表中取值，省去了访问内存的时间，从而达到了优化。）
+  int *p=(int*)&x;//必须强制类型转换
+  *p=10;
+  std::cout <<x<<std::endl;
+
+```
+
+一旦将对象定义为常对象之后，不管是哪种形式，**该对象就只能访问被 const 修饰的成员函数了，因为非 const 成员函数可能会修改对象的数据（编译器也会这样假设），可以访问没被const修饰的public变量，但不能修改**。
+
+被 volatile 修饰的变量，在对其进行读写操作时，会引发一些可观测的副作用。而这些可观测的副作用，是由程序之外的因素决定的。
+
+```cpp
+int  *output = (unsigned  int *)0xff800000; //定义一个IO端口；  
+int   init(void)  
+{  
+    int i;  
+    for(i=0;i< 10;i++)
+    {  
+    *output = i;  
+    }  
+}
+//会被优化为
+int  init(void)  
+{  
+    *output = 9;  
+}
+static int i=0;
+
+int main()
+{
+    while(1)
+    {
+    if(i) dosomething();
+    }
+}
+//会被优化为
+/* Interrupt service routine */
+void IRS()
+{
+    i=1;
+}
+//如果将变量i加上volatile修饰，则编译器保证对变量i的读写操作都不会被优化，从而保证了变量i被外部程序更改后能及时在原程序中得到感知。
+
+/*多线程应用中被多个任务共享的变量。 当多个线程共享某一个变量时，该变量的值会被某一个线程更改，应该用 volatile 声明。作用是防止编译器优化把变量从内存装入CPU寄存器中，当一个线程更改变量后，未及时同步到其它线程中导致程序出错。volatile的意思是让编译器每次操作该变量时一定要从内存中真正取出，而不是使用已经存在寄存器中的值。*/
+```
+
+### \#define,using和typedef的一些补充
+
+[详见](https://www.cnblogs.com/kevinWu7/p/10163447.html)
+
+C++语言允许宏带有参数。在宏定义中的参数称为形式参数，在宏调用中的参数称为实际参数。
+
+```cpp
+#define add(x,y) (x+y)   //此处要打括号，不然执行2*add(x,y) 会变成 2*x + y
+int main()
+{
+    std::cout << add(9,12) << std::endl;//输出21
+    return 0;
+}
+```
+
+```cpp
+int (*func[5])(int *);  
+/*看完整的右左法则”解析：
+func右边是一个[]运算符，说明func是具有5个元素的数组；func的左边有一个*，说明func的元素是指针（注意这里的*不是修饰func，而是修饰func[5]的，原因是[]运算符优先级比*高，func先跟[]结合，把func[]看成一个整体）。跳出这个括号，看右边，又遇到圆括号，说明func数组的元素是函数类型的指针，它指向的函数具有int*类型的形参，返回值类型为int.*/
+//用typedef来定义这些复杂的类型，比如上面的函数指针，格式为：
+
+typedef  返回类型  (*新类型名)  (参数表)
+
+typedef char(*PTRFUN)(int); //定义char(*)(int)的函数指针 的别名为PTRFUN
+PTRFUN pfun;  //直接用别名PTRFUN定义char(*)(int)类型的变量
+
+char getchar(int a) //定义一个形参为int，返回值为char的函数
+{
+    return '1';
+}
+int main()
+{
+    pfun = getchar; //把函数赋给指针
+    (*pfun)(5);     //用函数指针取函数，调用
+    return 0;
+}
+```
+
+typedef能做的using都可以做。
+
+```cpp
+typedef int arr[10];
+using arr=int[10];
+typedef void (*FP) (int, const std::string&);
+using FP = void (*) (int, const std::string&);
+```
+
+举出一个typedef做不到，而using可以做到的例子：alias templates, 模板别名
+
+```cpp
+
+template <typename T>
+using Vec = MyVector<T, MyAlloc<T>>;
+
+    // usage
+Vec<int> vec;
+
+这一切都会非常的自然。
+
+
+那么，若你使用typedef来做这一切：
+
+    template <typename T>
+    typedef MyVector<T, MyAlloc<T>> Vec;
+     
+    // usage
+    Vec<int> vec;
+
+当你使用编译器编译的时候，将会得到类似：error: a typedef cannot be a template的错误信息。。
+
+所以using和typedef都有各自的用处，并没有谁好谁坏，而标准委员会他们的观点是，在C++11中，鼓励用using，而不用typedef的
+
+#define定义的常量以及一些宏语句的任务（如果常量是表达式的值则应用const），而typedef和using则常用来定义关键字、冗长的类型的别名。
+```
+
+### decltype
+
+declare type
+
+使用typeid运算符来查询一个变量的类型是在**运行时进行**。
+
+decltype与auto关键字一样，用于进行**编译时类型推导**，不过它与auto还是有一些区别的。decltype的类型推导并不是像auto一样是从变量声明的初始化表达式获得变量的类型，而是总是以一个普通表达式作为参数，返回该表达式的类型,而且decltype并不会对表达式进行求值。
+
+auto 和 decltype 关键字都可以自动推导出变量的类型，但它们的用法是有区别的：
+
+```cpp
+auto varname = value;
+decltype(exp) varname = value;
+```
+
+其中，varname 表示变量名，**value 表示赋给变量的值**，exp 表示一个表达式。auto 根据=右边的初始值 value 推导出变量的类型，而 decltype 根据 exp 表达式推导出变量的类型，跟=右边的 value 没有关系。
+
+必须要保证 exp 的结果是有类型的，不能是 void.
+
+- 如果 exp 是一个不被括号( )包围的表达式，或者是一个类成员访问表达式，或者是一个单独的变量，那么 decltype(exp) 的类型就和 exp 一致，这是最普遍最常见的情况。
+  
+- 如果 exp 是函数调用，那么 decltype(exp) 的类型就和函数返回值的类型一致。
+  
+- 如果 exp 是一个左值，或者被括号( )包围，那么 decltype(exp) 的类型就是 exp 的引用；假设 exp 的类型为 T，那么 decltype(exp) 的类型就是 T&。
+
+- 如果 exp 是一个将亡值(*xvalue,引用rvalue产生*)，decltype(exp)的类型就是T&&;
+  
+```cpp
+int i = 4;
+    int arr[5] = { 0 };
+    int *ptr = arr;
+    struct S{ double d; }s ;
+    void Overloaded(int);
+    void Overloaded(char);//重载的函数
+    int && RvalRef();
+    const bool Func(int);
+ 
+    //规则一：推导为其类型
+    decltype (arr) var1; //int 标记符表达式
+ 
+    decltype (ptr) var2;//int *  标记符表达式
+ 
+    decltype(s.d) var3;//doubel 成员访问表达式
+ 
+    //decltype(Overloaded) var4;//重载函数。编译错误。
+ 
+    //规则二：将亡值。推导为类型的右值引用。
+ 
+    decltype (RvalRef()) var5 = 1;
+ 
+    //规则三：左值，推导为类型的引用。
+ 
+    decltype ((i))var6 = i;     //int&
+ 
+    decltype (true ? i : i) var7 = i; //int&  条件表达式返回左值。
+ 
+    decltype (++i) var8 = i; //int&  ++i返回i的左值。
+ 
+    decltype(arr[5]) var9 = i;//int&. []操作返回左值
+ 
+    decltype(*ptr)var10 = i;//int& *操作返回左值
+ 
+    decltype("hello")var11 = "hello"; //const char(&)[9]  字符串字面常量为左值，且为const左值。
+
+ 
+    //规则四：以上都不是，则推导为本类型
+ 
+    decltype(1) var12;//const int
+ 
+    decltype(Func(1)) var13=true;//const bool
+ 
+    decltype(i++) var14 = i;//!int i++返回右值
+
+```
+
+```cpp
+ int i = 4;
+    decltype(i) a; //推导结果为int。a的类型为int。
+
+     using size_t = decltype(sizeof(0));//sizeof(a)的返回值为size_t类型
+    using ptrdiff_t = decltype((int*)0 - (int*)0);
+    using nullptr_t = decltype(nullptr);
+    vector<int >vec;
+    typedef decltype(vec.begin()) vectype;
+    for (vectype i = vec.begin; i != vec.end(); i++)
+    {
+        //...
+    }
+    //这样和auto一样也提高了代码的可读性。
+
+```
+
+```cpp
+struct 
+{
+    int d ;
+    doubel b;
+}anon_s;
+//借助decltype使用匿名类型
+decltype(anon_s) as ;//定义了一个上面匿名的结构体
+```
+
+```cpp
+//判断左右值引用
+ cout << is_lvalue_reference<decltype(++i)>::value << endl;//1
+  cout << is_rvalue_reference<decltype(++i)>::value << endl;//0
+  //对于i++推导类型为右值，所以都是0
+ ```
+
+### 列表初始化
+
+```cpp
+class Foo
+{
+public:
+    Foo(int) {}
+private:
+    Foo(const Foo &);
+};
+int main(void)
+{
+    Foo a1(123);
+    Foo a2 = 123;  //error: 'Foo::Foo(const Foo &)' is private
+    Foo a3 = { 123 };
+    Foo a4 { 123 };
+    int a5 = { 3 };
+    int a6 { 3 };
+    return 0;
+}
+/*，a3、a4 使用了新的初始化方式来初始化对象，效果如同 a1 的直接初始化。
+
+a5、a6 则是基本数据类型的列表初始化方式。可以看到，它们的形式都是统一的。
+
+这里需要注意的是，a3 虽然使用了等于号，但它仍然是列表初始化，因此，私有的拷贝构造并不会影响到它。*/
+int* arr = new int[3] { 1, 2, 3 };
+
+struct Foo
+{
+    Foo(int, double) {}
+};
+Foo func(void)
+{
+    return { 123, 321.0 };
+}
+//这里的 return 语句就如同返回了一个 Foo(123, 321.0)。
+
+```
+
+### 返回数组指针和函数指针
+
+```cpp
+//数组名的类型:type(*)[size];
+int (*func(int i))[10]//(*func(int i))[10]表示解引用func返回值得到的是一个大小为10的数组
+//使用类型别名
+typedef int arr[10];//==using arr=int[10];
+arr* func(int i);
+//使用尾置返回类型
+auto func(int i)->int(*)[10]；//返回一个指针，该指针指向含有10个整数的数组
+//auto 表示真正的返回值在形参列表之后
+//使用decltype
+int a[]={1,2,3};
+decltype(a) *func(int i);
+```
+
+```cpp
+//函数名的类型:returnType(*)(paralist);
+/*函数类型的形参会被转换成函数指针，而返回函数时不会自动转换，由于不能返回函数，所以必须显式指定为函数指针以返回。*/
+int (*f1(int))(int,int);
+
+using F=int(int,int);
+using PF=int(*)(int,int);
+PF f1(int);
+F *f1(int);//F*=FP;
+
+auto  f1(int)->int(*)(int,int);
+
+int F(int,int);
+decltype(F) *f1(int);
+
+```
+
+### lambda匿名函数
+
+```cpp
+[外部变量访问方式说明符] (参数) (opt:mutable noexcept/throw()) -> 返回值类型
+{
+   函数体;//函数体内除了可以使用指定传递进来的参数之外，还可以使用指定的外部变量以及全局范围内的所有全局变量。
+};//注意这个分号
+//所谓外部变量，指的是和当前 lambda 表达式位于同一作用域内的所有局部变量。
+auto f = [](int a) -> int { return a + 1; };//为匿名函数设置名称(只使用一次的话就不必了)
+std::cout << f(1) << std::endl;  // 输出: 2
+//C++11 中允许省略 lambda 表达式的返回值定义：
+auto f = [](int a){ return a + 1; };
+auto x1 = [](int i){ return i; };  // OK: return type is int
+auto x2 = [](){ return { 1, 2 }; };  // error: 无法推导出返回值类型
+auto x2 = []()->std::vector<int>{ return { 1, 2 }; };  
+
+```
+
+```cpp
+lambda 表达式还可以通过捕获列表捕获一定范围内的变量：
+[] 不捕获任何变量。
+[&] 捕获外部作用域中所有变量，并作为引用在函数体中使用（按引用捕获）。
+[=] 捕获外部作用域中所有变量，并作为副本在函数体中使用（按值捕获）。
+[=，&foo] 按值捕获外部作用域中所有变量，并按引用捕获 foo 变量。
+[&,=foo],与上一个配套
+[bar] 按值捕获 bar 变量，同时不捕获其他变量。
+[this] 捕获当前类中的 this 指针，让 lambda 表达式拥有和当前类成员函数同样的访问权限。如果已经使用了 & 或者 =，就默认添加此选项。捕获 this 的目的是可以在 lamda 中使用当前类的成员函数和成员变量。
+
+```
+
+```cpp
+class A
+{
+    public:
+    int i_ = 0;
+    void func(int x, int y)
+    {
+        auto x1 = []{ return i_; };                    // error，没有捕获外部变量
+        auto x2 = [=]{ return i_ + x + y; };           // OK，捕获所有外部变量
+        auto x3 = [&]{ return i_ + x + y; };           // OK，捕获所有外部变量
+        auto x4 = [this]{ return i_; };                // OK，捕获this指针
+        auto x5 = [this]{ return i_ + x + y; };        // error，没有捕获x、y
+        auto x6 = [this, x, y]{ return i_ + x + y; };  // OK，捕获this指针、x、y
+        auto x7 = [this]{ return i_++; };              // OK，捕获this指针，并修改成员的值
+    }
+};
+int a = 0, b = 1;
+auto f1 = []{ return a; };               // error，没有捕获外部变量
+auto f2 = [&]{ return a++; };            // OK，捕获所有外部变量，并对a执行自加运算
+auto f3 = [=]{ return a; };              // OK，捕获所有外部变量，并返回a
+auto f4 = [=]{ return a++; };            // error，a是以复制方式捕获的，无法修改
+auto f5 = [a]{ return a + b; };          // error，没有捕获变量b
+auto f6 = [a, &b]{ return a + (b++); };  // OK，捕获a和b的引用，并对b做自加运算
+auto f7 = [=, &b]{ return a + (b++); };  // OK，捕获所有外部变量和b的引用，并对b做自加运算
+```
+
+lambda 表达式的类型在 C++11 中被称为“闭包类型（Closure Type）”。它是一个特殊的，匿名的非 union 的类类型，属于函数对象。
+
+按照 C++ 标准，lambda 表达式的 operator() 默认是 const 的。一个 const 成员函数是无法修改成员变量的值的。而 mutable 的作用，就在于取消 operator() 的 const。
+
+```cpp
+int a = 0;
+auto f1 = [=]{ return a++; };             // error，修改按值捕获的外部变量
+auto f2 = [=]() mutable { return a++; };  // OK，mutable(mutable第一个用处是允许被const成员函数修改),注意在后置返回式之前
+```
+
+对于没有捕获任何变量的 lambda 表达式，还可以被转换成一个普通的函数指针，它的捕获列表捕获住的任何外部变量，最终均会变为闭包类型的成员变量。而一个使用了成员变量的类的 operator()，如果能直接被转换为普通的函数指针，那么 lambda 表达式本身的 this 指针就丢失掉了。而没有捕获任何外部变量的 lambda 表达式则不存在这个问题
+
+```cpp
+using func_t = int(*)(int);//函数指针
+func_t f = [](int a){ return a; };//可用auto替代
+f(123);
+```
+
+```cpp
+#include <iostream>
+using namespace std;
+int main()
+{
+    auto except = []()throw(int) {
+        throw 10;
+    };
+    try {
+        except();
+    }
+    catch (int) {
+        cout << "捕获到了整形异常";
+    }
+    return 0;
+}
+```
+
+简化函数
+
+```cpp
+ sort(num, num+4, [=](int x, int y) -> bool{ return x < y; } );
+
+ ```
+
+ 代替函数对象
+
+```cpp
+class CountEven//通过一般的函数对象实现 
+{
+    int& count_;
+public:
+    CountEven(int& count) : count_(count) {}
+    void operator()(int val)
+    {
+        if (!(val & 1))       // val % 2 == 0
+        {
+            ++ count_;
+        }
+    }
+};
+for_each(v.begin(), v.end(), CountEven(even_count));
+//简化后
+for_each( v.begin(), v.end(), [&even_count](int val)
+        {
+            if (!(val & 1))  // val % 2 == 0
+            {
+                ++ even_count;
+            }
+        });
+//for_each的实现原理
+emplate < typename InputIterator, typename Function >
+Function for_each(InputIterator beg, InputIterator end, Function f)  {
+  while(beg != end) 
+    f(*beg++);
+}
+//lambda函数可以简便的满足一元谓词的输入条件，多余的参数通过它的捕获传入即可
+```
+
+## C++string
+
+### 基本
 
 C++ 大大增强了对字符串的支持，除了可以使用C风格的字符串，还可以使用内置的 string 类。string 类处理起字符串来会方便很多，完全可以代替C语言中的字符数组或字符串指针。
 
@@ -1828,9 +2619,55 @@ C++ 标准没有定义 string 类的内存布局，各个编译器厂商可以�
 
 只有当字符串被修改的时候才创建各自的拷贝，这种实现方式称为**写时复制（copy-on-write）策略**。当字符串只是作为值参数（value parameter）或在其他只读情形下使用，这种方法能够节省时间和空间。
 
-### 操作string中的字符
+### \<cctype\>
 
+```cpp
+<cctype>(<ctype.h>)
+isalnum
+Check if character is alphanumeric 
+isalpha
+Check if character is alphabetic 
+isblank 
+Check if character is blank 
+iscntrl
+Check if character is a control character 
+isdigit
+Check if character is decimal digit 
+isgraph
+Check if character has graphical representation 
+islower
+Check if character is lowercase letter 
+isprint
+Check if character is printable 
+ispunct
+Check if character is a punctuation character 
+isspace
+Check if character is a white-space 
+isupper
+Check if character is uppercase letter
+isxdigit
+Check if character is hexadecimal digit 
 
+Character conversion functions
+Two functions that convert between letter cases:
+tolower
+Convert uppercase letter to lowercase 
+toupper
+Convert lowercase letter to uppercase 
+```
+
+```cpp
+std::string str="Hello";
+for(auto c:str)//auto:char
+c=toupper(c);
+```
+
+### size_type
+
+size_type由string类类型和vector类类型定义的类型，用以保存任意string对象或vector对象的长度，标准库类型将size_type定义为*unsigned*类型。
+string抽象意义是字符串， size（）的抽象意义是字符串的尺寸， string::size_type抽象意义是尺寸单位类型。
+
+string::size_type它在不同的机器上，长度是可以不同的，并非固定的长度。但只要你使用了这个类型，就使得你的程序适合这个机器。与实际机器匹配。
 
 ### 字符串字面量(String literal)
 
@@ -1889,7 +2726,7 @@ std::ios::sync_with_stdio(false);    // Linux gcc.
     
 ```
 
-#### getline and stringstream
+### getline and stringstream
 
 ```cpp
 istream& getline (istream&  is, string& str, char delim);
@@ -1908,7 +2745,7 @@ Note that any content in str before the call is *replaced* by the newly extracte
 
 ## C++引用
 
-### 基本
+### 基本()
 
 在 C++ 中，我们有了一种比指针更加便捷的传递聚合类型数据的方式，那就是引用（Reference）。
 
@@ -1977,6 +2814,7 @@ int main() {
 ```
 
 本编译器不允许，会报段错误
+
 ### 指针与引用
 
 **指针传递参数本质上是值传递的方式，它所传递的是一个地址值**。值传递过程中，被调函数的形式参数作为被调函数的局部变量处理，即在栈中开辟了内存空间以存放由主调函数放进来的实参的值，从而成为了实参的一个副本。值传递的特点是被调函数对形式参数的任何操作都是作为局部变量进行，不会影响主调函数的实参变量的值。
@@ -2023,6 +2861,16 @@ int main() {
 
 ### 右值引用和移动构造函数
 
+虽然 C++98/03 标准不支持为右值建立非常量左值引用，但允许使用常量左值引用操作右值。也就是说，常量左值引用既可以操作左值，也可以操作右值
+
+```cpp
+int num = 10;
+const int &b = num;
+const int &c = 10;
+```
+
+右值往往是没有名称的，因此要使用它只能借助引用的方式。这就产生一个问题，实际开发中我们可能需要对右值进行修改（实现移动语义时就需要），显然左值引用的方式是行不通的。
+
 左值引用&;右值引用&&；
 
 右值引用只能绑定到将要销毁的对象，实现对右值资源的移动，不能绑定左值,使用右值引用的对象可以自由接管所引用对象的资源。
@@ -2031,11 +2879,36 @@ int main() {
 返回非引用类型的函数，连同算术 、关系 、位以及**后置递增 ，递减运算符**（表达式的值是暂时的，递增，递减后会改变）， 都生成右值 。我们不能将一个左值引用绑定到这类表达式上 ， 但我们可以将一个**const 的左值引用或者一个右值**引用绑定到这类表达式上 。
 
 ```cpp
+
+const int&& a = 10;//编译器不会报错,但并无实际用处
 const int &r1=i*20;//正确
 int &&r2=i*20;//正确
 int &r3=i*20;//错误 
 std::move()：返回对象的右值引用//重名可能性大，最好带上std::
 int &&r4=std::move(i)//i将不能再使用，可以销毁或赋值
+
+```
+
+### 引用限定符
+
+所谓引用限定符，就是在成员函数的后面添加 "&" 或者 "&&"，从而限制调用者的类型（左值还是右值）。
+
+需要注意的一点是，当 const && 修饰类的成员函数时，调用它的对象只能是右值对象；当 const & 修饰类的成员函数时，调用它的对象既可以是左值对象，也可以是右值对象。无论是 const && 还是 const & 限定的成员函数，内部都不允许对当前对象做修改操作。
+
+```cpp
+  //左值和右值对象都可以调用
+    int get_num() const &{
+        return this->num;
+    }
+    //仅供右值对象调用
+    int get_num2() const && {
+        return this->num2;
+    }
+     cout << a.get_num() << endl;        // 正确
+    cout << move(a).get_num() << endl;  // 正确
+   
+    //cout << a.get_num2() << endl;     // 错误 
+    cout << move(a).get_num2() << endl; // 正确
 ```
 
 ### 移动构造函数
@@ -2052,7 +2925,7 @@ public:
     }
     //移动构造函数
     movedemo(movedemo &&d):num(d.num){
-        d.num = nullptr;//销毁右值时会运行析构函数，需要保证销毁它是无害的
+        d.num = nullptr;//销毁右值时会运行析构函数，需要保证销毁它是无害的(否则对应空间会被释放)
         cout<<"move construct!"<<endl;
     }
 public:     //这里应该是 private，使用 public 是为了更方便说明问题
@@ -2073,7 +2946,7 @@ int main(){
 
 ## 继承和派生
 
-### 基本
+### 基本(a)
 
 继承（Inheritance）可以理解为一个类从另一个类获取成员变量和成员函数的过程。例如类 B 继承于类 A，那么 B 就拥有 A 的成员变量和成员函数。
 
@@ -2275,7 +3148,7 @@ D(形参列表): A(实参列表), B(实参列表), C(实参列表){
 
 对象赋值
 
-赋值的本质是将现有的数据写入已分配好的内存中，对象的内存只包含了成员变量，所以**对象之间的赋值是成员变量的赋值，成员函数不存在赋值问题**。运行结果也有力地证明了这一点，虽然有a=b;这样的赋值过程，但是 a.display() 始终调用的都是 A 类的 display() 函数。换句话说，对象之间的赋值不会影响成员函数，也不会影响 this 指针。
+赋值的本质是将现有的数据写入已分配好的内存中，对象的内存只包含了成员变量，所以**对象之间的赋值是成员变量(共有的)的赋值，成员函数不存在赋值问题**。运行结果也有力地证明了这一点，虽然有a=b;这样的赋值过程，但是 a.display() 始终调用的都是 A 类的 display() 函数。换句话说，对象之间的赋值不会影响成员函数，也不会影响 this 指针。
 
 指针赋值
 
@@ -2283,19 +3156,24 @@ pa 本来是基类 A 的指针，现在指向了派生类 D 的对象，这使�
 
 编译器**通过指针来访问成员变量**，指针指向哪个对象就使用哪个对象的数据；编译器**通过指针的类型来访问成员函数**，指针属于哪个类的类型就使用哪个类的函数（注意函数里的参数也是指针所属类的，指向派生类后会使用其继承的变量，不会使用派生类的同名变量）
 
+**基类的指针或引用的静态类型(编译时已知)和动态类型(运行时已知)可能不一致**.
+
 在进行指针赋值的时候。将子类指针赋值个父类指针，编译器会做如下处理：让指针指向子类中父类对象的起始位置。
 
 ![a](https://imgconvert.csdnimg.cn/aHR0cDovL2MuYmlhbmNoZW5nLm5ldC91cGxvYWRzL2FsbGltZy8xOTAyMTQvMUc1NDkxQTAtMC5qcGc?x-oss-process=image/format,png)
 
 上面是D的内存模型，B类对象和C类对象在内存中的先后顺序是依据继承时的顺序决定的。这就是为什么pa pb和pd的地址相同，pc和pd不同的原因
- 
+
 引用赋值
 
 基类的引用也可以指向派生类的对象，并且它的表现和指针是类似的。
 
+当用一个派生类对象为一个基类对象初始化或赋值时，只有基类部分会被拷贝，移动或赋值，其它部分会被切掉。
+例如一个函数形参是基类，实参是派生类的情况，当**使用引用或指针时可以避免被切掉**。
+
 ## 多态和虚函数
 
-### 基本
+### 基本(2)
 
 让基类指针能够访问派生类的成员函数，C++ 增加了虚函数（Virtual Function）
 
@@ -2331,6 +3209,10 @@ C++提供多态的目的是：可以通过基类指针对所有派生类（包�
 
 **首先看成员函数所在的类是否会作为基类。然后看成员函数在类的继承后有无可能被更改功能，如果希望更改其功能的，一般应该将它声明为虚函数。如果成员函数在类被继承后功能不需修改，或派生类用不到该函数，则不要把它声明为虚函数。**
 
+虚函数可以是内联函数，内联是可以修饰虚函数的，但是当虚函数表现多态性的时候不能内联。
+内联是在编译期建议编译器内联，而虚函数的多态性在运行期，编译器无法知道运行期调用哪个代码，因此虚函数表现为多态性时（运行期）不可以内联。
+inline virtual **唯一可以内联的时候是：编译器知道所调用的对象是哪个类（如 Base::who()），这只有在编译器具有实际对象而不是对象的指针或引用时才会发生**。
+
 ### 虚析构函数的必要性
 
 对于指向派生类的基类指针，在没有虚函数的情况下只能调用基类的析构函数，这会产生未定义的行为（例如导致delete调用基类析构函数在释放内存时，没有将派生类对象产生的堆内存释放掉），导致内存泄露
@@ -2357,29 +3239,45 @@ virtual ~className()=default//推荐,但作用一样
 virtual 返回值类型 函数名 (函数参数) = 0;
 ```
 
-纯虚函数没有函数体，只有函数声明，在虚函数声明的结尾加上=0，表明此函数为纯虚函数。
+**纯虚函数可以没有函数体，只有函数声明**，在虚函数声明的结尾加上=0，表明此函数为纯虚函数。
 
-包含纯虚函数的类称为抽象类（*Abstract Class*）。之所以说它抽象，是因为它无法实例化，也就是无法创建对象。原因很明显，纯虚函数没有函数体，不是完整的函数，无法调用，也无法为其分配内存空间。
+包含纯虚函数的类称为抽象类（*Abstract Class*）。之所以说它抽象，是因为它**无法实例化**，也就是无法创建对象。原因很明显，纯虚函数没有函数体，不是完整的函数，无法调用，也无法为其分配内存空间。
 
-抽象类通常是作为基类，让派生类去实现纯虚函数。派生类必须实现纯虚函数才能被实例化。
+抽象类通常是作为基类，让派生类去实现纯虚函数。**派生类必须实现纯虚函数才能被实例化**。
 
 在实际开发中，你可以定义一个抽象基类，只完成部分功能，未完成的功能交给派生类去实现（谁派生谁实现）。这部分未完成的功能，往往是基类不需要的，或者在基类中无法实现的。虽然抽象基类没有完成，但是却强制要求派生类完成，这就是抽象基类的“霸王条款”。
 
 抽象基类除了约束派生类的功能，还可以实现多态。**抽象基类的指针指向派生类后向可以访问派生类中虚函数的实现**。
 
-抽象类又被称为**接口**，C++中没有interface，只能用抽象类实现
+抽象类又被称为**接口**，C++中没有interface，只能用抽象类实现。
 
-1) **一个纯虚函数就可以使类成为抽象基类**，但是抽象基类中除了包含纯虚函数外，还可以包含其它的成员函数（虚函数或普通函数）和成员变量。
+1) **一个纯虚函数就可以使类成为抽象基类(必须实现了基类中的所有纯虚函数，才能成为非抽象类。)**，但是抽象基类中除了包含纯虚函数外，还可以包含其它的成员函数（虚函数或普通函数）和成员变量。
 
 2) **只有类中的虚函数才能被声明为纯虚函数**，普通成员函数和顶层函数均不能声明为纯虚函数.
 
-普通虚函数同时继承接口和缺省实现是危险的，最好是基类中实现缺省行为 (behavior)，但只有在派生类要求时才提供该缺省行为,派生类忘记重写继承的函数时就会调用基类的default实现。
+普通虚函数同时继承接口和缺省实现是危险的，如果忘记重写就会调用基类的实现，但这不一定是想要的实现。目的是既可以使用缺省的实现，而忘记重写又不会误调用缺省的实现。
 
 解决：
 
-1) 纯虚函数 + 缺省实现，因为是纯虚函数，所以只有接口被继承，其缺省的实现不会被继承。派生类要想使用该缺省的实现，必须显式的调用（这种方式也应该加上override）
+1) 纯虚函数+缺省实现 ，因为是纯虚函数，所以只有接口被继承，其缺省的实现不会被继承。派生类要想使用该缺省的实现，必须显式的调用（这种方式继承类也最好加上override以作为标识）
 
-2) 使用关键字 overrid
+```cpp
+class Airplane {
+public:
+    virtual void Fly(const string& destination) = 0;
+};
+ 
+void Airplane::Fly(const string& destination)//纯虚函数也可以有定义
+{
+    // a pure virtual function default code for flying an airplane to the given destination
+}
+class ModelA: public Airplane {
+public:
+    virtual void Fly(const string& destination) { Airplane::Fly(destination); }//显式调用
+};　　
+```
+
+2)使用关键字 override
 
 描述：override保留字表示当前函数重写了基类的虚函数。
 
@@ -2393,35 +3291,50 @@ virtual 返回值类型 函数名 (函数参数) = 0;
 
   四同：基类和派生类中，成员函数名、形参类型、常量属性 (constness) 和 引用限定符 (reference qualifier) 必须完全相同
 
-  如此多的限制条件，导致了虚函数重写如上述代码，极容易因为一个不小心而出错
+  如此多的限制条件，导致了虚函数重写如上述代码，极容易因为一个不小心而出错,**出错就相当于定义了一个新的函数而没有重写继承的函数**。
 
-  C++11 中的 override 关键字，可以显式的在派生类中声明，哪些成员函数需要被重写，如果没被重写，则编译器会报错。 
+  C++11 中的 override 关键字，可以显式的在派生类中声明，哪些成员函数需要被重写，如果没被重写，则编译器会报错。
+
+final关键字:
+
+C++ 中增加了 final 关键字来**限制某个类不能被继承，或者某个虚函数不能被重写**，和 Jave 的 final 关键字的功能是类似的。如果使用 final 修饰函数，只能修饰虚函数，并且要把final关键字放到类或者函数的后面。
 
 ```cpp
-class testoverride
-{
-public:
-    testoverride(void);
-    ~testoverride(void);
-    virtual void show() const = 0;
-    virtual int infor() = 0;
-    virtual void test() = 0;
-    virtual int spell() = 0;
-};
-
-class B: public testoverride
-{
-public:
-    virtual void show();     //1
-    virtual void infor();    //2
-    virtual void vmendd();   //3
-virtual void test(int x);//4
-virtual void splle();    //5 
-};
-//上面的1-5个重载函数编译过程中，除了返回值不同的infor会报错以外，其他函数都不会有问题，但是在类实例化的时候会提示是抽象类，因为他们都没有真正实现重载
+class NoDerived final {\\}
+virtual void func() final
 ```
 
-注意：override只是C++保留字，不是关键字，这意味着只有在正确的使用位置，oerride才启“关键字”的作用，其他地方可以作为标志.
+### 虚函数的私有
+
+```cpp
+class Base { 
+    public: 
+        virtual void fun() { cout << "Base Fun"; } 
+     //   friend int main(); 
+}; 
+
+class Derived: public Base { 
+    private: 
+        void fun() { cout << "Derived Fun"; } 
+}; 
+
+int main() 
+{ 
+    Base *ptr = new Derived; 
+    ptr->fun(); 
+    return 0; 
+}//基类指针可以访问派生类中私有的虚函数实例。
+```
+
+如果在基类中将虚函数声明为私有的，则需要将int main()声明为友元，在main函数里就变成公有了。
+
+```cpp
+class Base { 
+    private: 
+        virtual void fun() { cout << "Base Fun"; } 
+        friend int main(); 
+}; 
+```
 
 ### vtable and vptr
 
@@ -2542,7 +3455,6 @@ Gcc的name()返回的是简写,要全称则用如下方式
 int status;
   char *realname;
   const std::type_info &ti = typeid(p);
-
   realname = abi::__cxa_demangle(ti.name(), 0, 0, &status);
   std::cout << ti.name() << "\t=> " << realname << "\t: " << status << '\n';
   free(realname);
@@ -2569,6 +3481,15 @@ C++ 标准只对 type_info 类做了很有限的规定，不仅成员函数少�
 为了减小编译后文件的体积，编译器不会为所有的类型创建 type_info 对象，只会为使用了 typeid 运算符的类型创建。不过有一种特殊情况，就是带虚函数的类（包括继承来的），不管有没有使用 typeid 运算符，编译器都会为带虚函数的类创建 type_info 对象
 
 表达式typeid(\*p1) == typeid(Base)和typeid(p1) == typeid(Base\*)的结果为 true 可以说明：即使将派生类指针 p2 赋值给基类指针 p1，p1 的类型仍然为 Base\*。
+
+### sizeof获取类的大小
+
+空类的大小为1字节
+一个类中，虚函数本身、成员函数（包括静态与非静态）和静态数据成员都是不占用类对象的存储空间。
+对于包含虚函数的类，不管有多少个虚函数，**只有一个虚指针,vptr的大小**。
+普通继承，派生类继承了所有基类的函数与成员，要按照字节对齐来计算大小
+虚函数继承，不管是单继承还是多继承，都是继承了基类的vptr。(32位操作系统4字节，**64位操作系统 8字节**)！
+虚继承,继承基类的vptr。
 
 ### RTTI
 
@@ -2656,3 +3577,722 @@ bool operator==(const Base &lhs, const Base &rhs)
 
 ## 运算符重载
 
+### 基本(3)
+
+运算符重载其实就是定义一个函数，在函数体内实现想要的功能，当用到该运算符时，编译器会自动调用这个函数。也就是说，运算符重载是通过函数实现的，它本质上是函数重载。
+
+```cpp
+运算符重载的格式为：
+返回值类型 operator 运算符名称 (形参表列){
+    //TODO:
+}
+```
+
+```cpp
+complex complex::operator+(const complex &A)const{
+    return complex(this->m_real + A.m_real, this->m_imag + A.m_imag);
+}
+```
+
+执行c3 = c1 + c2;语句时，编译器检测到+号左边（+号具有左结合性，所以先检测左边）是一个 complex 对象，就会调用成员函数operator+()，也就是转换为下面的形式：
+c3 = c1.operator+(c2);
+
+c1 是要调用函数的对象，c2 是函数的实参。
+
+注意事项：
+
+- 并不是所有的运算符都可以重载。能够重载的运算符包括：
+  
+```cpp
+- +  -  *  /  %  ^  &  |  ~  !  =  <  >  +=  -=  *=  /=  %=  ^=  &=  |=  <<  >>  <<=  
+>>=  ==  !=  <=  >=  &&  ||  ++  --  ,  ->*  ->  ()  []  new  new[]  delete  delete[]
+//长度运算符sizeof、条件运算符: ?、成员选择符.和域解析运算符::不能被重载。
+```
+
+- 重载不能改变运算符的优先级和结合性。
+
+- 重载不会改变运算符的用法，原有有几个操作数、操作数在左边还是在右边，这些都不会改变。例如~号右边只有一个操作数，+号总是出现在两个操作数之间，重载后也必须如此。
+
+- 运算符重载函数**不能有默认的参数**，否则就改变了运算符操作数的个数，这显然是错误的。
+
+- 运算符重载函数大都既可以作为类的成员函数，也可以作为全局函数,但*箭头运算符->、下标运算符[ ]、函数调用运算符( )、赋值运算符=只能以成员函数的形式重载*。
+
+- 将运算符重载函数作为类的成员函数时，二元运算符的参数只有一个，一元运算符不需要参数。之所以少一个参数，是因为这个参数是隐含的(好让编译器区分这是程序员自定义的运算符，防止程序员修改用于内置类型的运算符的性质。)
+  
+- 作为全局函数时，如果有两个参数，这两个参数可以都是对象，也可以一个是对象，一个是C ++内置类型的数据，例如：
+
+### 实例
+
+```cpp
+complex operator+(int a, complex &c){//a+c，c+a都可以被重载
+    return complex(a+c.real, c.imag);//返回一个临时对象
+}
+```
+
+对于二元运算符，全局函数的重载满足交换律，而只有一个参数的成员函数不满足。
+
+```cpp
+返回值类型 & operator[] (参数);
+const 返回值类型 & operator[] (参数) const;//数组元素为const
+```
+
+```cpp
+Complex &operator=(const Complex &A); 
+//operator=() 的返回值类型设为引用，这样不但能够避免在返回数据时调用拷贝构造函数，还能够达到连续赋值的目的
+//特别的，在gcc下返回一个临时对象并不会调用拷贝构造函数，RVO（return value optimization），被gcc进行值返回的优化了，通过对g++增加选项-fno-elide-constructors可以将RVO优化关闭，
+```
+
+cout 是 ostream 类的对象，cin 是 istream 类的对象，要想达到这个目标，就**必须以全局函数（友元函数）的形式重载<<和>>**，否则就要修改标准库中的类
+
+```cpp
+istream & operator>>(istream &in, complex &A){//返回 istream 类对象的引用，是为了能够连续读取复数
+    in >> A.m_real >> A.m_imag;
+    return in;
+}
+ostream & operator<<(ostream &out, complex &A){
+    out << A.m_real <<" + "<< A.m_imag <<" i ";
+    return out;
+}
+```
+
+```cpp
+friend  std::istream &operator>>(std::istream &in, Complex &A);
+   friend std::ostream &operator<<(std::ostream &out,const Complex &A);//不加const则无法输出右值
+```
+
+```cpp
+
+stopwatch stopwatch::run(){
+    ++m_sec;
+    if(m_sec == 60){
+        m_min++;
+        m_sec = 0;
+    }
+    return *this;
+}
+stopwatch stopwatch::operator++(){
+    return run();
+}
+stopwatch stopwatch::operator++(int n){//参数n是没有任何意义的，它的存在只是为了区分是前置形式还是后置形式。
+    stopwatch s = *this;
+    run();
+    return s;
+}
+```
+
+```cpp
+以成员函数的形式重载 new 运算符：
+void * className::operator new( size_t size ){
+    //TODO:
+}
+
+以全局函数的形式重载 new 运算符：
+void * operator new( size_t size ){
+    //TODO:
+}
+
+//delete类似，只是参数变成了void *ptr
+}
+```
+
+```cpp
+  operator double() { return real; }  //重载强制类型转换运算符 double
+  //(double)c等价于c.operator double()
+```
+
+### 函数对象
+
+
+## 异常处理
+
+### 基本(4)
+
+程序的错误大致可以分为三种，分别是语法错误、逻辑错误和运行时错误：
+
+1) 语法错误在编译和链接阶段就能发现，只有 100% 符合语法规则的代码才能生成可执行程序。语法错误是最容易发现、最容易定位、最容易排除的错误，程序员最不需要担心的就是这种错误。
+
+2) 逻辑错误是说我们编写的代码思路有问题，不能够达到最终的目标，这种错误可以通过调试来解决。
+
+3) 运行时错误是指程序在运行期间发生的错误，例如除数为 0、内存分配失败、数组越界、文件不存在等。C++ 异常（Exception）机制就是为解决运行时错误而引入的。
+
+运行时错误如果放任不管，系统就会执行默认的操作，终止程序运行，也就是我们常说的程序崩溃（Crash）。C++ 提供了异常（Exception）机制，让我们能够捕获运行时错误，给程序一次“起死回生”的机会，或者至少告诉用户发生了什么再终止程序。
+
+可以通过捕获异常防止程序奔溃
+
+```cpp
+try{
+    // 可能抛出异常的语句
+}catch(exceptionType variable){
+    // 处理异常的语句
+
+```
+
+try和catch都是 C++ 中的关键字，后跟语句块，不能省略{ }。try 中包含可能会抛出异常的语句，一旦有异常抛出就会被后面的 catch 捕获。从 try 的意思可以看出，它只是“检测”语句块有没有异常，如果没有发生异常，它就“检测”不到。catch 是“抓住”的意思，用来捕获并处理 try 检测到的异常；如果 try 语句块没有检测到异常（没有异常抛出），那么就不会执行 catch 中的语句。
+
+```cpp
+ try{
+        char ch1 = str[100];
+        cout<<ch1<<endl;
+    }catch(exception e){
+        cout<<"[1]out of bound!"<<endl;
+    }
+    try{
+        char ch2 = str.at(100);
+        cout<<ch2<<endl;
+    }catch(exception &e){  //exception类位于<exception>头文件中
+        cout<<"[2]out of bound!"<<endl;
+    }
+    //运行结果：
+(
+[2]out of bound!
+
+```
+
+[ ]不会检查下标越界，不会抛出异常，所以即使有错误，try 也检测不到。换句话说，**发生异常时必须将异常*明确地*抛出，try 才能检测到**；如果不抛出来，即使有异常 try 也检测不到。所谓抛出异常，就是明确地告诉程序发生了什么错误。
+
+检测到异常后程序的执行流会发生跳转，从异常点跳转到 catch 所在的位置，**位于异常点之后的、并且在当前 try 块内的语句就都不会再执行了**.
+
+执行完 catch 块所包含的代码后，程序会继续执行 catch 块后面的代码，就恢复了正常的执行流。
+
+```cpp
+void func_inner(){
+    throw "Unknown Exception";  //抛出异常
+    //        throw std::out_of_range("Out Of Range");//调用terminate并显示字符串
+    cout<<"[1]This statement will not be executed."<<endl;
+}
+void func_outer(){
+    func_inner();
+    cout<<"[2]This statement will not be executed."<<endl;
+}
+int main(){
+    try{
+        func_outer();
+        cout<<"[3]This statement will not be executed."<<endl;
+    }catch(const char* &e){
+        cout<<e<<endl;
+    }
+
+```
+
+发生异常后，程序的执行流会沿着函数的调用链往前回退，直到遇见 try 才停止。在这个回退过程中，调用链中剩下的代码（所有函数中未被执行的代码）都会被跳过，没有执行的机会了。
+
+**处理构造初始值异常的唯一方法是将构造函数写成try语句块**，与try关联的catch既能处理构造函数抛出的异常，也能处理成员初始化列表时抛出的异常，但初始化构造函数的参数时发生的异常不属于try语句块的一部分。
+
+### catch
+
+catch(exceptionType variable)//异常声明
+
+只有跟 exceptionType 类型匹配的异常数据才会被传递给 variable，否则 catch 不会接收这份异常数据，也不会执行 catch 块中的语句。换句话说，catch 不会处理当前的异常。
+
+**不支持算数转换**：例如 int 转换为 float，char 转换为 int，double 转换为 int 等，但**支持const 转换**：也即将非 const 类型转换为 const 类型，例如将 char \* 转换为 const char \*和**向上转型以及数组或函数指针转换**。
+
+可以将 catch 看做一个没有返回值的函数，当异常发生后 catch 会被调用，并且会接收实参（异常数据）。
+
+对于 catch，异常是在运行阶段产生的，它可以是任何类型，没法提前预测，所以不能在编译阶段判断类型是否正确，只能等到程序运行后，真的抛出异常了，再将异常类型和 catch 能处理的类型进行匹配，匹配成功的话就“调用”当前的 catch，否则就忽略当前的 catch。
+
+也可以将 variable 省略掉，这样只会将异常类型和 catch 所能处理的类型进行匹配
+
+多级匹配
+
+```cpp
+try{
+    //可能抛出异常的语句
+}catch (exception_type_1 e){
+    //处理异常的语句
+}catch (exception_type_2 e){
+    //处理异常的语句
+}
+//其他的catch
+catch (exception_type_n e){
+    //处理异常的语句
+}
+```
+
+```cpp
+ try{
+        throw Derived();  //抛出自己的异常类型，实际上是创建一个Derived类型的匿名对象
+        cout<<"This statement will not be executed."<<endl;
+    }catch(int){
+        cout<<"Exception type: int"<<endl;
+    }catch(char *){
+        cout<<"Exception type: cahr *"<<endl;
+    }catch(Base){  //匹配成功（向上转型）
+        cout<<"Exception type: Base"<<endl;
+    }catch(Derived){
+        cout<<"Exception type: Derived"<<endl;
+    }
+    //运行结果：
+Exception type: Base
+//异常提前被catch(Base)捕获了，这说明 catch 在匹配异常类型时发生了向上转型（Upcasting）。
+/*为了避免向上转型，应该将继承链最底端的类(most derived type)放在最前面的catch，最顶端的(least derived type)放在最后*/
+```
+
+需要注意的是**异常声明的静态类型决定了catch所能执行的操作**，如果参数是基类类型则它无法使用派生类的特有成员，如果需要使用则应声明为引用
+
+捕获所有异常(catch-all)
+
+```cpp
+void manip()
+{
+    try()
+    {
+        //...
+    }
+    catch(...) {//放在最前面对所有的异常作处理后再抛出
+        //...
+        throw；//不加后面的语句将不会被执行
+    }
+    catch(exceptionType variable){
+
+    }
+
+    
+}
+
+void manip()
+{
+    try{
+    // ...
+} catch (const std::exception& ex) {
+    // ...
+} catch (const std::string& ex) {
+    // ...
+} catch (...) {//放在最后以监测意外的异常
+    // ...
+}
+ 
+}
+
+```
+
+当一个函数里面抛出异常时，如果抛出的异常没有在该函数里面找到相应的catch处理模块，这个时候在抛出异常前的那些局部变量就开始销毁，最后整个函数调用的栈帧也被销毁。异常就到了调用该函数的去找catch处理模块，如果也没有 那么一样要销毁该调用函数的栈帧。就这样一层层的往外推。这样的一个过程就是**栈展开**了。过程中创建的局部对象也会被销毁。对于类类型，它们的析构函数执行时不应抛出异常，如果抛出异常但未被自身捕获，程序就会终止。
+
+如果最终没有找到相应的catch就会**调用标准库terminate函数终止程序**。
+
+### throw exceptionData
+
+exceptionData 是“异常数据”的意思，它可以包含任意的信息，完全有程序员决定。exceptionData 可以是 int、float、bool 等基本类型，也可以是指针、数组、字符串、结构体、类等聚合类型
+
+异常规范
+
+```cpp
+
+double func (char param) throw (int);
+double func (char param) throw (int, char, exception);//多种异常
+double func (char param) throw ();//不抛出异常
+```
+
+C++ 规定，派生类虚函数的异常规范必须与基类虚函数的异常规范一样严格，或者更严格。只有这样，当通过基类指针（或者引用）调用派生类虚函数时，才能保证不违背基类成员函数的异常规范。可抛出的异常数据类型越少越严格
+
+异常规范在函数声明和函数定义中必须同时指明，并且要严格保持一致，不能更加严格或者更加宽松。
+
+异常规范的初衷是好的，它希望让程序员看到函数的定义或声明后，立马就知道该函数会抛出什么类型的异常，这样程序员就可以使用 try-catch 来捕获了。如果没有异常规范，程序员必须阅读函数源码才能知道函数会抛出什么异常。
+
+不过这有时候也不容易做到。例如，func_outer() 函数可能不会引发异常，但它调用了另外一个函数 func_inner()，这个函数可能会引发异常。再如，您编写的函数调用了老式的库函数，此时不会引发异常，但是库更新以后这个函数却引发了异常。总之，异常规范的初衷实现起来有点困难，所以大家达成的一致意见是，最好不要使用异常规范。
+
+异常规范是 C++98 新增的一项功能，但是后来的 C++11 已经将它抛弃了，**不再建议使用**。
+
+**抛出表达式的类型取决于其静态编译时类型**，例如一个指向派生类的基类指针在抛出解引用时将抛出其基类部分。
+
+rethrowing 操作:在catch执行语句最后加上一条"throw;"，异常声明是引用时会保留对参数的修改，否则等同于多级匹配。
+
+### exception类
+
+C++语言本身或者标准库抛出的异常都是 exception 的子类，称为标准异常（Standard Exception）。
+
+```cpp
+try{
+    //可能抛出异常的语句
+}catch(const  exception &e){//使用引用，是为了提高效率
+    //处理异常的语句
+    cerr<< e.what() << endl;//输出异常类型 ,cout也可以
+    /*cerr对应标准错误流，用于显示错误消息。默认情况下被关联到标准输出流，但它不被缓冲，也就说错误消息可以直接发送到显示器，而无需等到缓冲区或者新的换行符时，才被显示。一般情况下不被重定向。*/
+}
+```
+
+```cpp
+class exception{
+public:
+    exception () throw();  //构造函数
+    exception (const exception&) throw();  //拷贝构造函数
+    exception& operator= (const exception&) throw();  //运算符重载
+    virtual ~exception() throw();  //虚析构函数
+    virtual const char* what() const throw();  //虚函数
+}
+```
+
+它的继承层次
+
+![114Q24150-0.jpg](https://i.loli.net/2021/10/15/meb1Ea8ZzQkT9FI.jpg)
+
+```cpp
+Blob<T>::Blob(std::initializer_list<T> il)
+try : data(std::make_shared<std::vector<T>>(il))
+{
+}
+catch (const std::bad_alloc &e)
+{
+    handle_out_of_memory(e);
+}
+void handle_out_of_memory(const std::exception &e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+```
+
+### noexcept
+
+指定符
+
+```cpp
+void func()noexcept;//不会抛出异常，func做了不抛出说明(nothrowing specification)
+void func()noexcept{ //声明和定义时都要出现
+    //
+}
+```
+
+C++17以后它不属于函数说明符的一部分。
+位置限制:在尾置返回类型之前，不能出现在typedef或类型别名中，在成员函数中应出现在const和引用限定符之后，而在final,override,和=0之前。
+
+```cpp
+   void func()const & noexcept final()=0;
+void g(void pfa() noexcept);  // g 接收指向不抛出的函数的指针
+// typedef int (*pf)() noexcept; // 错误
+```
+
+如果一个函数做了不抛出说明却包含了throw函数或其它可能抛出异常的函数，那么它会顺利通过编译期，但运行时抛出的异常还是会使程序调用terminate.
+
+所以noexcpt既可以用来承诺函数不会抛出异常，也可以用在我们不知道如何处理异常的情况；
+
+noexcpt(true)等同于noexcpt,noexcpt(false)（等同于不加）表示可能抛出异常,后者可用来标记较有可能抛出异常的函数
+
+特别的，noexcpt(false)可使析构函数(noexcpt(true)，较新版本)变成可能抛出异常。
+
+```cpp
+
+int main()
+{
+    X x;
+
+    // This will not fire even in GCC 4.7.2 if the destructor is
+    // explicitly marked as noexcept(true)
+    static_assert(noexcept(x.~X()), "Ouch!");
+}
+/*static_assert用来做编译期间的断言，因此叫做静态断言,如果第一个参数常量表达式的值为真(true或者非零值)，那么不做任何事情，就像它不存在一样，否则会产生一条编译错误，错误位置就是该static_assert语句所在行，错误提示就是第二个参数提示字符串。*/
+```
+
+more effective c++提出两点理由（析构函数不能抛出异常的理由）：
+
+1）如果析构函数抛出异常，则异常点之后的程序不会执行，如果析构函数在异常点之后执行了某些必要的动作比如释放某些资源，则这些动作不会执行，会造成诸如资源泄漏的问题。
+
+2）通常异常发生时，c++的机制会调用已经构造对象的析构函数来释放资源，此时若析构函数本身也抛出异常，则前一个异常尚未处理，又有新的异常，会造成程序崩溃的问题。
+
+析构函数中抛出异常时概括性总结
+
+1）C++中析构函数的执行不应该抛出异常；
+
+2）假如析构函数中抛出了异常，那么你的系统将变得非常危险，也许很长时间什么错误也不会发生；但也许你的系统有时就会莫名奇妙地崩溃而退出了，而且什么迹象也没有，崩得你满地找牙也很难发现问题究竟出现在什么地方；
+
+3）当在某一个析构函数中会有一些可能（哪怕是一点点可能）发生异常时，那么就必须要把这种可能发生的异常完全封装在析构函数内部，决不能让它抛出函数之外（通过catch，可以什么都不做）；
+
+4）一定要切记上面这几条总结，析构函数中抛出异常导致程序不明原因的崩溃是许多系统的致命内伤！ 
+
+做了不抛出声明的函数指针只能指向做了不抛出声明的函数，如果虚函数承诺了不抛出异常，则后续派生的虚函数也必须做相同的承诺
+
+运算符
+
+Returns a prvalue(纯右值) of type bool.
+
+```cpp
+noexcpt(func(i)):当func(i)调用的所有函数都承诺了不抛出异常且它本身不包含throw语句时表达式为真
+void  f() noexcept(noexcpt(g()))//f和g的异常说明一致
+```
+
+## 动态内存与智能指针
+
+\<memory\>
+
+### allocator类
+
+将内存分配与对象分离开。new默认会初始化内存，也可以指定再进行值初始化。
+
+```cpp
+allocator<T>  a;
+a.allocate(n);//分配一段原始的内存并返回指针
+a.deallocate(p,n);//从p开始释放n个对象的内存，p是allocate返回的指针被释放的对象须事先调用destory();
+a.construct(p,args);//p指向一块原始内存，args为转发给对象构造函数的参数
+a.destory(p);//为p指向的对象调用析构函数
+```
+
+```cpp
+allocator<std::string> alloc;
+auto p=alloc.allocate(10);
+auto q=p;
+//q指向最后构造的元素之后的位置
+alloc.construct(q++);//空字符串
+alloc.construct(q++,5,'1');//"11111"
+alloc.construct(q++,"lala");
+while(p!=q)
+alloc.destroy(--q);//ro,not or
+alloc.deallocate(p,10);
+```
+
+拷贝和填充未初始化的内存
+
+```cpp
+uninitialized_copy(b,e,b2);//迭代器b到e到b2，b2必须指向未构造的空间(allocate或malloc分配的，返回最后一个构造的元素之后位置的迭代器
+uninitialized_copy(b,n,b2);//b开始n个
+// constructs the objects in-place, instead of just copying the value to them
+uninitialized_fill(b,e,t);//用t的拷贝填充
+uninitialized_fill_n(b,n,t);
+```
+
+```cppshasdfdctor<int> vi={1,2,3,4,5};
+auto p=allc.allocate(vi.size()*2);
+auto q=uninitialized_copy(vi.begin(),vi.end(),p);
+uninitialized_fill_n(p,vi.size(),1);
+```
+
+智能指针可以自动释放分配的动态内存，
+
+### shared_ptr类
+
+shared_ptr允许多个指针指向同一个对象
+
+![ok.png](https://i.loli.net/2021/10/16/7RclBHq5yDGtUTF.png)
+
+为了避免内存泄漏，**通过智能指针管理的对象应该没有其他的引用指向它们**。换句话说，指向动态分配存储的指针应该立即传递给智能指针构造函数，而不能先将它赋值给指针变量。
+
+引用计数为0则将调用析构函数释放内存。
+
+```cpp
+//应该避免这样
+int *p = new int;
+unique_ptr<int> uptr(p);
+
+/*C++11 标准还支持同一类型的 shared_ptr 对象，或者 shared_ptr 和 nullptr 之间，进行 ==，!=，<，<=，>，>= 运算。*/
+
+auto q=p.get();//返回智能指针内部包含的普通指针
+
+shared_ptr<string>p//空指针,可以根据是否为空判断智能指针是否分配了空间
+shared_ptr<string>p(new string);//shared_ptr<string>=new string;
+shared_ptr<string>p=make_shared<string>(10,'1');
+auto q=make_shared<string>();//也可以用auto代替shared_ptrshared
+```
+
+[尽量使用make_shared初始化](https://www.jianshu.com/p/03eea8262c11)
+
+```cpp
+//调用拷贝构造函数,p3引用计数加一,p4引用计数减一(如果p3不为空)
+std::shared_ptr<int> p4(p3);//或者 std::shared_ptr<int> p4 = p3;
+//调用移动构造函数//p4变为空指针
+std::shared_ptr<int> p5(std::move(p4)); //或者 std::shared_ptr<int> p5 = std::move(p4);
+p5.reset();//置空，及时释放空间(而不是等待出作用域)可以减少内存浪费
+p5.reset(new int(20));//改变指向
+```
+
+对于申请的动态数组来说，shared_ptr 指针默认的释放规则是不支持释放数组的，只能自定义对应的释放规则，才能正确地释放申请的堆内存。
+
+```cpp
+//指定 default_delete 作为释放规则
+std::shared_ptr<int> p6(new int[10], std::default_delete<int[]>());
+//自定义释放规则
+void deleteInt(int*p) {
+    delete []p;
+}
+//初始化智能指针，并自定义释放规则
+std::shared_ptr<int> p7(new int[10], deleteInt);
+std::shared_ptr<int> p7(new int[10], [](int* p) {delete[]p; });//推荐
+
+shared_ptr不支持下标运算符和指针的算数运算
+
+*(p7.get()+i);
+```
+
+让不同成员共享相同的底层数据
+
+```cpp
+关键部分：
+std:shared_ptr<std::vector<string>> data;
+StrBlob::StrBlob():data(make_shared<vector<string>>()){}
+StrBlob::StrBlob(initializer_list<string> il):data(make_shared<vector<string>>(il)){}
+//使用默认拷贝，赋值，和析构成员函数
+```
+
+### 直接管理内存
+
+
+## 模板
+
+### 基本(5)
+
+所谓函数模板，实际上是建立一个通用函数，它所用到的数据的类型（包括返回值类型、形参类型、局部变量类型）可以不具体指定，而是用一个虚拟的类型来代替（实际上是用一个标识符来占位），**等发生函数调用时再根据传入的实参来逆推出真正的类型**。这个通用函数就称为函数模板（Function Template）。
+
+模板形参不能为空。
+
+#### 函数模板
+
+模板函数应尽量减少对实参类型的要求(也是泛型编程的原则)，除了函数体所使用的语句和函数要注意，还应尽量使用**const引用参数减小复制时间和对参数的要求**(如果确保参数只可能是内置类型可以不用太执着)。
+
+类型模板参数
+
+```cpp
+template <typename 类型参数1 , typename 类型参数2 , ...> 返回值类型  函数名(形参列表){
+    //在函数体中可以使用类型参数
+}
+//typename关键字也可以使用class关键字替代，它们没有任何区别。
+template<typename T> T max(T a, T b, T c);//声明
+//模板的实例
+template<typename T>  //模板头，这里不能有分号
+T max(T a, T b, T c){ //函数头
+    T max_num = a;
+    if(b > max_num) max_num = b;
+    if(c > max_num) max_num = c;
+    return max_num;
+}
+函数模板声明为inline或constexpr时说明符放在模板参数之后。
+template<typename T> inline T max(T a, T b, T c);
+
+```
+
+非类型模板参数
+
+非类型模板参数，**面对的未加确定的参数细节是指（value），而非类型**。当要使用基于值的模板时，你必须显式地指定这些值，模板方可被实例化。例如vector\<int ,5\>;
+
+可以将非类型参数的类型定义为类型参数：int VAL->T VAL
+
+```cpp
+template<typename T, T VAL> 
+T addValue(const T& x)
+{
+    return x+VAL;
+}
+```
+
+非类型模板参数是有类型限制的。一般而言，它可以是**常整型或者指针或左值引用。(enum声明的内部数据可以作为实参传递给int，但是一般不能当形参).
+
+实参必须是常量表达式(*常量表达式基本上是字面值以及const修饰的变量*)，绑定到指针或引用的实参则必须具有静态的生存期(全局变量，静态变量，外部变量,具体参见C语言word文档),这样可以突破长整型的限制。
+
+| 存储类别     | 存储期 | 作用域 | 链接 | 声明方式                     |
+| ------------ | ------ | ------ | ---- | ---------------------------- |
+| 自动         | 自动   | 块     | 无   | 块内                         |
+| 寄存器       | 自动   | 块     | 无   | 块内，使用关键字register     |
+| 静态外部链接 | 静态   | 文件   | 外部 | 所有函数外                   |
+| 静态内部链接 | 静态   | 文件   | 内部 | 所有函数外，使用关键字static |
+| 静态无链接   | 静态   | 块     | 无   | 块内，使用关键字static       |
+
+特别的，C++17以前，当引用局部静态变量时会报错：‘& x’ is not a valid template argument of type ‘double*’ because ‘x’ has no linkage，说明17以前的gcc编译器是按照是否有链接来确定是否可以作为引用实参的。
+
+```cpp
+template<double VAL>            // ERROR： 浮点数不可作为非类型模板参数
+template<std::string name>      // ERROR：类对象不能作为非类型模板参数
+template <unsigned M, unsigned N>//这种情况编译器能根据字面量推出M和N,unsigned lomg和unsigned int意义相同，都可以用undigned表示
+int compare(const char (&p)[M], const char (&q)[N])
+{
+  return strcmp(p, q);
+}
+std::cout << compare("lalal", "lalal");
+
+template<typename T, int MAXSIZE>
+class Stack
+{
+public:
+    Stack():idx(0){}
+    bool empty() const { return idx == 0;}
+    bool full() const { return idx == MAXSIZE;}
+    void push(const T&);
+    void pop();
+    T& top();
+    const T& top() const;
+private:
+    int idx; 
+    T elems[MAXSIZE];
+}
+template<typename T, int MAXSIZE = 20>//非类型模板参数可以指定缺省值。
+class Stack
+{
+    ...
+}
+```
+
+从c++17起，可以使用auto推断非类型模板参数：
+
+```cpp
+template <auto value> void f() { }
+
+f<10>();      // deduces int
+
+template <typename Type, Type value> //如果没有auto的情况下将非类型模板参数的类型当做模板参数
+
+template<auto Val, typename T = decltype(Val)>//在auto推导的的情况下获取类型：
+T foo();
+
+```
+
+#### 类模板
+
+```cpp
+template<typename 类型参数1 , typename 类型参数2 , …> class 类名{
+    //TODO:
+};
+template<typename 类型参数1 , typename 类型参数2 , …>//类外定义函数
+返回值类型 类名<类型参数1 , 类型参数2, ...>::函数名(形参列表){
+    //TODO:
+}
+template<typename T1, typename T2>  //模板头
+T1 Point<T1, T2>::getX() const /*函数头*/ {
+    return m_x;
+}
+Point<int, int> p1(10, 20);//实例化使要提供显式模板实参列表
+Point<int, float> p2(10, 15.5);
+Point<float, char*> p3(12.4, "东经180度");
+Point<float, float> *p1 = new Point<float, float>(10.6, 109.3);//赋值号两边都要指明具体的数据类型，且要保持一致
+Point<char*, char*> *p = new Point<char*, char*>("东经180度", "北纬210度");
+```
+
+在类的作用域之内(类的定义和外部函数在类名之后的部分)写类名时***不用写实参列表**。class\<T\>-\>class
+
+#### 模板编译
+
+当使用而不是定义模板时，编译器才生成代码。
+
+当使用类类型的对象时，只需要类定义可用即可，所以一般将类定义和函数声明放在头文件中。而**模板定义和函数实现都应该放在头文件里**。
+
+大多关于模板的编译错误在编译的第三个阶段实例化阶段报告。
+
+#### 强类型，弱类型
+
+强类型语言在定义变量时需要显式地指明数据类型，并且一旦为变量指明了某种数据类型，该变量以后就不能赋予其他类型的数据了，除非经过强制类型转换或隐式类型转换。典型的强类型语言有 C/C++、Java、C# 等。
+
+```cpp
+int a = 100;  //不转换
+a = (int)12.34;  //强制转换（直接舍去小数部分，得到12）
+//Java 对类型转换的要求比 C/C++ 更为严格，隐式转换只允许由低向高转，由高向低转必须强制转换。
+```
+
+弱类型语言在定义变量时不需要显式地指明数据类型，编译器（解释器）会根据赋给变量的数据自动推导出类型，并且可以赋给变量不同类型的数据。典型的弱类型语言有 JavaScript、Python、PHP、Ruby、Shell、Perl 等。
+
+```cpp
+a = new Array("JavaScript","React","JSON");  //赋给数组,JS
+$a = 100;  //赋给整数
+$a = 12.34;  //赋给小数
+$a = array("JavaScript","React","JSON");  //赋给数组,PHP
+```
+
+弱类型语言往往是一边执行一边编译，这样可以根据上下文（可以理解为当前的执行环境）推导出很多有用信息，让编译更加高效。我们将这种一边执行一边编译的语言称为解释型语言，而将传统的先编译后执行的语言称为编译型语言。
+
+强类型语言较为严谨，在编译时就能发现很多错误，适合开发大型的、系统级的、工业级的项目；而弱类型语言较为灵活，编码效率高，部署容易，学习成本低，在 Web 开发中大显身手。另外，强类型语言的 IDE 一般都比较强大，代码感知能力好，提示信息丰富；而弱类型语言一般都是在编辑器中直接书写代码。
+
+模板所支持的类型是宽泛的，没有限制的，我们可以使用任意类型来替换，这种编程方式称为泛型编程（Generic Programming）。相应地，可以将参数 T 看做是一个泛型，而将 int、float、string 等看做是一种具体的类型。除了 C++，Java、C#、Pascal（Delphi）也都支持泛型编程。
+
+
+### 模板的重载
+
+函数模板会进行严格的类型匹配，模板类型不提供隐式类型转化
+普通函数能够进行自动类型转换
+
+函数模板重载四大规则
+1 函数模板可以像普通函数一样被重载
+2 C++编译器优先考虑普通函数
+3 如果函数模板可以产生一个更好的匹配，那么选择模板
+4 可以通过空模板实参列表的语法限定编译器只通过模板匹配

@@ -65,6 +65,74 @@ build CMakeFiles/package_source.util: CUSTOM_COMMAND
 
 build package_source: phony CMakeFiles/package_source.util
 
+# =============================================================================
+# Object build statements for EXECUTABLE target main3
+
+
+#############################################
+# Order-only phony target for main3
+
+build cmake_object_order_depends_target_main3: phony || cmake_object_order_depends_target_LINK
+
+build CMakeFiles/main3.dir/main3.cpp.o: CXX_COMPILER__main3 ../main3.cpp || cmake_object_order_depends_target_main3
+  DEP_FILE = CMakeFiles/main3.dir/main3.cpp.o.d
+  FLAGS = -save-temps=obj -std=c++17 -g
+  INCLUDES = -I.
+  OBJECT_DIR = CMakeFiles/main3.dir
+  OBJECT_FILE_DIR = CMakeFiles/main3.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target main3
+
+
+#############################################
+# Link the executable main3
+
+build main3: CXX_EXECUTABLE_LINKER__main3 CMakeFiles/main3.dir/main3.cpp.o | src/libLINK.a || src/libLINK.a
+  FLAGS = -save-temps=obj -std=c++17 -g
+  LINK_FLAGS = -rdynamic
+  LINK_LIBRARIES = src/libLINK.a
+  OBJECT_DIR = CMakeFiles/main3.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = main3
+  TARGET_PDB = main3.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target main2
+
+
+#############################################
+# Order-only phony target for main2
+
+build cmake_object_order_depends_target_main2: phony || cmake_object_order_depends_target_LINK
+
+build CMakeFiles/main2.dir/main2.cpp.o: CXX_COMPILER__main2 ../main2.cpp || cmake_object_order_depends_target_main2
+  DEP_FILE = CMakeFiles/main2.dir/main2.cpp.o.d
+  FLAGS = -save-temps=obj -std=c++17 -g
+  INCLUDES = -I.
+  OBJECT_DIR = CMakeFiles/main2.dir
+  OBJECT_FILE_DIR = CMakeFiles/main2.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target main2
+
+
+#############################################
+# Link the executable main2
+
+build main2: CXX_EXECUTABLE_LINKER__main2 CMakeFiles/main2.dir/main2.cpp.o | src/libLINK.a || src/libLINK.a
+  FLAGS = -save-temps=obj -std=c++17 -g
+  LINK_FLAGS = -rdynamic
+  LINK_LIBRARIES = src/libLINK.a
+  OBJECT_DIR = CMakeFiles/main2.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = main2
+  TARGET_PDB = main2.dbg
+
 
 #############################################
 # Utility command for edit_cache
@@ -81,12 +149,6 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for NightlyMemCheck
 
 build NightlyMemCheck: phony CMakeFiles/NightlyMemCheck
-
-
-#############################################
-# Utility command for NightlyTest
-
-build NightlyTest: phony CMakeFiles/NightlyTest
 
 
 #############################################
@@ -165,6 +227,46 @@ build ExperimentalConfigure: phony CMakeFiles/ExperimentalConfigure
 # Utility command for Continuous
 
 build Continuous: phony CMakeFiles/Continuous
+
+
+#############################################
+# Utility command for NightlyTest
+
+build NightlyTest: phony CMakeFiles/NightlyTest
+
+# =============================================================================
+# Object build statements for EXECUTABLE target main
+
+
+#############################################
+# Order-only phony target for main
+
+build cmake_object_order_depends_target_main: phony || cmake_object_order_depends_target_LINK
+
+build CMakeFiles/main.dir/main.cpp.o: CXX_COMPILER__main ../main.cpp || cmake_object_order_depends_target_main
+  DEP_FILE = CMakeFiles/main.dir/main.cpp.o.d
+  FLAGS = -save-temps=obj -std=c++17 -g
+  INCLUDES = -I.
+  OBJECT_DIR = CMakeFiles/main.dir
+  OBJECT_FILE_DIR = CMakeFiles/main.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target main
+
+
+#############################################
+# Link the executable main
+
+build main: CXX_EXECUTABLE_LINKER__main CMakeFiles/main.dir/main.cpp.o | src/libLINK.a || src/libLINK.a
+  FLAGS = -save-temps=obj -std=c++17 -g
+  LINK_FLAGS = -rdynamic
+  LINK_LIBRARIES = src/libLINK.a
+  OBJECT_DIR = CMakeFiles/main.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = main
+  TARGET_PDB = main.dbg
 
 
 #############################################
@@ -256,53 +358,12 @@ build ContinuousTest: phony CMakeFiles/ContinuousTest
 
 build ContinuousSubmit: phony CMakeFiles/ContinuousSubmit
 
-# =============================================================================
-# Object build statements for EXECUTABLE target class
-
-
-#############################################
-# Order-only phony target for class
-
-build cmake_object_order_depends_target_class: phony || cmake_object_order_depends_target_LINK
-
-build CMakeFiles/class.dir/main.cpp.o: CXX_COMPILER__class ../main.cpp || cmake_object_order_depends_target_class
-  DEP_FILE = CMakeFiles/class.dir/main.cpp.o.d
-  FLAGS = -save-temps=obj -g
-  OBJECT_DIR = CMakeFiles/class.dir
-  OBJECT_FILE_DIR = CMakeFiles/class.dir
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target class
-
-
-#############################################
-# Link the executable ../bin/class
-
-build ../bin/class: CXX_EXECUTABLE_LINKER__class CMakeFiles/class.dir/main.cpp.o | src/libLINK.a || src/libLINK.a
-  FLAGS = -save-temps=obj -g
-  LINK_FLAGS = -rdynamic
-  LINK_LIBRARIES = src/libLINK.a
-  OBJECT_DIR = CMakeFiles/class.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  TARGET_FILE = ../bin/class
-  TARGET_PDB = class.dbg
-
 
 #############################################
 # Custom command for CMakeFiles/NightlyMemCheck
 
 build CMakeFiles/NightlyMemCheck: CUSTOM_COMMAND
   COMMAND = cd /home/fengsc/Desktop/cpp/CppTest/class/build && /usr/bin/ctest -D NightlyMemCheck
-  pool = console
-
-
-#############################################
-# Custom command for CMakeFiles/NightlyTest
-
-build CMakeFiles/NightlyTest: CUSTOM_COMMAND
-  COMMAND = cd /home/fengsc/Desktop/cpp/CppTest/class/build && /usr/bin/ctest -D NightlyTest
   pool = console
 
 
@@ -407,6 +468,14 @@ build CMakeFiles/ExperimentalConfigure: CUSTOM_COMMAND
 
 build CMakeFiles/Continuous: CUSTOM_COMMAND
   COMMAND = cd /home/fengsc/Desktop/cpp/CppTest/class/build && /usr/bin/ctest -D Continuous
+  pool = console
+
+
+#############################################
+# Custom command for CMakeFiles/NightlyTest
+
+build CMakeFiles/NightlyTest: CUSTOM_COMMAND
+  COMMAND = cd /home/fengsc/Desktop/cpp/CppTest/class/build && /usr/bin/ctest -D NightlyTest
   pool = console
 
 
@@ -588,7 +657,8 @@ build cmake_object_order_depends_target_LINK: phony || src/CMakeFiles/LINK.dir
 
 build src/CMakeFiles/LINK.dir/func.cpp.o: CXX_COMPILER__LINK ../src/func.cpp || cmake_object_order_depends_target_LINK
   DEP_FILE = src/CMakeFiles/LINK.dir/func.cpp.o.d
-  FLAGS = -save-temps=obj -g
+  FLAGS = -save-temps=obj -std=c++17 -g
+  INCLUDES = -I.
   OBJECT_DIR = src/CMakeFiles/LINK.dir
   OBJECT_FILE_DIR = src/CMakeFiles/LINK.dir
 
@@ -601,7 +671,7 @@ build src/CMakeFiles/LINK.dir/func.cpp.o: CXX_COMPILER__LINK ../src/func.cpp || 
 # Link the static library src/libLINK.a
 
 build src/libLINK.a: CXX_STATIC_LIBRARY_LINKER__LINK src/CMakeFiles/LINK.dir/func.cpp.o
-  LANGUAGE_COMPILE_FLAGS = -save-temps=obj -g
+  LANGUAGE_COMPILE_FLAGS = -save-temps=obj -std=c++17 -g
   OBJECT_DIR = src/CMakeFiles/LINK.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -613,8 +683,6 @@ build src/libLINK.a: CXX_STATIC_LIBRARY_LINKER__LINK src/CMakeFiles/LINK.dir/fun
 
 build LINK: phony src/libLINK.a
 
-build class: phony ../bin/class
-
 build libLINK.a: phony src/libLINK.a
 
 # =============================================================================
@@ -625,7 +693,7 @@ build libLINK.a: phony src/libLINK.a
 #############################################
 # Folder: /home/fengsc/Desktop/cpp/CppTest/class/build
 
-build all: phony ../bin/class src/all
+build all: phony main3 main2 main src/all
 
 # =============================================================================
 

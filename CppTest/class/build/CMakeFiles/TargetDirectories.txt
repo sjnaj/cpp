@@ -1,9 +1,10 @@
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/rebuild_cache.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/test.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/package_source.dir
+/home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/main3.dir
+/home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/main2.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/edit_cache.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/NightlyMemCheck.dir
-/home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/NightlyTest.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ContinuousConfigure.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ContinuousBuild.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/NightlyConfigure.dir
@@ -17,6 +18,8 @@
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ContinuousCoverage.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ExperimentalConfigure.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/Continuous.dir
+/home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/NightlyTest.dir
+/home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/main.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/Nightly.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/NightlySubmit.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/NightlyStart.dir
@@ -31,7 +34,6 @@
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ContinuousMemCheck.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ContinuousTest.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ContinuousSubmit.dir
-/home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/class.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/src/CMakeFiles/edit_cache.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/src/CMakeFiles/test.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/src/CMakeFiles/package_source.dir
