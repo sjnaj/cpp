@@ -1,7 +1,7 @@
 <!--
  * @Author: fengsc
  * @Date: 2021-08-02 18:59:05
- * @LastEditTime: 2021-10-16 22:50:43
+ * @LastEditTime: 2021-10-21 23:06:02
 -->
 - [STL](#stl)
   - [基本](#基本)
@@ -321,7 +321,7 @@ swap和remove是标准库函数，其它是成员函数
  //也可以将后面的部分删去后按一般方法遍历
  demo.erase(iter, demo.end());
 
- demo.clear();//清空vector，size归零
+ demo.clear();//清空vector，size归零,并不会把所有元素清零并不会把所有元素清零.
 
  demo.shrink_to_fit();使capacity和size一样
 
@@ -332,6 +332,32 @@ swap和remove是标准库函数，其它是成员函数
  return {};//注意冒号，列表初始化返回值
 
   ```
+  
+清零：
+
+  Method      |  executable size  |  Time Taken (in sec) |
+            |  -O0    |  -O3    |  -O0      |  -O3     |  
+------------|---------|---------|-----------|----------|
+1. memset   | 17 kB   | 8.6 kB  | 0.125     | 0.124     |
+2. fill     | 19 kB   | 8.6 kB  | 13.4      | 0.124    |
+3. manual   | 19 kB   | 8.6 kB  | 14.5      | 0.124    |
+4. assign   | 24 kB   | 9.0 kB  | 1.9       | 0.591    |
+
+```cpp
+  for(size_t i = 0; i < TEST_ITERATIONS; ++i) {
+   #if TEST_METHOD == 1 
+      memset(&v[0], 0, v.size() * sizeof v[0]);
+   #elif TEST_METHOD == 2
+      std::fill(v.begin(), v.end(), 0);
+   #elif TEST_METHOD == 3
+      for (std::vector<int>::iterator it=v.begin(), end=v.end(); it!=end; ++it) {
+         *it = 0;
+      }
+   #elif TEST_METHOD == 4
+      v.assign(v.size(),0);
+   #endif
+   }
+```
 
 vector 容器扩容的整个过程，和 realloc() 函数的实现方法类似，大致分为以下 4 个步骤：
 1，分配一块大小是当前 vector 容量几倍的新存储空间。注意，多数 STL 版本中的 vector 容器，其容器都会以 2 的倍数增长，也就是说，每次 vector 容器扩容，它们的容量都会提高到之前的 2 倍；

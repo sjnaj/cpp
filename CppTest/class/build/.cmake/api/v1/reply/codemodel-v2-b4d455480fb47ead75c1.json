@@ -48,7 +48,9 @@
 						28,
 						29,
 						30,
-						31
+						31,
+						32,
+						33
 					]
 				},
 				{
@@ -109,7 +111,9 @@
 						28,
 						29,
 						30,
-						31
+						31,
+						32,
+						33
 					]
 				}
 			],
@@ -337,6 +341,20 @@
 					"id" : "main3::@6890427a1f51a3e7e1df",
 					"jsonFile" : "target-main3-Debug-1614be4bda97a8e9fa58.json",
 					"name" : "main3",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mainptrtest::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mainptrtest-Debug-b0b39c01bf6ad7494558.json",
+					"name" : "mainptrtest",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "maintest::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-maintest-Debug-4ad7e0e45ed29769d5f0.json",
+					"name" : "maintest",
 					"projectIndex" : 0
 				}
 			]

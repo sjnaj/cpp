@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-10-06 22:38:44
- * @LastEditTime: 2021-10-17 00:29:54
+ * @LastEditTime: 2021-10-19 14:54:12
  */
 #include "func.h"
 void Complex::display() const
@@ -121,7 +121,7 @@ Complex::Complex(const Complex &A)
     else
     {
         this->m_len = A.m_len;
-        this->seq.reset(new Complex[m_len]);//m_len为0也能正常运行，但定义数组时不行
+        this->seq = std::make_unique<Complex[]>(m_len);
         for (int i = 0; i < A.m_len; i++)
             this->seq[i] = A.seq[i]; //(待定)
     }
@@ -136,7 +136,7 @@ Complex::Complex(Complex &&A)
     else
     {
         this->m_len = A.m_len;
-       this->seq = move(A.seq);
+        this->seq = move(A.seq);//seq会自动置空
     }
 }
 const Complex &Complex::operator[](int i) const
@@ -198,3 +198,4 @@ std::ostream &operator<<(std::ostream &out, const Complex &A)
     }
     return out;
 }
+

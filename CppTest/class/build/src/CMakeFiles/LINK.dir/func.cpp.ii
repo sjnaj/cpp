@@ -54359,11 +54359,13 @@ uninitialized_value_construct_n(_ExecutionPolicy&& __exec, _ForwardIterator __fi
 
 # 13 "../src/func.h"
 const double PI = acos(-1);
+class ComplexPtr;
 class Complex
 {
     friend Complex operator+(const double a, const Complex &A);
     friend std::istream &operator>>(std::istream &in, Complex &A);
     friend std::ostream &operator<<(std::ostream &out, const Complex &A);
+    friend class ComplexPtr;
 public:
     Complex operator+(const Complex &A) const;
 
@@ -54378,14 +54380,15 @@ public:
     bool operator!=(const Complex &A) const;
     Complex &operator[](int i);
     const Complex &operator[](int i) const;
-    operator double() const;
+    explicit operator double() const;
     double abs() const;
     double arg() const;
     Complex conjugate();
     Complex(double x, double y) : m_real(x), m_imag(y) {}
     Complex() : m_real(0), m_imag(0) {}
-    Complex(double a) : m_real(a), m_imag(0) {}
-    Complex(int len) : m_len(len) { seq.reset(new Complex[len]()); }
+    explicit Complex(double a) : m_real(a), m_imag(0) {}
+
+    explicit Complex(int len) : m_len(len), seq(std::make_unique<Complex[]>(len)) {}
     ~Complex() = default;
     Complex(const Complex &A);
     Complex(Complex &&A);
@@ -54400,11 +54403,40 @@ public:
 private:
     std::unique_ptr<Complex[]> seq;
     double m_real;
+    Complex *m_ptr;
     union
     {
         int m_len;
         double m_imag;
     };
+};
+class ComplexPtr
+{
+private:
+    Complex *m_ptr;
+public:
+    ComplexPtr() : m_ptr(nullptr) {}
+    ComplexPtr(Complex *p) : m_ptr(p) {}
+    ~ComplexPtr() { delete m_ptr; }
+    Complex &operator*() const
+    {
+        return *m_ptr;
+    }
+    Complex* operator->() const
+    {
+        return m_ptr;
+    }
+
+    ComplexPtr(const ComplexPtr &p)
+    {
+
+        m_ptr=new Complex(*p);
+    }
+    ComplexPtr(ComplexPtr &&p)
+    {
+       m_ptr=p.m_ptr;
+       p.m_ptr=nullptr;
+    }
 };
 # 7 "../src/func.cpp" 2
 void Complex::display() const
@@ -54524,7 +54556,7 @@ Complex::Complex(const Complex &A)
     else
     {
         this->m_len = A.m_len;
-        this->seq.reset(new Complex[m_len]);
+        this->seq = std::make_unique<Complex[]>(m_len);
         for (int i = 0; i < A.m_len; i++)
             this->seq[i] = A.seq[i];
     }
@@ -54539,7 +54571,7 @@ Complex::Complex(Complex &&A)
     else
     {
         this->m_len = A.m_len;
-       this->seq = move(A.seq);
+        this->seq = move(A.seq);
     }
 }
 const Complex &Complex::operator[](int i) const

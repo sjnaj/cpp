@@ -11,6 +11,7 @@
     - [inline内联函数](#inline内联函数)
     - [函数的默认参数](#函数的默认参数)
     - [函数重载和其二义性](#函数重载和其二义性)
+    - [数组](#数组)
     - [从assert到static_assert](#从assert到static_assert)
     - [C和C++混合编程](#c和c混合编程)
   - [类和对象](#类和对象)
@@ -35,7 +36,8 @@
     - [位域和union](#位域和union)
   - [重要关键字和部分C++11的特性](#重要关键字和部分c11的特性)
     - [default和delete](#default和delete)
-    - [constexpr和static const](#constexpr和static-const)
+    - [constexpr和const变量](#constexpr和const变量)
+    - [constexpr函数](#constexpr函数)
     - [const和volatile](#const和volatile)
     - [\#define,using和typedef的一些补充](#defineusing和typedef的一些补充)
     - [decltype](#decltype)
@@ -53,9 +55,9 @@
     - [返回引用](#返回引用)
     - [指针与引用](#指针与引用)
     - [临时变量、引用参数和const引用](#临时变量引用参数和const引用)
-    - [右值引用和移动构造函数](#右值引用和移动构造函数)
+    - [右值引用](#右值引用)
     - [引用限定符](#引用限定符)
-    - [移动构造函数](#移动构造函数)
+    - [移动构造函数和move](#移动构造函数和move)
   - [继承和派生](#继承和派生)
     - [基本(a)](#基本a)
     - [基类和派生类构造和析构函数](#基类和派生类构造和析构函数)
@@ -76,7 +78,9 @@
   - [运算符重载](#运算符重载)
     - [基本(3)](#基本3)
     - [实例](#实例)
-    - [函数对象](#函数对象)
+    - [成员访问运算符](#成员访问运算符)
+    - [类型转换重载，隐式转换风险和四种类型转换](#类型转换重载隐式转换风险和四种类型转换)
+    - [函数调用运算符(仿函数)](#函数调用运算符仿函数)
   - [异常处理](#异常处理)
     - [基本(4)](#基本4)
     - [catch](#catch)
@@ -87,12 +91,20 @@
     - [allocator类](#allocator类)
     - [shared_ptr类](#shared_ptr类)
     - [直接管理内存](#直接管理内存)
+    - [unique_ptr 类](#unique_ptr-类)
+    - [weak_ptr](#weak_ptr)
   - [模板](#模板)
     - [基本(5)](#基本5)
-      - [函数模板](#函数模板)
-      - [类模板](#类模板)
-      - [模板编译](#模板编译)
-      - [强类型，弱类型](#强类型弱类型)
+    - [函数模板](#函数模板)
+    - [非类型(值)模板参数](#非类型值模板参数)
+    - [类模板](#类模板)
+    - [模板编译和强类型，弱类型](#模板编译和强类型弱类型)
+    - [友元](#友元)
+    - [模板类型别名和static成员](#模板类型别名和static成员)
+    - [模板默认实参](#模板默认实参)
+    - [成员模板](#成员模板)
+    - [控制实例化](#控制实例化)
+    - [模板实参推断](#模板实参推断)
     - [模板的重载](#模板的重载)
   
 # cpp
@@ -627,6 +639,18 @@ C++代码在编译时会根据参数列表对函数进行重命名，例如void 
 
 3.类型型相关歧义（较深内容，先放下）
 
+### 数组
+
+```cpp
+int  a[]={1,2,3,4,5};
+int *p=&a[2];
+int x=p[-2];///p[-2]==a[0];
+
+vector<int>vi(begin(a), end(a));
+vector<int>vi(a+1, a+4);
+//应尽量使用vector和迭代器，避免使用容易出错的内置数组和指针
+
+```
 ### 从assert到static_assert
 
 ```cpp
@@ -1897,7 +1921,39 @@ u.ui_box = 0;
 删除特殊成员函数提供了一种更简洁的方法来防止编译器生成我们不想要的特殊成员函数。（如“禁用拷贝构造函数”示例中所示）。
 删除正常成员函数或非成员函数可防止有问题的类型导致调用非预期函数（如“禁用不需要的参数转换”示例中所示）。
 
-### constexpr和static const
+### constexpr和const变量
+
+为了解决 const 关键字的双重语义问题，保留了 const 表示“只读”的语义，而将“常量”的语义划分给了新添加的 constexpr 关键字。因此 C++11 标准中，建议将 const 和 constexpr 的功能区分开，**即凡是表达“只读”语义的场景都使用 const，表达“常量”语义的场景都使用 constexpr**。
+
+constexpr 关键字则用于指明其后是一个常量（或者常量表达式），编译器在编译程序时可以顺带将其结果计算出来，而无需等到程序运行阶段，这样的优化极大地提高了程序的执行效率。所有计算都在编译时完成(The values are guaranteed to be available at compile time.)。像溢出这样错误也会在编译时被检出。
+
+```cpp
+class test {
+    public:
+static int si; // 静态成员变量
+  const double x=0;
+  //constexpr double y=0;//error,
+    //static int si2 = 100; // error: 只有静态常量成员变量，才可以这样初始化
+    static const int csi; // 静态常量成员变量
+    static const int csi2 = 100; // 静态常量成员变量的初始化(Integral type) (1)
+    static constexpr double csc= 100;//和上面的式子等价，都可以用来作为数组的大小。
+    //较老的编译器可能不支持上述两种方式，可以借助共用体实现类内初始化常量。
+      enum { n = 27, m = 51, p = -82 };
+    static const double csd; // 静态常量成员变量(non-Integral type)
+    //staticconst double csd2 = 99.9; // error: 只有静态常量整型数据成员才可以在类中初始化
+
+}
+```
+
+### constexpr函数
+
+constexpr函数指的是在编译的时候就能得到其返回值的函数，也就是说编译器将constexpr函数直接转换成其返回值，因此，constexpr函数都是被隐式地定义为内联函数。使用constexpr关键字来修饰constexpr函数。
+
+- constexpr函数的返回值类型必须是字面值类型(i*i是，i不是)；
+
+- constexpr函数的形参可以是非常量，但是实参必须是常量
+
+- 函数体内只能有一条返回语句，初次之外只能有空语句和类型别名。
 
 ```cpp
 constexpr int limit = mf + 1
@@ -1934,28 +1990,6 @@ constexpr double Sqr(double x)
 constexpr double Cos(double x)
 {
     return (Abs(x) < 0.5 ? SinCos_impl(x*x, 1.0, 1.0) : Sqr(Cos(x * 0.5)) - Sqr(Sin(x * 0.5)));
-}
-```
-
-为了解决 const 关键字的双重语义问题，保留了 const 表示“只读”的语义，而将“常量”的语义划分给了新添加的 constexpr 关键字。因此 C++11 标准中，建议将 const 和 constexpr 的功能区分开，**即凡是表达“只读”语义的场景都使用 const，表达“常量”语义的场景都使用 constexpr**。
-
-constexpr 关键字则用于指明其后是一个常量（或者常量表达式），编译器在编译程序时可以顺带将其结果计算出来，而无需等到程序运行阶段，这样的优化极大地提高了程序的执行效率。所有计算都在编译时完成(The values are guaranteed to be available at compile time.)。像溢出这样错误也会在编译时被检出。
-
-```cpp
-class test {
-    public:
-static int si; // 静态成员变量
-  const double x=0;
-  //constexpr double y=0;//error,
-    //static int si2 = 100; // error: 只有静态常量成员变量，才可以这样初始化
-    static const int csi; // 静态常量成员变量
-    static const int csi2 = 100; // 静态常量成员变量的初始化(Integral type) (1)
-    static constexpr double csc= 100;//和上面的式子等价，都可以用来作为数组的大小。
-    //较老的编译器可能不支持上述两种方式，可以借助共用体实现类内初始化常量。
-      enum { n = 27, m = 51, p = -82 };
-    static const double csd; // 静态常量成员变量(non-Integral type)
-    //staticconst double csd2 = 99.9; // error: 只有静态常量整型数据成员才可以在类中初始化
-
 }
 ```
 
@@ -2420,7 +2454,7 @@ for_each( v.begin(), v.end(), [&even_count](int val)
             }
         });
 //for_each的实现原理
-emplate < typename InputIterator, typename Function >
+template < typename InputIterator, typename Function >
 Function for_each(InputIterator beg, InputIterator end, Function f)  {
   while(beg != end) 
     f(*beg++);
@@ -2669,10 +2703,16 @@ string抽象意义是字符串， size（）的抽象意义是字符串的尺寸
 
 string::size_type它在不同的机器上，长度是可以不同的，并非固定的长度。但只要你使用了这个类型，就使得你的程序适合这个机器。与实际机器匹配。
 
+ typedef typename std::vector\<T\>::size_type size_type; //,通过别名使用size_type,typename告诉编译器size_type是一个类型而不是成员
+
+数组使用的是size_t，size_type是它的别名，64位机器上是unsigned long long int
+
 ### 字符串字面量(String literal)
 
 ```cpp
 #include <iostream>
+
+字符串字面量原本类型是 const char[N]，长度是已知的。
  
 char array1[] = "Foo" "bar";
 // same as
@@ -2859,7 +2899,7 @@ int main() {
 
 使用const引用使函数能够正确生成并使用临时变量
 
-### 右值引用和移动构造函数
+### 右值引用
 
 虽然 C++98/03 标准不支持为右值建立非常量左值引用，但允许使用常量左值引用操作右值。也就是说，常量左值引用既可以操作左值，也可以操作右值
 
@@ -2896,14 +2936,23 @@ int &&r4=std::move(i)//i将不能再使用，可以销毁或赋值
 需要注意的一点是，当 const && 修饰类的成员函数时，调用它的对象只能是右值对象；当 const & 修饰类的成员函数时，调用它的对象既可以是左值对象，也可以是右值对象。无论是 const && 还是 const & 限定的成员函数，内部都不允许对当前对象做修改操作。
 
 ```cpp
+     int get_num() &//仅左值
+     {
+         return this->num;
+     }
+     int get_num()&&//仅右值
+     {
+         return this->num;
+     }
   //左值和右值对象都可以调用
-    int get_num() const &{
+    int get_num2() const &{
         return this->num;
     }
     //仅供右值对象调用
     int get_num2() const && {
         return this->num2;
     }
+    //对于重载函数要么都加引用限定符，要么都不加；
      cout << a.get_num() << endl;        // 正确
     cout << move(a).get_num() << endl;  // 正确
    
@@ -2911,7 +2960,9 @@ int &&r4=std::move(i)//i将不能再使用，可以销毁或赋值
     cout << move(a).get_num2() << endl; // 正确
 ```
 
-### 移动构造函数
+### 移动构造函数和move
+
+指的就是以移动而非深拷贝的方式初始化含有指针成员的类对象，即转交指针的所有权，而非深拷贝其指向的内容，
 
 ```cpp
 class movedemo{
@@ -2925,7 +2976,7 @@ public:
     }
     //移动构造函数
     movedemo(movedemo &&d):num(d.num){
-        d.num = nullptr;//销毁右值时会运行析构函数，需要保证销毁它是无害的(否则对应空间会被释放)
+        d.num = nullptr;//销毁右值时会运行析构函数，需要保证销毁它是无害的(否则对应空间会被释放)，一般情况下需要自定义复制构造函数时也需要自定义移动构造函数，以保证销毁右值无害
         cout<<"move construct!"<<endl;
     }
 public:     //这里应该是 private，使用 public 是为了更方便说明问题
@@ -2937,10 +2988,10 @@ int main(){
     movedemo demo2 = demo;
     //cout << *demo2.num << endl;   //可以执行
     cout << "demo3:\n";
-    movedemo demo3 = std::move(demo);//过调用 move() 函数可以得到 demo 对象的右值形式，用其初始化 demo3 对象，编译器会优先调用移动构造函数。
+    movedemo demo3 = std::move(demo);//过调用 move() 函数可以得到 demo 对象的右值形式，用其初始化 demo3 对象，编译器会优先调用移动构造函数。//const &和&&里会优先选择&&,同理左值优先选前者
     //此时 demo.num = nullptr，因此下面代码会报运行时错误
     //cout << *demo.num << endl;
-    return 0;
+    return 0;//std::move只是进行类型转换而不会进行内存的转移，转换之后原左值的状态没有任何改变，但可能会被移动构造函数改变，例如指针被置空。对string这样操作也会被置空,所以很可能会导致原左值残缺，最好不要再使用，一般只剩下内置变量，不会浪费很多空间，能达到一定程度的移动，在确保安全的情况的使用std::move()传参;
 }
 ```
 
@@ -3638,11 +3689,12 @@ const 返回值类型 & operator[] (参数) const;//数组元素为const
 
 ```cpp
 Complex &operator=(const Complex &A); 
+//可以加引用限定符保证只能对可修改的左值赋值
 //operator=() 的返回值类型设为引用，这样不但能够避免在返回数据时调用拷贝构造函数，还能够达到连续赋值的目的
 //特别的，在gcc下返回一个临时对象并不会调用拷贝构造函数，RVO（return value optimization），被gcc进行值返回的优化了，通过对g++增加选项-fno-elide-constructors可以将RVO优化关闭，
 ```
 
-cout 是 ostream 类的对象，cin 是 istream 类的对象，要想达到这个目标，就**必须以全局函数（友元函数）的形式重载<<和>>**，否则就要修改标准库中的类
+cout 是 ostream 类的对象，cin 是 istream 类的对象，要想达到这个目标，就**必须以全局函数（友元函数）的形式重载\<<和\>>**，否则就要修改标准库中的类
 
 ```cpp
 istream & operator>>(istream &in, complex &A){//返回 istream 类对象的引用，是为了能够连续读取复数
@@ -3670,10 +3722,10 @@ stopwatch stopwatch::run(){
     }
     return *this;
 }
-stopwatch stopwatch::operator++(){
+stopwatch& stopwatch::operator++(){
     return run();
 }
-stopwatch stopwatch::operator++(int n){//参数n是没有任何意义的，它的存在只是为了区分是前置形式还是后置形式。
+stopwatch stopwatch::operator++(int n){//参数n是没有任何意义的，它的存在只是为了区分是前置形式还是后置形式,不能返回引用
     stopwatch s = *this;
     run();
     return s;
@@ -3695,13 +3747,161 @@ void * operator new( size_t size ){
 }
 ```
 
+### 成员访问运算符
+
+*的重载很简单，行为没有什么限制
+
+重载箭头运算符时，可以改变的是从哪个对象获取成员，但不能改变获取成员这一事实，也就是无论如何都要获取一个成员
+
+对于内置指针类型调用->会调用内置的箭头运算符
+
+如果调用箭头运算符的是一个重载了箭头的对象，则会对获取(返回的)的对象继续调用箭头运算符，根据目标是指针还是对象决定调用哪个箭头运算符
+
+所以重载的箭头运算符必须返回类的指针(调用内置类型)或者一个重载了箭头运算符的类(调用重载类型)，其它情况都会导致调用过程出现错误
+
 ```cpp
-  operator double() { return real; }  //重载强制类型转换运算符 double
+const Entity* operator->()const
+{
+    return m_obj;//返回指向本类的指针
+}
+Entity e,*pe;
+e->func();
+pe->func();//they are equal,注意如果重载函数是const的则func也需要是const的,仅作为演示
+//一般用来使用在一个自定义的指针类，通过指针类重载箭头实现像内置指针的操作
+```
+
+```cpp
+//箭头运算符获取公有成员偏移量
+int offset =(int)&((Entity*)nullptr)->member;//类的首地址是nullptr，其成员的地址就是偏移量
+```
+
+### 类型转换重载，隐式转换风险和四种类型转换
+
+必须定义为类的成员函数,一般定义为const
+
+```cpp
+  operator double() const{ return real; }  //重载强制类型转换运算符 double
   //(double)c等价于c.operator double()
 ```
 
-### 函数对象
+[隐式转换详解](https://www.cnblogs.com/apocelipes/p/14415033.html)
 
+```cpp
+std::string s = "hello c++";
+//C++11之前会创建两个string(复制拷贝)，C++11可能一个可能两个(移动拷贝)(复制省略可选)，C++17开始只有一个(强制复制省略)
+```
+
+数组传进函数后隐式转换为指针会丢失长度发生退化，可以借助模板或用array解决。
+
+一个隐式类型转换序列包括一个初始标准转换序列、一个用户定义转换序列、一个第二标准转换序列
+
+转换序列最少可以转换1次，最多可以三次，唯一会触发问题的是出现了两次用户定义转换。
+
+```cpp
+A(int i){}
+f(A){}
+f(1);//这时会先调用拷贝初始化，相当于将int隐式转换成A,而不会报错，如果要避免而不是利用这种情况，各种单参的构造函数都应声明为显式，例如参数为int和double，一个不声明就会调用没有声明的那个
+//explicit只需在声明处加入
+//如果既提供了将算数类型转换为类类型的初始化函数，又重载了将类类型转换为算数类型的类型转换符，就会遇到二义性问题
+1+x;//如果x是类，那么就会有向上转1和向下转x两种可能的方式
+explicit A(int i){}//这样可以避免拷贝初始化
+ explicit operator double() const{ return real; }//避免意外的隐式转换
+ //只能显式转换
+```
+
+由于不受限制的显式类型转换允许将任何指针转换为任何其他指针类型，而不依赖于指针所指向的类型，依然存在风险，所以C++引入四种类型转换。
+
+dynamic_cast
+
+dynamic_cast依赖于RTTI信息
+
+```cpp
+dynamic_cast < type-id > ( expression )
+/*The type-id must be a pointer or a referenceto a previously defined class type or a "pointer to void".The type of expression must be a pointer if type-id is a pointer, or an l-valueif type-id is a reference*/
+//如果type-id是interior类型，The cast will now return the 0 pointer value instead of throwing.
+//任意的expression都可以转成void*,type-id始终可以是void*。
+```
+
+```cpp
+/*if type-id is a pointer to an unambiguous accessible direct or indirect baseclass of expression ,a pointer to the uniquesubobject of type type-id*/
+//派生类的指针转为基类指针， "upcast"，可以隐式完成，用dynamic_cast会有额外的开销，它的主要目的是实现safe的downcast
+```
+
+```cpp
+//a run-timecheck is madeto seeif expression actually points to a **complete object** of the type of type-id . If this is true, the result is a pointer to a complete object of the type of type-id .
+//原理是单继承中某个派生类(完全类)的直接或间接基类指针都可以安全的指向它。
+```
+
+多继承情况主要是为了避免二义性，需要选择合适的路径进行转换，具体参见微软官方文档的栗子
+
+static_cast
+
+```cpp
+```
+
+### 函数调用运算符(仿函数)
+
+如果类重载了调用运算符，则称该类的对象为函数对象
+
+lambda表达式是函数对象(匿名)
+
+```cpp
+
+auto f =[sz](const string s){return s};
+f相当于:
+class{
+    public:
+   string operator()(const string s)
+   {
+       return s;
+   }
+   private:
+   size_t sz;
+}
+//引用捕获时不会构造变量
+//不含默认构造函数，赋值运算符，及默认 析构函数，是否具有拷贝/移动函数视捕获的数据元素而定
+
+
+```
+
+![标准库函数对象](https://i.loli.net/2021/10/17/5QxmJjVZ1oc7ODw.png)
+
+```cpp
+//比较指针大小
+vector<string*>vec;
+sort(vec.begin(), vec.end(),[](string* a, string* b){return a<b};);//错误，<将产生未定义的行为
+sort(vec.begin(), vec.end(),less<string*>());
+```
+
+不同的类型(例如普通函数，lambda表达式和函数对象)可能具有相同的调用形式，只要它们的参数类型和返回类型完全一致，例如int(int,int);
+
+可以定义一个函数表将它们存储在一起
+
+```cpp
+int add(a,b){return a+b;}
+map<string,int(*)(int,int))>binops;
+binops.insert({'+',add}); //pair
+//但lambda函数没有函数名，不符合map的元素类型
+```
+
+![function类](![heh.png](https://i.loli.net/2021/10/17/AGBpg26UqsKalI8.png))
+
+```cpp
+function<int(int,int)>f1=add;//函数指针
+function<int(int,int)>f2=devide();//函数对象类的对象
+function<int(int,int)>f3=[](int i,int j){return i*j;};//lambda
+std::cout<<f1(1,2)<<f2(1,2)<<f3(1,2);
+
+重新定义map；
+map<string,function<int(int,int)>> binops=
+{
+    .....//各种函数对象，lambda表达式等。
+}
+binops['+'](10,10);//调用add(10,10);//
+当函数发生重载时，可以用函数指针
+int(*fp) (int,int)=add;
+
+```
 
 ## 异常处理
 
@@ -4072,12 +4272,16 @@ unique_ptr<int> uptr(p);
 
 /*C++11 标准还支持同一类型的 shared_ptr 对象，或者 shared_ptr 和 nullptr 之间，进行 ==，!=，<，<=，>，>= 运算。*/
 
-auto q=p.get();//返回智能指针内部包含的普通指针
-
+auto q=p.get();//返回智能指针内部包含的普通指针(The stored pointer.)，传递给不能使用智能指针的函数或代码
+//不能用它初始化智能指针，这样做会使两个智能指针指向一块内存而各自的引用计数都是1，出现对象被销毁而一个指针悬空导致未定义行为或重复delete
+//if(p)==if(p.get())==if((bool)p),始终是成立的
 shared_ptr<string>p//空指针,可以根据是否为空判断智能指针是否分配了空间
-shared_ptr<string>p(new string);//shared_ptr<string>=new string;
-shared_ptr<string>p=make_shared<string>(10,'1');
-auto q=make_shared<string>();//也可以用auto代替shared_ptrshared
+shared_ptr<string>p(new string);
+shared_ptr<string>=new string//是错误的，除了直接初始化外不能隐式转换内置指针和智能指针
+ std::shared_ptr<int>p;//这样也可以，相当于创建了一个临时的智能指针
+    p=std::shared_ptr<int>(new int(10));
+shared_ptr<string>p=make_shared<string>(10,'1');//make_shared构造相当于同类赋值可以随意搭配，单独赋值也可以
+auto q(make_shared<string>());//也可以用auto代替shared_ptrshared
 ```
 
 [尽量使用make_shared初始化](https://www.jianshu.com/p/03eea8262c11)
@@ -4119,8 +4323,148 @@ StrBlob::StrBlob(initializer_list<string> il):data(make_shared<vector<string>>(i
 //使用默认拷贝，赋值，和析构成员函数
 ```
 
+在确认自己是独占的情况下修改
+
+```cpp
+if(!p.unique())
+p.reset(new string (*p));//不是唯一用户则分配新的拷贝
+*p+=newVal;
+```
+
+[别名构造函数](https://www.codesynthesis.com/~boris/blog/2012/04/25/shared-ptr-aliasing-constructor/)
+
+```cpp
+template <class Y>
+shared_ptr (const shared_ptr<Y>& r, T* p) noexcept;//p（stored but not owned)不能被自动释放
+//一般用法
+struct Bar { 
+    // some data that we want to point to
+};
+
+struct Foo {
+    Bar bar;
+};
+
+shared_ptr<Foo> f = make_shared<Foo>(some, args, here);
+shared_ptr<Bar> specific_data(f, &f->bar);//第一个参数用于增加f的ref cnt,f->bar是要保存的对象,分别是specific_data的owns和stores
+//specific_data.use_count==f.use_count();
+//specific_data.get()==&f->bar;
+// ref count of the object pointed to by f is 2
+f.reset();
+
+// the Foo still exists (ref cnt == 1)
+// so our Bar pointer is still valid, and we can use it for stuff
+some_func_that_takes_bar(specific_data);
+```
+
+The first argument (r) is the pointer with which we will share ownership of object Y. While the second argument (p) is the object which we will actually point to. That is, get() and operator-> will return p, not r. In fact, to understand this better, it is useful to think of shared_ptr as consisting of two parts: **the object that it owns (or, more precisely, shares ownership of) and the object that it stores. When we use other shared_ptr constructors, these two objects are the same (give or take base-derived differences)**. The aliasing constructor allows us to create a shared pointer that has different objects in these two parts. Note also that the stored object is never deleted by shared_ptr. If a shared pointer created with the aliasing constructor goes out of scope, and it is the last pointer owning r, then r is deleted, not p.
+
+null shared_ptr:owns object is null;empty shared_ptr:stroes object is empty;前者针对控制块(own)，后者针对包含的指针(store)，一般情况下控制的就是包含的指针, (控制块会控制其存储指针的生存期. 但是,控制块中存储的指针未必是sharedptr存储的指针).
+
+[null,empty,ptr](https://www.nextptr.com/question/qa1372136808/shared_ptr-initialized-with-nullptr-is-null-or-empty)
+
+Notice that a null shared_ptr (i.e., a pointer for which this function returns false) is not necessarily an empty shared_ptr. An alias may own some pointer but point to null, or an owner group may even own null pointers (see constructors 4 and 5).
+
+```cpp
+//Uses default constructor: shared_ptr(); 
+std::shared_ptr<int> p1;
+//Uses constructor: shared_ptr(std::nullptr_t);
+std::shared_ptr<int> p2(nullptr);
+int* iptr{nullptr};
+std::shared_ptr<int> p3(iptr);//null but not empty
+/*Both p1 and p2 are null, but they are empty too because they don't have any control block associated with them. On the other hand, p3 is null but not empty because it has a control block with a managed nullptr and a reference count of 1.*/
+
+int x = 100;
+ //'px' holds &x, but is empty.
+ //A null and empty shared_ptr<void> is passed 
+ //to aliasing constructor to initialize px 
+ std::shared_ptr<int> px(std::shared_ptr<void>(), &x); //empty but not null
+```
+
 ### 直接管理内存
 
+```cpp
+int *p =new int[0];//合法，但仍然会分配内存，需要销毁，用在定义数组则非法
+vector<string>*ps=new string(10,'1');
+vector<int>*pv=new vector<int>{1,2,3,4,5};
+//对于类类型默认初始化和值初始化为空是等价的，而对于内置类型，默认初始化后值是随机的
+auto p1=new auto(obj);//p1指向和obj类型相同的对象并用obj进行初始化
+const int pc= new const int(10);//可以指向const对象，但必须值初始化(内置类型)或隐式初始化(类类型)
+int *p=new (nothrow) int;//如果初始化失败则返回空指针而不是抛出std::bad_alloc导致terminate
+```
+
+内置类型的对象销毁什么也不会发生。
+delete之后最好重置指针值
+空悬指针
+
+简单地说，空悬指针是对象的指针的生存周期比对象更长所导致的，也就是说，对象销毁、删除了，不存在了，指针仍然存在，这时这个指针就成了空悬指针。
+当对象被析构、删除时，如果指向它的指针没有被同时修改，那么指针仍然会指向那块内存（但是那块内存已经没有东西了）。系统此时可能会重新分配这块已经free掉的内存，如果程序再通过这个指针读这块内存，就可能会有不可预见的事情发生，因为这块内存可能被分配了完全不同的内容。如果程序此时要写这块内存，就可能会造成数据污染，进而可能带来超级难被发现的bug。如果内存已经被其它进程重新分配，此时再去访问指针指向的内容，就可能会发生片段错误(UNIX,Linux)或者一般性保护错误(Windows).如果程序有足够的权限去重写内核内存分配器的内容，还可能造成系统的不稳定。在有垃圾回收机制的面向对象语言中，阻止空悬引用的方法是销毁所有访问不到的对象，也就是说他们也就没有所谓的指针了，这是由追踪或引用计数而确保的。然而finalizer可能会创建新的对象的引用，这就要求对象要再生来防止空悬引用。
+
+野指针作为一个指针，甚至都没有被初始化，也就是说虽然它的类型是一个指针，但它根本没有值。它跟NULL指针还有差别，NULL是指向了0地址，而野指针是没有地址
+
+使用delete难以解决的问题
+
+```cpp
+int *p=new int(10);
+auto q=p;
+delete p;
+p=nullptr;
+//q必须也置零，但实际中找到执行相同内存的所有指针是困难的
+```
+
+使用动态指针可以避免许多使用new和delete的问题
+
+不要混合使用内置指针和智能指针，因为用内置指针访问时不知道对象是否已销毁。
+
+[智能指针陷阱](![oo.png](https://i.loli.net/2021/10/17/xErwU1MgBP6tDdo.png))
+
+### unique_ptr 类
+
+不能改变独占性
+
+```cpp
+unique_ptr<int> uptr = make_unique<int>();//C++14以后
+unique_ptr<int> uptr1(new int);
+unique_ptr<int> uptr2 = uptr1; // 非法初始化
+unique_ptr<int> uptr3; // 正确
+uptr3 = uptr1; // 非法赋值
+
+uptr3 = move (uptr1) ; // 将所有权从 uptr1 转移到 uptr3，不是std的那个
+uptr3.reset(uptr1.release());//等价，单独release会导致指针丢失
+//unique_ptr可以引用传参，值传递时可以调用转换所有权的函数，但要保证安全，move返回unique_ptr,release返回内置指针
+
+//可以拷贝或一个将要被销毁的unique_ptr，包括临时的和局部的
+unique_ptr<int>  clone(int p)
+{
+    return unique_ptr<int>(new int p);
+}
+
+uptr = nullptr;//这两种方式可以保留指针，同时释放所管理的空间,release不能释放空间
+uptr.reset();
+```
+
+支持动态数组
+
+```cpp
+unique_ptr<int[]> uptr(new int[]len);//注意int[];
+unique_ptr<int[]> uptr(make_unique<int[]>(len));
+uptr[0]=1;//支持下标运算，可以自动析构,不用传入删除器
+```
+
+### weak_ptr
+
+是shared_ptr的伴随类
+
+```cpp
+auto p=make_shared<int>(10);
+weak_ptr wp(p);//wp弱共享p，引用计数不变
+
+if(shared_ptr<int>np=wp.lock())//不能直接访问，必须调用lock返回一个shared_ptr访问
+{
+   ...
+}//主要用途就是阻止访问不存在的对象
+
+```
 
 ## 模板
 
@@ -4130,7 +4474,7 @@ StrBlob::StrBlob(initializer_list<string> il):data(make_shared<vector<string>>(i
 
 模板形参不能为空。
 
-#### 函数模板
+### 函数模板
 
 模板函数应尽量减少对实参类型的要求(也是泛型编程的原则)，除了函数体所使用的语句和函数要注意，还应尽量使用**const引用参数减小复制时间和对参数的要求**(如果确保参数只可能是内置类型可以不用太执着)。
 
@@ -4155,7 +4499,7 @@ template<typename T> inline T max(T a, T b, T c);
 
 ```
 
-非类型模板参数
+### 非类型(值)模板参数
 
 非类型模板参数，**面对的未加确定的参数细节是指（value），而非类型**。当要使用基于值的模板时，你必须显式地指定这些值，模板方可被实例化。例如vector\<int ,5\>;
 
@@ -4186,7 +4530,7 @@ T addValue(const T& x)
 ```cpp
 template<double VAL>            // ERROR： 浮点数不可作为非类型模板参数
 template<std::string name>      // ERROR：类对象不能作为非类型模板参数
-template <unsigned M, unsigned N>//这种情况编译器能根据字面量推出M和N,unsigned lomg和unsigned int意义相同，都可以用undigned表示
+template <unsigned M, unsigned N>//这种情况编译器能根据字面量推出M和N,unsigned 和unsigned int意义相同,unsigned long gcc上是8字节
 int compare(const char (&p)[M], const char (&q)[N])
 {
   return strcmp(p, q);
@@ -4229,7 +4573,7 @@ T foo();
 
 ```
 
-#### 类模板
+### 类模板
 
 ```cpp
 template<typename 类型参数1 , typename 类型参数2 , …> class 类名{
@@ -4252,15 +4596,14 @@ Point<char*, char*> *p = new Point<char*, char*>("东经180度", "北纬210度")
 
 在类的作用域之内(类的定义和外部函数在类名之后的部分)写类名时***不用写实参列表**。class\<T\>-\>class
 
-#### 模板编译
+### 模板编译和强类型，弱类型
+
 
 当使用而不是定义模板时，编译器才生成代码。
 
 当使用类类型的对象时，只需要类定义可用即可，所以一般将类定义和函数声明放在头文件中。而**模板定义和函数实现都应该放在头文件里**。
 
 大多关于模板的编译错误在编译的第三个阶段实例化阶段报告。
-
-#### 强类型，弱类型
 
 强类型语言在定义变量时需要显式地指明数据类型，并且一旦为变量指明了某种数据类型，该变量以后就不能赋予其他类型的数据了，除非经过强制类型转换或隐式类型转换。典型的强类型语言有 C/C++、Java、C# 等。
 
@@ -4285,6 +4628,102 @@ $a = array("JavaScript","React","JSON");  //赋给数组,PHP
 
 模板所支持的类型是宽泛的，没有限制的，我们可以使用任意类型来替换，这种编程方式称为泛型编程（Generic Programming）。相应地，可以将参数 T 看做是一个泛型，而将 int、float、string 等看做是一种具体的类型。除了 C++，Java、C#、Pascal（Delphi）也都支持泛型编程。
 
+### 友元
+
+```cpp
+限制特定的实例为友元 
+template <typename T> class Pal;
+template <typename T> class C
+{
+    friend class Pal<T>;//限制用T初始化，需要前置声明
+    friend class Pal<C>;//限制用C初始化的为友元
+    template<typename X> friend class Pal2;//所有实例都是C的友元，不用前置声明，注意typename不能写成本类的T，实例化时可以任意
+    //模板内层的参数名会隐藏外部的，所以在模块内不能重用模板参数名，并且一个模板参数名在一个参数列表里只能出现一次。
+};
+将自己的模板参数声明为友元
+template <typename T> class C
+{
+    friend T;//当T是类类型或函数时，将称为C的友元，内置类型也不会冲突
+}
+```
+
+### 模板类型别名和static成员
+
+```cpp
+typedef std::map<int,std::string> vec;//合法
+
+template <typename T>
+typedef std::map<int,T>alias;//非法
+
+template <typename T> using alias= std::map<int,T>;
+alias<std::string>bar;//std::map<int,std::string>bar;
+
+\\实例化后每一种实例都会有一份独有的静态成员，静态成员不能通过模板类访问，静态成员函数和其它成员函数一样只有在实例化时才会被定义
+
+ typedef typename std::vector<T>::size_type sizeType; //typename告诉编译器sizetype是一个类型而不是静态成员，这也是typename唯一不同于class的地方
+
+```
+
+### 模板默认实参
+
+```cpp
+template <typename T,template F=less<T>>
+int compare(const T& x, const T* y,F f=F())//前一个F是模板参数，后面的F()是默认的F，即less<T>；
+{
+    if(f(x,y))return -1;
+    if(f(y,x))return 1;
+    return 0;
+}
+template <typename T=int>class{...};
+class<>A;
+
+```
+
+### 成员模板
+
+```cpp
+class DebugDelete
+{
+    public:
+    DebugDelete(std::ostream &s=std::cerr):os(s){}
+    template <typename T>
+    void operator()(T *p)const
+    {
+        os<<"deleting unique_ptr"<<std::endl;
+        delete p;
+    }
+    private:
+    std::ostream &os;
+};
+double *p=new double(2);
+DebugDelete d;
+d(p);
+DebugDelete()(p1);//用默认构造的临时对象
+
+template <typename T>class Blob
+{
+    template<typename It>
+    Blob(It b,It e){
+        ...
+    }
+};
+```
+
+### 控制实例化
+
+显式实例化
+
+防止不同文件出现重复的实例化(不同文件有相同的模板和函数参数)，使不同文件共享某一个文件里的实例化定义
+
+```cpp
+extern template class<Blob>;//extern声明实例化定义在外部，将调用该实例化定义，本文件不会生成实例化代码，extern声明需要出现在需要实例化定义的片段之前。
+template int compare(const int& a,const int& b);//实例化定义
+//特别的，类模板的实例化定义会实例化其所有成员函数(不同与普通模板的实例化),所以实例化定义时的模板实参必须适合每一个成员函数，有局限性。
+```
+
+### 模板实参推断
+
+
 
 ### 模板的重载
 
@@ -4296,3 +4735,4 @@ $a = array("JavaScript","React","JSON");  //赋给数组,PHP
 2 C++编译器优先考虑普通函数
 3 如果函数模板可以产生一个更好的匹配，那么选择模板
 4 可以通过空模板实参列表的语法限定编译器只通过模板匹配
+

@@ -1,24 +1,30 @@
 /*
  * @Author: fengsc
  * @Date: 2021-10-14 14:32:49
- * @LastEditTime: 2021-10-15 15:53:00
+ * @LastEditTime: 2021-10-20 00:42:36
  */
 #pragma once
 #include <memory>
 #include <iostream>
 #include <vector>
+//template <typename T> class BlobPtr;
 template <typename T>
 class Blob
 {
+    template <typename X>
+    friend class BlobPtr;
+
 public:
     std::shared_ptr<std::vector<T>> data;
-    typedef typename std::vector<T>::size_type sizeType; //typename告诉编译器sizetype是一个类型而不是成员
+    typedef typename std::vector<T>::size_type sizeType; //typename告诉编译器sizetype是一个类型而不是静态成员
     Blob();
+    template <typename It>
+    Blob(It b, It e) :data(std::make_shared<std::vector<T>>(b, e)) {}
     Blob(std::initializer_list<T> il);
     sizeType size() const { return data->size(); }
     bool empty() const { return data->empty(); }
     void pushBack(const T &t) { data->push_back(t); }
-    void pushBack(T &&t) { data->push_back(std::move(t)); } //左值转换为右值引用,实现移动构造(原实参被销毁)
+    void pushBack(T &&t) { data->push_back(std::move(t)); }
     void popBack();
     T &back();
     T &operator[](sizeType i); //内部用vector实现，不能用const元素初始化，所以没必要设置const版的重载
@@ -63,4 +69,59 @@ void Blob<T>::popBack()
 {
     check(0, "popback on empty Blob");
     data->pop_back();
+}
+template <typename T> //指向Blob中的元素
+class BlobPtr
+{
+public:
+    BlobPtr() : curr(0) {}
+    BlobPtr(const Blob<T> &b, size_t ze = 0) : wptr(b.data), curr(ze) {}
+    T &operator*() const
+    {
+        auto p = check(curr, "dereference out of range");
+        return (*p)[curr];
+    }
+    BlobPtr &operator++();
+    BlobPtr &operator--();
+    BlobPtr operator++(int i);
+    BlobPtr operator--(int i);
+
+private:
+    size_t curr;
+    std::shared_ptr<std::vector<T>> check(size_t size, const std::string &msg) const;
+    std::weak_ptr<std::vector<T>> wptr;
+};
+template <typename T>
+BlobPtr<T> &BlobPtr<T>::operator++()
+{
+    ++curr;
+    return *this;
+}
+template <typename T>
+BlobPtr<T> &BlobPtr<T>::operator--()
+{
+    --curr;
+    return *this;
+}
+template <typename T>
+BlobPtr<T> BlobPtr<T>::operator++(int i)
+{
+    BlobPtr tmp = *this;
+    curr++;
+    return tmp;
+}
+template <typename T>
+BlobPtr<T> BlobPtr<T>::operator--(int i)
+{
+    BlobPtr tmp = *this;
+    curr--;
+    return tmp;
+}
+template <typename T>
+std::shared_ptr<std::vector<T>> BlobPtr<T>::check(size_t size, const std::string &msg) const
+{
+    auto ptr = wptr.lock();
+    if (!ptr || size >= ptr->size())
+        throw std::out_of_range(msg);
+    return std::shared_ptr<std::vector<T>>(ptr);
 }

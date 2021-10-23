@@ -44249,14 +44249,20 @@ namespace std __attribute__ ((__visibility__ ("default")))
 }
 # 10 "../src/blob.h" 2
 
-# 10 "../src/blob.h"
+
+# 11 "../src/blob.h"
 template <typename T>
 class Blob
 {
+    template <typename X>
+    friend class BlobPtr;
+
 public:
     std::shared_ptr<std::vector<T>> data;
     typedef typename std::vector<T>::size_type sizeType;
     Blob();
+    template <typename It>
+    Blob(It b, It e) :data(std::make_shared<std::vector<T>>(b, e)) {}
     Blob(std::initializer_list<T> il);
     sizeType size() const { return data->size(); }
     bool empty() const { return data->empty(); }
@@ -44307,19 +44313,65 @@ void Blob<T>::popBack()
     check(0, "popback on empty Blob");
     data->pop_back();
 }
+template <typename T>
+class BlobPtr
+{
+public:
+    BlobPtr() : curr(0) {}
+    BlobPtr(const Blob<T> &b, size_t ze = 0) : wptr(b.data), curr(ze) {}
+    T &operator*() const
+    {
+        auto p = check(curr, "dereference out of range");
+        return (*p)[curr];
+    }
+    BlobPtr &operator++();
+    BlobPtr &operator--();
+    BlobPtr operator++(int i);
+    BlobPtr operator--(int i);
+
+private:
+    size_t curr;
+    std::shared_ptr<std::vector<T>> check(size_t size, const std::string &msg) const;
+    std::weak_ptr<std::vector<T>> wptr;
+};
+template <typename T>
+BlobPtr<T> &BlobPtr<T>::operator++()
+{
+    ++curr;
+    return *this;
+}
+template <typename T>
+BlobPtr<T> &BlobPtr<T>::operator--()
+{
+    --curr;
+    return *this;
+}
+template <typename T>
+BlobPtr<T> BlobPtr<T>::operator++(int i)
+{
+    BlobPtr tmp = *this;
+    curr++;
+    return tmp;
+}
+template <typename T>
+BlobPtr<T> BlobPtr<T>::operator--(int i)
+{
+    BlobPtr tmp = *this;
+    curr--;
+    return tmp;
+}
+template <typename T>
+std::shared_ptr<std::vector<T>> BlobPtr<T>::check(size_t size, const std::string &msg) const
+{
+    auto ptr = wptr.lock();
+    if (!ptr || size >= ptr->size())
+        throw std::out_of_range(msg);
+    return std::shared_ptr<std::vector<T>>(ptr);
+}
 # 8 "../main2.cpp" 2
 int main()
 {
-    std::allocator<std::string> alloc;
-    std::vector<std::string> vi = {"11", "22", "33"};
-    auto p = alloc.allocate(vi.size() * 2);
-    auto q = std::uninitialized_copy(vi.begin(), vi.end(), p);
-    std::uninitialized_fill_n(q, vi.size(), "1");
-    std::cout << *p << ' ' << *(p + 1) << "  " << *(p + 2) << std::endl;
-    q+=vi.size();
-    while (p != q)
-        alloc.destroy(--q);
-    alloc.deallocate(p, 10);
+# 20 "../main2.cpp"
     Blob<std::string> blob = {"hehe", "lala"};
     std::cout << blob.back() << std::endl;
     blob.popBack();
@@ -44331,4 +44383,9 @@ int main()
     blob.pushBack("huhu");
     std::cout << blob.back() << std::endl;
     Blob<int> blob2 = {1, 2, 3};
+    BlobPtr<std::string> blobptr(blob,0);
+    std::cout <<' '<<*(blobptr)<<std::endl;
+    std::vector<int> v{0,1,2,3,4,5};
+    Blob<int>test(v.begin(),v.end());
+    std::cout <<test.size() << std::endl;
 }
