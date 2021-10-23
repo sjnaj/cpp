@@ -36507,7 +36507,9 @@ int main()
     bool commutative, associative, eliminable, idempotent;
     char e, ze;
     vector<string> Operator{"* ", "⊙ ", ". "};
-    char A[][3][3] = {'a', 'b', 'c', 'b', 'c', 'a', 'c', 'a', 'b', 'a', 'b', 'c', 'b', 'b', 'b', 'c', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'};
+    char A[][3][3] = {'a', 'b', 'c', 'b', 'c', 'a', 'c', 'a', 'b',
+                     'a', 'b', 'c', 'b', 'b', 'b', 'c', 'b', 'c',
+                     'a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'};
     for (int i = 0; i < 3; i++)
     {
         e = ze = 0;
