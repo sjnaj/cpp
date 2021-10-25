@@ -79,7 +79,8 @@
     - [基本(3)](#基本3)
     - [实例](#实例)
     - [成员访问运算符](#成员访问运算符)
-    - [类型转换重载，隐式转换风险和四种类型转换](#类型转换重载隐式转换风险和四种类型转换)
+    - [类型转换重载，隐式转换风险](#类型转换重载隐式转换风险)
+    - [四种类型转换](#四种类型转换)
     - [函数调用运算符(仿函数)](#函数调用运算符仿函数)
   - [异常处理](#异常处理)
     - [基本(4)](#基本4)
@@ -105,6 +106,8 @@
     - [成员模板](#成员模板)
     - [控制实例化](#控制实例化)
     - [模板实参推断](#模板实参推断)
+    - [转发](#转发)
+    - [模板类继承](#模板类继承)
     - [模板的重载](#模板的重载)
   
 # cpp
@@ -641,16 +644,68 @@ C++代码在编译时会根据参数列表对函数进行重命名，例如void 
 
 ### 数组
 
+与普通变量名相比，数组名既有一般性也有特殊性：一般性表现在数组名也用来指代特定的内存块，也有类型和长度；特殊性表现在数组名有时候会转换为一个指针，而不是它所指代的数据本身的值
+
 ```cpp
+
 int  a[]={1,2,3,4,5};
 int *p=&a[2];
-int x=p[-2];///p[-2]==a[0];
+int x=p[-2];///p[-2]==a[0];vector和string不支持
 
 vector<int>vi(begin(a), end(a));
 vector<int>vi(a+1, a+4);
 //应尽量使用vector和迭代器，避免使用容易出错的内置数组和指针
 
+//type[size]:数组类型，type(*)[size]：数组指针
+//数组名通常会被转换成指向首元素的常量指针,int [size]->int * const,
+//指向数组的指针和数组名都可以用[]访问元素，但指针是迭代器，而数组名不能通过自增自减的方式访问
+//数组指针自增一次偏移量是整个数组的大小
+
+//使用引用限定符和decltype不会发生这种转换
+int a[4]={1,2,3,4};
+int ai[3][4]={1,2,3,4,5,6,7,8,9,10,11,12};
+int row[4]=ai[1];//错误，array must be initialized with a brace-enclosed initializer
+int (&p)[4]=a;//引用绑定
+auto &p=a;//与上面的等价
+auto p=a;//普通指针
+auto p=(int(*)[4])a//数组指针
+(decltype(ai))ai;//ISO C++ forbids casting to an array type，不能强制转换为数组类型
+int (&row)[4]=ai[1];//row绑定到ai[1]数组上
+decltype(ai[1]) row=ai[1];//和上一个等价
+decltype(a) p=a;//和引用绑定不等价，虽然a和ai[1]都是一位数组，但类型不同，前者是int[size],后者是int(&)[size]，非引用语句相当于一个错误的初始化语句。
+
+auto &p=a;//引用绑定，即别名
+auto p=a;//指针(type*),一般用作(列)迭代器
+auto p=(int(*)[size])a//数组指针，用作行迭代器
+//都不会新建新数组；
+
+for(auto p=ai;p!=ai+3;p++)
+    {
+        for(auto q=*p;q!=*p+4;q++)//*p是数组类型，被自动转换为指向首元素的指针
+        {
+            cout<<*q<<' ';
+        }
+        cout<<endl;
+    }
+for(auto p=begin(ai);p!=end(ai);p++)//简洁版
+    {
+        for(auto q=begin(*p);q!=end(*p);q++)
+        {cout<<*q<<' ';}
+        cout<<endl;
+    } 
+
+    //使用范围for语句，维度是数组类型的一部分，不用设置终点
+     for(auto &row:ai)//所有外层必须加&防止被自动转成指针
+    {
+        for(auto& col:row)//最内侧不需要修改时可以不加&
+        {
+            cout<<col<<' ';
+        }
+        cout<<endl;
+    }
+
 ```
+
 ### 从assert到static_assert
 
 ```cpp
@@ -1995,10 +2050,18 @@ constexpr double Cos(double x)
 
 ### const和volatile
 
+顶层表示本身是常量，底层表示所指的对象是常量。
+
 ```cpp
-const int *p1;
-int const *p2;
-int * const p3;
+const int *p1;//底层const,允许改变变量本身，不允许改变指向的对象
+int const *p2;//底层const
+int * const p3;、//顶层const，不允许改变变量
+const int &r=i;//声明引用的const变量都是底层const，r是底层，i是顶层
+//执行拷贝操作时顶层const不受什么影响，底层const转换时必须保证有相同的底层const资格，例如两个底层const指针之间的赋值，以及将const引用变量作为函数参数时拷贝的实际形参(两者性质相同所以在函数中变量也会保持const)
+//非常量可以转化为常量，反之不行
+const int ci =0；
+int &r=ci;//错误
+const int &r=ci;
 ```
 
 在最后一种情况下，指针是只读的，也就是 p3 本身的值不能被修改；在前面两种情况下，指针所指向的数据是只读的，也就是 p1、p2 本身的值可以修改（指向不同的数据），但它们指向的数据不能被修改。
@@ -2029,7 +2092,7 @@ class const *p = new class(params);
 ```cpp
 const volatile int x=1;//volatile告诉编译器不要优化（C++中的常量折叠：指const变量（即常量）值放在编译器的符号表中，计算时编译器直接从表中取值，省去了访问内存的时间，从而达到了优化。）
   int *p=(int*)&x;//必须强制类型转换
-  *p=10;
+  *p=10;//未定义行为(不规范)，慎用
   std::cout <<x<<std::endl;
 
 ```
@@ -2317,8 +2380,8 @@ decltype(a) *func(int i);
 /*函数类型的形参会被转换成函数指针，而返回函数时不会自动转换，由于不能返回函数，所以必须显式指定为函数指针以返回。*/
 int (*f1(int))(int,int);
 
-using F=int(int,int);
-using PF=int(*)(int,int);
+using F=int(int,int);//函数
+using PF=int(*)(int,int);//函数指针
 PF f1(int);
 F *f1(int);//F*=FP;
 
@@ -3775,7 +3838,7 @@ pe->func();//they are equal,注意如果重载函数是const的则func也需要�
 int offset =(int)&((Entity*)nullptr)->member;//类的首地址是nullptr，其成员的地址就是偏移量
 ```
 
-### 类型转换重载，隐式转换风险和四种类型转换
+### 类型转换重载，隐式转换风险
 
 必须定义为类的成员函数,一般定义为const
 
@@ -3809,6 +3872,8 @@ explicit A(int i){}//这样可以避免拷贝初始化
  //只能显式转换
 ```
 
+### 四种类型转换
+
 由于不受限制的显式类型转换允许将任何指针转换为任何其他指针类型，而不依赖于指针所指向的类型，依然存在风险，所以C++引入四种类型转换。
 
 dynamic_cast
@@ -3817,27 +3882,115 @@ dynamic_cast依赖于RTTI信息
 
 ```cpp
 dynamic_cast < type-id > ( expression )
+B * pb = dynamic_cast<B *>(pa);
+C &c = dynamic_cast<C&>(a);
 /*The type-id must be a pointer or a referenceto a previously defined class type or a "pointer to void".The type of expression must be a pointer if type-id is a pointer, or an l-valueif type-id is a reference*/
 //如果type-id是interior类型，The cast will now return the 0 pointer value instead of throwing.
 //任意的expression都可以转成void*,type-id始终可以是void*。
 ```
 
-```cpp
-/*if type-id is a pointer to an unambiguous accessible direct or indirect baseclass of expression ,a pointer to the uniquesubobject of type type-id*/
-//派生类的指针转为基类指针， "upcast"，可以隐式完成，用dynamic_cast会有额外的开销，它的主要目的是实现safe的downcast
-```
+if type-id is a pointer to an unambiguous accessible direct or indirect baseclass of expression ,a pointer to the uniquesubobject of type type-id
+派生类的指针转为基类指针， "upcast"，可以隐式完成，用dynamic_cast会有额外的开销，它的主要目的是实现safe的downcast
+子类对象占用的内存空间大于父类对象，因此子类的指针或引用可访问的内存范围更大
+
+a run-timecheck is made to see if expression actually points to a **complete object** of the type of type-id . If this is true, the result is a pointer to a complete object of the type of type-id .
+原理是单继承中某个派生类(完全类)的直接或间接基类指针都可以安全的指向它。
 
 ```cpp
-//a run-timecheck is madeto seeif expression actually points to a **complete object** of the type of type-id . If this is true, the result is a pointer to a complete object of the type of type-id .
-//原理是单继承中某个派生类(完全类)的直接或间接基类指针都可以安全的指向它。
+D* pd = dynamic_cast<D*>(pb); // ok: pb actually points to a D 
+D* pd2 = dynamic_cast<D*>(pb2); // pb2 points to a B not a D,转换失败，pb2维持原状，pd2是 nullptr
 ```
 
-多继承情况主要是为了避免二义性，需要选择合适的路径进行转换，具体参见微软官方文档的栗子
+多继承情况下为了避免二义性，需要选择合适的路径进行转换，具体参见微软官方文档的栗子
+
+转换目标是指针类型时若转换失败则返回0，若是引用类型则抛出bad_cast错误，因为不存在空引用。
+
+```cpp
+Blob<T> &CastTest(DeriveBlob<T> &d)
+{
+    Blob<T> tmp;
+    Blob<T> &b =tmp;//不能 
+    try
+    {
+        b = dynamic_cast<Blob<T> &>(d); //内部定义的变量对外部不可见
+    }
+    catch (const std::bad_cast bad)
+    {
+        std::cerr << "Caught:" << bad.what() << std::endl;
+    }
+    return b;
+}
+```
 
 static_cast
 
+类似于C风格的强制转换。无条件转换,但是在编译时会进行类型检查及时报错，**无关指针之间不能转换**，无关类型之间转换(double->int)将使编译器**不会发出警告**.
+
+**no run-time type check** is made to help ensure the safety of the conversion.
+
+The static_cast operator can be used for operations such as converting a pointer to a base class to a pointer to a derived class.Such conversions are **not always safe**.
+
+Although dynamic_cast conversions aresafer, dynamic_cast only works on pointers or references,and therun-timetypecheck is an overhead.不安全(maybe generate disastrous things)，但是范围广
+
+If pb points to an object of type B and not to the complete D class, then dynamic_cast will know enough to return zero. However, static_cast relies on the programmer's assertion that pb points to an object of type D and simply returns a pointer to that supposed D object
+
+Dueto the danger of performing unchecked casts on top of a relocating garbagec ollector, the use of static_cast should only bein performance-critical code when you are **certain it will work correctly**. If you must use static_cast in release mode, substituteit with safe_cast in your debug builds to ensure success.
+
 ```cpp
+D* pd2 = static_cast<D*>(pb); // Not safe, D can have fields // and methods that are not in B.
+B* pb2 = static_cast<B*>(pd); // Safe conversion, D always // contains all of B.
+ch = static_cast<char>(i); // int to char 
+dbl = static_cast<double>(f); 
+i = static_cast<BYTE>(ch); // float to double
+return static_cast<typename remove_reference<T>::type&&>(t);//std::move原理，static_cast将左值转换为右值引用
 ```
+
+const_cast
+
+Removes the const , volatile ,and __unaligned attribute(s) from（属于） a class.
+
+只能转换指针，实现类似与用指针修改const变量的方式，但没有声明volatile，不会改变原变量
+
+You cannot use the const_cast operator to directly overridea constantvariable's constant status//被转换的变量值并不会被改变。
+
+对于const数据始终要保证不对const数据进行重新赋值。
+
+```cpp
+const_cast< CCTest * >( this )->number--;//number最终还是原值
+int *p=&constant;//错误，对于常量必须在前面加const限定符,除非将右边强制类型转换，但这样是不安全的
+int* modifier = const_cast<int*>(&constant);
+*modifier = 7;// undefined behavior(未定义不代表结果不可知，未定义行为是指执行某种计算机代码所产生的结果，这种代码在当前程序状态下的行为在其所使用的语言标准中没有规定。常见于翻译器对源代码存在某些假设，而执行时这些假设不成立的情况。不通用，可视为bug)
+int i = 3;                 // i is not declared const
+ const int& rci = i; //&改为*也成立，只要最初的变量不是const就可以正常修改
+ const_cast<int&>(rci) = 4; // OK: modifies i
+ std::cout << "i = " << i << '\n';
+//还有一个用法是将const变量指针转换为非const指针，使其能作为函数参数，前提是已知函数不会修改变量的值
+```
+
+reinterpret_cast Operator
+
+reinterpret_cast is a mandatory type conversion character in C ++.
+
+极不安全，在编写黑客程序、病毒或反病毒程序时，也许会用到这样怪异的转换。
+
+只有将转换后的类型值转换回到其原始类型，这样才是正确使用reinterpret_cast方式。
+
+随意将一个类型值的比特位交给另一个类型作为它的值，**但指针转换为其他类型时不能造成精度损失**。
+
+long long 可以转为int或int*(用强制类型转换可能会警告)，int \*不能转为int(强制类型转换也不能通过).
+
+```cpp
+int j;
+ intptr_t k=reinterpret<intptr_t>(&j);//这样可以将指针转换为整数，适应全平台intptr_t k=(intptr_t)(&j)
+ //64位机上int_64,long,long long也都行
+   
+```
+
+Allows any pointer to be converted into any other pointer type. Also allows any integral typeto be converted into any pointer type and vice versa（反之亦然）
+
+The reinterpret_cast operator can be used for conversions such as char\* to int\* , or One_class\* to Unrelated_class\* , which areinherently unsafe.
+
+可用这四种类型转换代替C风格的强制类型转换，dynamic_cast最安全，但范围受限且占用资源最多，static_cast用于确保安全的情况，reinterpret一般不要用，除非需要特殊用法。
 
 ### 函数调用运算符(仿函数)
 
@@ -3924,6 +4077,20 @@ try{
     // 可能抛出异常的语句
 }catch(exceptionType variable){
     // 处理异常的语句
+    }
+     /*语句块内部*/   //注意其局部作用域
+    try{
+        int a = 0;
+    }catch(Exception e){
+        int b = 0;
+    }finally{
+        int c = 0;
+    }
+    /*语句块外部*/       
+    //a = 5;    //非法，编译器无法识别该变量
+    //b = 5;    //非法，编译器无法识别该变量
+    //c = 5;    //非法，编译器无法识别该变量
+
 
 ```
 
@@ -3984,7 +4151,7 @@ catch(exceptionType variable)//异常声明
 
 只有跟 exceptionType 类型匹配的异常数据才会被传递给 variable，否则 catch 不会接收这份异常数据，也不会执行 catch 块中的语句。换句话说，catch 不会处理当前的异常。
 
-**不支持算数转换**：例如 int 转换为 float，char 转换为 int，double 转换为 int 等，但**支持const 转换**：也即将非 const 类型转换为 const 类型，例如将 char \* 转换为 const char \*和**向上转型以及数组或函数指针转换**。
+**不支持算数转换**：例如 int 转换为 float，char 转换为 int，double 转换为 int 等，但**支持const 转换**：也即将非 const 类型转换为 const 类型，例如将 char \* 转换为 const char \*和**向上转型以及数组或函数转换**。
 
 可以将 catch 看做一个没有返回值的函数，当异常发生后 catch 会被调用，并且会接收实参（异常数据）。
 
@@ -3996,7 +4163,7 @@ catch(exceptionType variable)//异常声明
 
 ```cpp
 try{
-    //可能抛出异常的语句
+    //可能抛出异常的语句类型转换
 }catch (exception_type_1 e){
     //处理异常的语句
 }catch (exception_type_2 e){
@@ -4596,8 +4763,16 @@ Point<char*, char*> *p = new Point<char*, char*>("东经180度", "北纬210度")
 
 在类的作用域之内(类的定义和外部函数在类名之后的部分)写类名时***不用写实参列表**。class\<T\>-\>class
 
-### 模板编译和强类型，弱类型
+仅针对本类，其它同模板类在本类作用域内也要加实参列表.
 
+Local classes are not allowed to have member templates.
+Member template functions **cannot be virtual functions** and **can not override virtual functions from a base class when they are declared with the same name as a base class virtual function**.//成员模板函数不是虚函数，也不能重写虚函数
+
+编译器在编译一个类的时候，需要确定这个类的虚函数表的大小。一般来说，如果一个类有N个虚函数，它的虚函数表的大小就是N，如果按字节算的话那么就是4*N。
+
+如果允许一个成员模板函数为虚函数的话，因为我们可以为该成员模板函数实例化出很多不同的版本，也就是可以实例化出很多不同版本的虚函数，那么编译器为了确定类的虚函数表的大小，就必须要知道我们一共为该成员模板函数实例化了多少个不同版本的虚函数。显然编译器需要查找所有的代码文件，才能够知道到底有几个虚函数，这对于多文件的项目来说，代价是非常高的，所以才规定成员模板函数不能够为虚函数。
+
+### 模板编译和强类型，弱类型
 
 当使用而不是定义模板时，编译器才生成代码。
 
@@ -4637,8 +4812,7 @@ template <typename T> class C
 {
     friend class Pal<T>;//限制用T初始化，需要前置声明
     friend class Pal<C>;//限制用C初始化的为友元
-    template<typename X> friend class Pal2;//所有实例都是C的友元，不用前置声明，注意typename不能写成本类的T，实例化时可以任意
-    //模板内层的参数名会隐藏外部的，所以在模块内不能重用模板参数名，并且一个模板参数名在一个参数列表里只能出现一次。
+    template<typename X> friend class Pal2;//所有实例都是C的友元，不用前置声明，注意typename不能写成本类的T(会被外部的T屏蔽)，实例化时可以任意
 };
 将自己的模板参数声明为友元
 template <typename T> class C
@@ -4660,7 +4834,7 @@ alias<std::string>bar;//std::map<int,std::string>bar;
 
 \\实例化后每一种实例都会有一份独有的静态成员，静态成员不能通过模板类访问，静态成员函数和其它成员函数一样只有在实例化时才会被定义
 
- typedef typename std::vector<T>::size_type sizeType; //typename告诉编译器sizetype是一个类型而不是静态成员，这也是typename唯一不同于class的地方
+ typedef typename std::vector<T>::size_type sizeType; //typename告诉编译器sizetype是一个类型而不是静态成员，是typename不同于class的地方，另一个不同的用处是用于声明模板函数实例化。
 
 ```
 
@@ -4718,12 +4892,181 @@ template <typename T>class Blob
 ```cpp
 extern template class<Blob>;//extern声明实例化定义在外部，将调用该实例化定义，本文件不会生成实例化代码，extern声明需要出现在需要实例化定义的片段之前。
 template int compare(const int& a,const int& b);//实例化定义
+template MyStack<int, 6>::MyStack( void );//实例化特定成员
 //特别的，类模板的实例化定义会实例化其所有成员函数(不同与普通模板的实例化),所以实例化定义时的模板实参必须适合每一个成员函数，有局限性。
 ```
 
 ### 模板实参推断
 
+a. **A template specialization for a specific typeis more specialized than one taking a generic type argument**.
+b. A template taking only T\* is more specialized than one taking only T , because a hypothetical type X\* is a valid argument for a T template argument, but X is nota valid argument for a T\* template argument.
+c. const T is more specialized than T , because const X is a valid argument for a T template argument, but X is nota valid argument for a const T template argument.
+d. const T\* is more specialized than T*\ , because const X\* is a valid argument for a T\* template argument, but X\* is nota valid argument for a const T \* template argument.
 
+模板只支持const转换和数组，函数到指针的转换
+
+注意引用传递数组时将不会转换为指针，此时如果维度不同则类型就不相同
+
+普通函数实参(和模板无关）和显式(\<type\>)定义的实参可以进行正常的类型转换
+
+```cpp
+template<typename T>
+void f(T,T);
+long long lnt;
+f(lnt,100);//不匹配
+f<long>(lnt,100)//显式指定，100自动转换为long
+
+//有多个模板参数时显式指定的参数从左向右匹配
+template<typename T1, typename T2,template T3>
+T1 f(T2,T3);
+f<int>(1,2);//T1显式指定，T2，T3根据实参推断，T1如果不在列表最左则不能匹配
+
+```
+
+```cpp
+//有时不能提前知道返回的准确类型，可以用尾置返回类型加以指定
+template<typename It>
+auto fcn(It beg,It end) ->decltype(*beg)//推断类型为迭代器所指元素的引用
+{
+    return *beg;
+}
+//如果要实现返回值，则须通过标准类型转换模板
+template<typename It>
+auto fcn(It beg,It end) ->typename remove_reference<decltype(*beg)>::type
+{
+    return (*beg);
+}
+
+```
+
+![标准类型转换模板](https://i.loli.net/2021/10/23/ywCDS8aBslnNJzi.png)
+
+模板实参类型转换
+
+```cpp
+// templated_user_defined_conversions.cpp 
+template <class T> struct S 
+{ 
+    template <class U> 
+operator S<U>()//重载尖括号
+{ 
+     return S<U>();
+}
+};
+int main() 
+{ 
+    S<int> s1;
+    S<long> s2 = s1; // Convert s1 using UDC and copy constructs S<long>. 
+     //在s2的复制构造函数的形参列表里以s1为实参，通过返回的显式指定模板实参为long的构造函数实现了模板实参类型转换
+}
+```
+
+函数指针实参推断
+
+```cpp
+template<typename T>
+int compare(const T&,const T&);
+int (*ptr)(const int &,const int &)=compare;//指向以int实例化的函数
+void func(const int &,const int &);
+void func(const string &,const string &);
+func(compare);//不能推断出模板实参类型
+func(compare<int>)//显式指定
+```
+
+引用推断类似函数的形参：T&：左值，const T &:左右值，T&&：右值
+
+引用折叠
+
+X& &,X& &&,X&& & 都折叠成X&;**X推断为type&**
+X&& && 折叠成X&&,**X推断为type**
+引用折叠只能用于间接创建的引用的引用(直接创建引用的引用是非法的)，如类型别名和模板实参
+**X&&可接受任意类型的参数，可以叫做万能引用**
+但由于模板实参推断出来的可能是引用也可能是非引用，所以一般只用于转发和重载(匹配非cosnt右值)
+
+```cpp
+template<typename T>
+typename remove_reference<T>::&& move(T&& t)
+{
+    return static_cast<typename remove_reference<T>::type&&>(t);
+}
+//传入左值时T推断为引用，然后引用被remove了，加上&&后依然返回一个右值
+//所以std::move可接受左值也可接受右值
+```
+
+### 转发
+
+将实参传递给其它函数并保持性质不变，包括实参是否为const和是左值还是右值
+
+如果一个函数参数是指向模板类型参数的右值引用，它对应的实参的const属性和左值右值属性将得到保证
+
+但因为函数参数都只能是左值，所以转发的时候参数即使被识别为右值引用，传递给内部函数的依然是一个左值，所以T&&不能用于发送右值引用的参数。
+
+模板中的 T 保存着传递进来的实参的信息，我们可以利用 T 的信息来强制类型转换我们的 param 使它和实参的类型一致
+
+```cpp
+template<typename T>
+T&& forward(T &param)
+{
+     return static_cast<T&&>(param);
+}
+//右值引用或右值转换后还是右值引用(T&& &&->T&&,T->T&&)，左值引用转换后结果还是左值(T& &&->T&)
+void f(int &&i,int &j)
+{
+    std::cout<<i<<j<<std::endl;
+}
+
+template<typename F, typename T1, typename T2>
+void filp(F f, T1 t1, T2 t2)
+{
+    // f(t1,t2);
+     f(std::forward<T1> t1,std::foward<T2> t2);
+} 
+int i=0;
+filp(1,i);
+```
+
+### 模板类继承
+
+类模板从类模板派生
+
+```cpp
+template <class T1, class T2>
+class A
+{
+    Tl v1; T2 v2;
+};
+template <class T1, class T2>
+class B : public A <T2, T1>
+{
+    T1 v3; T2 v4;
+};
+```
+
+类模板从模板类派生，常用
+
+```cpp
+template<class T1, class T2>
+class A{ T1 v1; T2 v2; };
+template <class T>
+class B: public A <int, double>
+{T v;};
+```
+
+类模板从普通类派生
+
+```cpp
+class A{ int v1; };
+template<class T>
+class B: public A{ T v; };
+```
+
+普通类从模板类派生
+
+```cpp
+template <class T>
+class A{ T v1; int n; };
+class B: public A <int> { double v; };
+```
 
 ### 模板的重载
 
