@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-21 17:41:34
- * @LastEditTime: 2021-09-18 00:46:38
+ * @LastEditTime: 2021-11-01 16:06:58
  */
 #ifndef _BinaryTree_h
 #include "BinaryTree.h"
@@ -17,7 +17,7 @@ void Create(BinTree &T, string s, int &i) //
         }
         else if (ch == '(' || (ch == ',')) //非空子女情况
             Create(T, s, i);
-        else if (ch == ')') //迭代越过左括号
+        else if (ch == ')') //越过左括号
             Create(T, s, i);
         else
         {
@@ -195,6 +195,25 @@ void FreeTree(BinTree &T)
         FreeTree(T->lchild);
         FreeTree(T->rchild);
         delete T;
+        T = nullptr;
+    }
+}
+void PrintRecess(BinTree &T, int k)
+{
+    if (T)
+    {
+        for (int i = 0; i < k; i++)
+            cout << ' ';
+        cout << T->data << endl;
+        PrintRecess(T->lchild, k + 5);
+        k += 5;
+        if (!T->lchild && T->rchild) //左支为空右支不为空就用#占位
+        {
+            for (int i = 0; i < k; i++)
+                cout << ' ';
+            cout << '#' << endl;
+        }
+        PrintRecess(T->rchild, k);
     }
 }
 int Height(BinTree &T) //基于后序遍历
@@ -345,19 +364,18 @@ void LevelOrder(BinTree &T)
     Q.push(T);
     while (!Q.empty())
     {
-        size = Q.size();
-        while (size--)
+        size = Q.size(); //记录当前层的结点数
+        while (size--)   //一次访问一层
         {
             p = Q.front();
             Q.pop();
             Visit(p);
-            if (!size) //分层
-                cout << endl;
             if (p->lchild)
                 Q.push(p->lchild);
             if (p->rchild)
                 Q.push(p->rchild);
         }
+        cout << endl;//分层
     }
 }
 void Visit(BinTree &t)
@@ -496,7 +514,7 @@ bool IsComplete(BinTree &T)
         Q.pop();
         if (p)
         {
-            if (flag) //同一层非空结点之前有空结点则不是完全二叉树
+            if (flag) //层序遍历时非空结点之前有空结点则不是完全二叉树
                 return false;
             Q.push(p->lchild);
             Q.push(p->rchild);
@@ -514,5 +532,5 @@ bool IsSameTree(BinTree p, BinTree q)
         return false;
     if (p->data != q->data)
         return false;
-    return IsSameTree(p->lchild ,q->lchild) && IsSameTree(p->rchild, q->rchild);
+    return IsSameTree(p->lchild, q->lchild) && IsSameTree(p->rchild, q->rchild);
 }

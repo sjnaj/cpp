@@ -427,3 +427,11 @@ Parsed CXX implicit link information from above output:
   implicit fwks: []
 
 
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/ninja cmTC_6ffe0 && [1/2  50% :: 0.230] Building C object CMakeFiles/cmTC_6ffe0.dir/CheckIncludeFile.c.o
+[2/2 100% :: 0.271] Linking C executable cmTC_6ffe0
+
+
+

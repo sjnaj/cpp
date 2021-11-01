@@ -13,7 +13,7 @@
     - [函数重载和其二义性](#函数重载和其二义性)
     - [数组](#数组)
     - [从assert到static_assert](#从assert到static_assert)
-    - [C和C++混合编程](#c和c混合编程)
+    - [C和C++混合编程和debug模式条件编译](#c和c混合编程和debug模式条件编译)
   - [类和对象](#类和对象)
     - [类的定义和对象的创建](#类的定义和对象的创建)
     - [类成员访问权限](#类成员访问权限)
@@ -44,6 +44,7 @@
     - [列表初始化](#列表初始化)
     - [返回数组指针和函数指针](#返回数组指针和函数指针)
     - [lambda匿名函数](#lambda匿名函数)
+    - [bitset](#bitset)
   - [C++string](#cstring)
     - [基本](#基本)
     - [\<cctype\>](#cctype)
@@ -79,7 +80,7 @@
     - [基本(3)](#基本3)
     - [实例](#实例)
     - [成员访问运算符](#成员访问运算符)
-    - [类型转换重载，隐式转换风险](#类型转换重载隐式转换风险)
+    - [类型转换重载，隐式转换风险以及explicit](#类型转换重载隐式转换风险以及explicit)
     - [四种类型转换](#四种类型转换)
     - [函数调用运算符(仿函数)](#函数调用运算符仿函数)
   - [异常处理](#异常处理)
@@ -108,7 +109,11 @@
     - [模板实参推断](#模板实参推断)
     - [转发](#转发)
     - [模板类继承](#模板类继承)
-    - [模板的重载](#模板的重载)
+    - [重载与模板](#重载与模板)
+    - [可变参数函数模板](#可变参数函数模板)
+    - [模板特例化](#模板特例化)
+  - [threat](#threat)
+    - [basic](#basic)
   
 # cpp
 
@@ -326,6 +331,46 @@ int main( )
 | ios::unitbuf    | 每次输出之后刷新所有的流                                   |
 | ios::stdio      | 每次输出之后清除stdout, stderr                             |
 
+彩色格式化输出，控制格式与printf相同
+
+```cpp
+#include <iostream>
+ 
+//the following are UBUNTU/LINUX ONLY terminal color codes.
+#define RESET   "\033[0m"
+#define BLACK   "\033[30m"      /* Black */
+#define RED     "\033[31m"      /* Red */
+#define GREEN   "\033[32m"      /* Green */
+#define YELLOW  "\033[33m"      /* Yellow */
+#define BLUE    "\033[34m"      /* Blue */
+#define MAGENTA "\033[35m"      /* Magenta */
+#define CYAN    "\033[36m"      /* Cyan */
+#define WHITE   "\033[37m"      /* White */
+#define BOLDBLACK   "\033[1m\033[30m"      /* Bold Black */
+#define BOLDRED     "\033[1m\033[31m"      /* Bold Red */
+#define BOLDGREEN   "\033[1m\033[32m"      /* Bold Green */
+#define BOLDYELLOW  "\033[1m\033[33m"      /* Bold Yellow */
+#define BOLDBLUE    "\033[1m\033[34m"      /* Bold Blue */
+#define BOLDMAGENTA "\033[1m\033[35m"      /* Bold Magenta */
+#define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
+#define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
+ 
+int main(int argc, const char * argv[])
+{
+ 
+    // insert code here...
+    std::cout< <RED      <<"Hello, World! in RED\n";
+    std::cout<<GREEN    <<"Hello, World! in GREEN\n";
+    std::cout<<YELLOW   <<"Hello, World! in YELLOW\n";
+    std::cout<<BLUE     <<"Hello, World! in BLUE\n";
+    std::cout<<MAGENTA  <<"Hello, World! in MAGENTA\n";
+    std::cout<<CYAN     <<"Hello, World! in CYAN\n";
+    std::cout<<WHITE    <<"Hello, World! in WHITE\n";
+    std::cout<<BOLDRED  <<"Hello, World! in BOLDRED\n";
+    std::cout<<BOLDCYAN <<"Hello, World! in BOLDCYAN\n";
+    return 0;
+}
+```
 ### bool and const
 
 C++ 新增了 bool 类型（布尔类型），它一般占用 1个字节长度。bool 类型只有两个取值，true 和 false：true 表示“真”，false 表示“假”
@@ -677,7 +722,6 @@ decltype(a) p=a;//和引用绑定不等价，虽然a和ai[1]都是一位数组�
 auto &p=a;//引用绑定，即别名
 auto p=a;//指针(type*),一般用作(列)迭代器
 auto p=(int(*)[size])a//数组指针，用作行迭代器
-//都不会新建新数组；
 
 for(auto p=ai;p!=ai+3;p++)
     {
@@ -703,6 +747,10 @@ for(auto p=begin(ai);p!=end(ai);p++)//简洁版
         }
         cout<<endl;
     }
+   for(decltype(ai[0]) row : ai)//相当于这样
+        for(decltype(ai[0][0]) col : row)
+               { cout << col << endl;}
+            cout<endl;
 
 ```
 
@@ -724,7 +772,46 @@ static_assert(sizeof(double) == 2 * sizeof(int), "double not twice int size");
 
 assert()可以导致正在运行的程序中止，而static_assert()可以导致程序无法通过编译。
 
-### C和C++混合编程
+### C和C++混合编程和debug模式条件编译
+
+debug模式有时需要打印一些release模式不需要的调试用日志
+
+```cpp
+ANSI C标准中有几个标准预定义宏（也是常用的）：
+
+__LINE__：在源代码中插入当前源代码行号；
+
+__FILE__：在源文件中插入当前源文件名；
+
+__DATE__：在源文件中插入当前的编译日期
+
+__TIME__：在源文件中插入当前编译时间；
+
+__STDC__：当要求程序严格遵循ANSI C标准时该标识被赋值为1；
+
+__cplusplus：当编写C++程序时该标识符被定义。
+#define _DEBUG 1 //#define _DEBUG
+#if _DEBUG == 1  //#ifdef _DEBUG
+//赋值易于控制
+#define LOG(format, ...) printf("LOG:" format, ##__VA_ARGS__)//##__VA_ARGS__可省略可变参数
+#define LOG_M(format, ...) fprintf(stderr, "\033[1;35m  LOG_G(%s:%d):\t\033[0m" format, __func__, __LINE__, ##__VA_ARGS__)
+#define LOG_R(format, ...) fprintf(stderr, "\033[1;31m  LOG_R(%s,%d):\t\033[0m" format, __func__, __LINE__, ##__VA_ARGS__)//注意两个格式列表之间的空格
+#else
+#define LOG(format, ...)//空定义，否则_DEBUG为0时会报错
+#define LOG_M(format, ...)
+#define LOG_R(format, ...)
+#endif
+
+int i=0;
+    LOG("hello %d\n", i++);
+     LOG_R("hello %d\n", i++);
+      LOG_M("hello %d\n", i++);
+
+/* LOG:hello 0
+  LOG_R(main,51):       hello 1
+  LOG_G(main:60):       hello 2
+  */
+```
 
 直接混合会出问题
 
@@ -2149,6 +2236,27 @@ int main()
     std::cout << add(9,12) << std::endl;//输出21
     return 0;
 }
+//多行定义
+#define MACRO(arg1, arg2) do { \
+/* declarations */ \
+stmt1; \
+stmt2; \
+/* ... */ \
+} while(0) /* (no trailing ; ) */
+
+```
+
+define 中的# ## 一般是用来拼接字符串的
+
+```cpp
+#define  strcpy__(dst, src)      strcpy(dst, #src)
+     
+strcpy__(buff,abc)  相当于 strcpy__(buff,“abc”)
+
+#define FUN(arg)     my##arg
+则     FUN(ABC)
+等价于  myABC
+
 ```
 
 ```cpp
@@ -2419,7 +2527,6 @@ lambda 表达式还可以通过捕获列表捕获一定范围内的变量：
 [&,=foo],与上一个配套
 [bar] 按值捕获 bar 变量，同时不捕获其他变量。
 [this] 捕获当前类中的 this 指针，让 lambda 表达式拥有和当前类成员函数同样的访问权限。如果已经使用了 & 或者 =，就默认添加此选项。捕获 this 的目的是可以在 lamda 中使用当前类的成员函数和成员变量。
-
 ```
 
 ```cpp
@@ -2446,24 +2553,30 @@ auto f4 = [=]{ return a++; };            // error，a是以复制方式捕获的
 auto f5 = [a]{ return a + b; };          // error，没有捕获变量b
 auto f6 = [a, &b]{ return a + (b++); };  // OK，捕获a和b的引用，并对b做自加运算
 auto f7 = [=, &b]{ return a + (b++); };  // OK，捕获所有外部变量和b的引用，并对b做自加运算
+//注意，单个外部变量不允许以相同的传递方式导入多次。例如 [=，val1] 中，val1 先后被以值传递的方式导入了 2 次，这是非法的。
 ```
 
 lambda 表达式的类型在 C++11 中被称为“闭包类型（Closure Type）”。它是一个特殊的，匿名的非 union 的类类型，属于函数对象。
 
 按照 C++ 标准，lambda 表达式的 operator() 默认是 const 的。一个 const 成员函数是无法修改成员变量的值的。而 mutable 的作用，就在于取消 operator() 的 const。
 
+*由于值传递进来的只是同一作用域的外部变量，所以全局变量不会被遮盖，函数体可以访问和修改全局变量*。
+
 ```cpp
 int a = 0;
 auto f1 = [=]{ return a++; };             // error，修改按值捕获的外部变量
-auto f2 = [=]() mutable { return a++; };  // OK，mutable(mutable第一个用处是允许被const成员函数修改),注意在后置返回式之前
+auto f2 = [=]() mutable { return a++; };  // OK，mutable(mutable的一个用处是允许被const成员函数修改),注意在后置返回式之前
 ```
 
-对于没有捕获任何变量的 lambda 表达式，还可以被转换成一个普通的函数指针，它的捕获列表捕获住的任何外部变量，最终均会变为闭包类型的成员变量。而一个使用了成员变量的类的 operator()，如果能直接被转换为普通的函数指针，那么 lambda 表达式本身的 this 指针就丢失掉了。而没有捕获任何外部变量的 lambda 表达式则不存在这个问题
+**对于没有捕获任何变量的 lambda 表达式，还可以被转换成一个普通的函数指针**，它的捕获列表捕获住的任何外部变量，最终均会变为闭包类型的成员变量。而一个使用了成员变量的类的 operator()，如果能直接被转换为普通的函数指针，那么 lambda 表达式本身的 this 指针就丢失掉了。而没有捕获任何外部变量的 lambda 表达式则不存在这个问题
+，**如果捕获了变量则只能用auto作为类型，其它函数调用时形参需要用function类**。
 
 ```cpp
 using func_t = int(*)(int);//函数指针
 func_t f = [](int a){ return a; };//可用auto替代
 f(123);
+auto f1=[=](int a){ return a; };
+void func(std::Function<int(int)> &f);
 ```
 
 ```cpp
@@ -2523,6 +2636,66 @@ Function for_each(InputIterator beg, InputIterator end, Function f)  {
     f(*beg++);
 }
 //lambda函数可以简便的满足一元谓词的输入条件，多余的参数通过它的捕获传入即可
+```
+
+### bitset
+
+![i.png](https://i.loli.net/2021/10/27/btFcXpISNfKUqur.png)
+
+```cpp
+ bitset<32> bitvec1(0xbeef); //小于高位补零，大于截高
+    bitset<32> bitvec2(0ULL) ;   //0 :unsigned  long  long
+        bitset<32>
+            bitvec3(~0ULL);
+    bitset<32> bitvec4("1100"); //bitset<32>bitvec4;
+    string s="1111111110000000001111111";
+    bitset<32> bitvec5(s,5,4);
+    cin>> bitvec6;//最多16个
+    cout<<bitvec1<<endl<<bitvec2<<endl<<bitvec3<<endl<<bitvec4<<endl;
+    //支持逻辑运算
+     bitvec2=bitvec1|bitvec2;
+     bitvec3~=bitvec4;
+     bitvec3=bitvec1&bitvec5;
+```
+
+```cpp
+bitset<32>bitvec(1U);
+bool is_set=bitvec.any();//存在置位
+bool is_not_set=bitvec.none();
+bool all_set= bitvec.all();
+size_t onBits=bitvec.count();//置位数
+size_t ze= bitvec.size();
+bitvec.filp();//翻转
+bitvec.reset();//复位
+bitvec.set();//置位
+
+bitvec.filp(0);
+bitvec.set(0,1);
+bitvec.reset(i);
+bitvec.test(i);
+
+//重载的下标运算符
+bitvec[i].flip();
+bitvec[i].set();
+~bitvec[i];
+
+//提取
+
+unsigned long ulong=to_ulong(bitvec);
+unsigned long long ullong=to_ullong(bitvec);
+
+//与普通位运算的关系
+ulong|=1UL<<x;
+bitvec.set(x);
+bool check=ulong&(1UL<<x);
+check=bitvec[x];
+ulong&=~(1UL<<x);
+bitvec.reset(x);
+```
+
+```cpp
+
+
 ```
 
 ## C++string
@@ -2943,6 +3116,8 @@ int main() {
 ●指针和引用的自增(++)运算意义不一样；
 
 ●引用是类型安全的，而指针不是 (引用比指针多了类型检查
+
+**传指针的好处是可以传入NULL表示不处理，而引用必须绑定到实际的对象**。
 
 ### 临时变量、引用参数和const引用
 
@@ -3535,6 +3710,7 @@ typeid 会把获取到的类型信息保存到一个 type_info 类型的对象�
 /*std::type_info is not copyable, so you cannot store it by value. You can use a reference if it suits your needs:
 const std::type_info &a(typeid(int));*/
 //本编译器不支持赋值运算符，只能用复制构造函数,并且不支持raw_name()
+      typeid(d).name()//可以不用中间对象
     #include <typeinfo>
     const type_info &nInfo = typeid(n);
     cout<<nInfo.name()<<" | "<<nInfo.raw_name()<<" | "<<nInfo.hash_code()<<endl;
@@ -3838,7 +4014,7 @@ pe->func();//they are equal,注意如果重载函数是const的则func也需要�
 int offset =(int)&((Entity*)nullptr)->member;//类的首地址是nullptr，其成员的地址就是偏移量
 ```
 
-### 类型转换重载，隐式转换风险
+### 类型转换重载，隐式转换风险以及explicit
 
 必须定义为类的成员函数,一般定义为const
 
@@ -3870,6 +4046,7 @@ f(1);//这时会先调用拷贝初始化，相当于将int隐式转换成A,而�
 explicit A(int i){}//这样可以避免拷贝初始化
  explicit operator double() const{ return real; }//避免意外的隐式转换
  //只能显式转换
+ //不是特别看重安全的化一般不加，可以利用其特性简便的构造或返回对象。
 ```
 
 ### 四种类型转换
@@ -4774,7 +4951,7 @@ Member template functions **cannot be virtual functions** and **can not override
 
 ### 模板编译和强类型，弱类型
 
-当使用而不是定义模板时，编译器才生成代码。
+**当使用而不是定义模板时，编译器才生成代码。(build的时候可能不会报错，与编译器特性也有关)**。
 
 当使用类类型的对象时，只需要类定义可用即可，所以一般将类定义和函数声明放在头文件中。而**模板定义和函数实现都应该放在头文件里**。
 
@@ -4995,13 +5172,13 @@ typename remove_reference<T>::&& move(T&& t)
 
 ### 转发
 
-将实参传递给其它函数并保持性质不变，包括实参是否为const和是左值还是右值
+函数将实参传递给内部其它函数并保持性质不变，包括实参是否为const和是左值还是右值
 
 如果一个函数参数是指向模板类型参数的右值引用，它对应的实参的const属性和左值右值属性将得到保证
 
 但因为函数参数都只能是左值，所以转发的时候参数即使被识别为右值引用，传递给内部函数的依然是一个左值，所以T&&不能用于发送右值引用的参数。
 
-模板中的 T 保存着传递进来的实参的信息，我们可以利用 T 的信息来强制类型转换我们的 param 使它和实参的类型一致
+T&&模板中的 T 保存着传递进来的实参的信息，我们可以利用 T 的信息来强制类型转换我们的 param 使它和实参的类型一致
 
 ```cpp
 template<typename T>
@@ -5016,7 +5193,7 @@ void f(int &&i,int &j)
 }
 
 template<typename F, typename T1, typename T2>
-void filp(F f, T1 t1, T2 t2)
+void filp(F f, T1 &&t1, T2 &&t2)
 {
     // f(t1,t2);
      f(std::forward<T1> t1,std::foward<T2> t2);
@@ -5068,14 +5245,165 @@ class A{ T v1; int n; };
 class B: public A <int> { double v; };
 ```
 
-### 模板的重载
+### 重载与模板
 
 函数模板会进行严格的类型匹配，模板类型不提供隐式类型转化
 普通函数能够进行自动类型转换
 
 函数模板重载四大规则
 1 函数模板可以像普通函数一样被重载
-2 C++编译器优先考虑普通函数
+2 C++编译器**优先考虑普通函数**
 3 如果函数模板可以产生一个更好的匹配，那么选择模板
 4 可以通过空模板实参列表的语法限定编译器只通过模板匹配
+
+```cpp
+//Tx和T*X,对于指针类型会选择更匹配的T*x
+
+cout<<debug_rep("lalala")<<endl;
+
+template<typename T>
+string debug_rep(const T &);//T会被绑定到char[6]
+template<typename T>
+string debug_rep(T*);//T会被绑定到const char,数组到指针的转换是精确匹配
+
+string debug_rep(const string &);//需要从const char *到string的转换
+//最终会调用第二个模板函数
+
+//如果希望将其按string处理，需要自定义重载的转换函数
+string debug_rep(char *p)
+{
+    return debug_rep(string(p));
+}
+string debug_rep(const char *p)
+{
+    return debug_rep(string(p));
+}
+//在定义任何函数之前要确保所有重载的版本已经声明，否则编译器可能在遇到所需要的函数之前实例化一个并非是所需的版本
+```
+
+### 可变参数函数模板
+
+```cpp
+template<typename T,typename... Args>//Args：模板参数包名,T必须存在，因为模板参数不能为空
+void foo(const T,const Args&... rest)//rest:函数参数包名,T可选
+foo(i,s,t,r);//包中有三个参数
+foo(i)//空包
+
+template<typename T,typename... Args>
+void count(Args...args)
+{
+    cout<<sizeof...(Args)<<sizeof...(args)<<endl;
+}
+count<int>(1,2,3,4,5);//显式指定确定T
+//5 5
+template <typename T>
+std::ostream &print(std::ostream &out, const T &t)//递归终止，rest只剩一个元素时调用,更特例化，如果删除则下面函数递归到最后将没有参数匹配t,作为重载函数声明需在作用域
+{
+    return out<<t<<std::endl;
+}
+template <typename T,typename...Args>
+std::ostream &print(std::ostream &out,const T&t,const Args&...rest)//拓展Args,拓展模式为引用，注意引用符号的位置
+{
+   out<<t<<' ';
+   print(out,rest...);//拓展rest
+}
+
+```
+
+转发可变参数模板
+
+```cpp
+template <typename...Args>
+void func(Args&&... args)
+{
+  work(std::forward(Args)(args)...);
+}
+```
+
+### 模板特例化
+
+单一模板不一定能匹配所有情况，所以需要一个不平凡的特例
+
+```cpp
+template<typename T>
+int compare(const T&a,const T&b)
+{
+    if(a<b)
+    return -1;
+    if(a>b)
+    return 1;
+    return 0;
+}
+template<size_t N,size_t M>
+int compare(const char(&p)N,const char (&q)M)
+{
+    return strcmp(p,q);
+      
+}
+const char *p1="alalla",*p2="lilili";
+compare(p1,p2);//将调用模板1,但无法判断出来两个字符串的大小
+compare("hi","huhu");//将调用模板2,因为无法将指针转化为数组的引用
+
+template<>
+compare(const char *const &p,const char * const &q)//模板1的特例化版本，T会被推断为const char*
+{
+ return strcmp(p,q);
+}
+//先匹配到模板1，再比较自动推断的T和特例化的T，判断出后者更精确，于是选择特例化版本
+```
+
+特例化本质是**实例化一个模板，而非重载**，不影响函数匹配，和显式实例化最大的区别是**重新定义了函数体**。
+
+特例化依然要满足普通作用于规则，否则丢失声明会导致匹配不到特例化版本。
+
+模板及其特例化声明应放在同一个头文件里，同名模板的声明在前面，然后是这些模板的特例化版本。
+
+类模板特例化
+
+部分特例化(偏特化)的模板参数是原始模板列表的一个子集或特例化版本，如果列表为空则为全特化。
+
+**函数模板特例化只能全特化.**
+
+```cpp
+//remove_reference实现，特例化版本的模板参数与原模板的相同，但类型不同
+template <typename T>
+struct remove_reference{ typedef T type;}
+template <typename T>
+struct remove_reference<T&>{ typedef T type;}
+template <typename T>
+struct remove_reference<T&&>{ typedef T type;}
+remove_reference<decltype(42)>::type a;//调用第一个
+remove_reference<decltype(decltype(i))>::type b;//调用第二个
+remove_reference<decltype(std::move(i))>::type c;//调用第三个
+//a,b,c皆为int型
+```
+
+特例化成员
+
+```cpp
+template<typename T>
+struct foo 
+{
+    void bar() {
+        /*...*/
+    }
+};
+template<>
+void Foo<int>bar()
+{
+    /*特例化的语句*/
+}
+foo<string>bar();//调用foo<string>的版本
+foo<int>bar();//调用特例化而非默认的
+```
+
+## threat
+
+### basic
+
+线程：线程是操作系统能够进行CPU调度的最小单位，它被包含在进程之中，一个进程可包含单个或者多个线程。可以用多个线程去完成一个任务，也可以用多个进程去完成一个任务，它们的本质都相当于多个人去合伙完成一件事。
+
+多线程并发：多线程是实现并发(双核的真正并行或者单核机器的任务切换都叫并发）的一种手段，多线程并发即多个线程同时执行,一般而言，多线程并发就是把一个任务拆分为多个子任务，然后交由不同线程处理不同子任务,使得这多个子任务同时执行。
+
+C++多线程并发： （简单情况下）实现C++多线程并发程序的思路如下：将任务的不同功能交由多个函数分别实现，创建多个线程，每个线程执行一个函数，一个任务就这样同时分由不同线程执行了。
 

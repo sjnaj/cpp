@@ -1,12 +1,14 @@
 /*
  * @Author: fengsc
  * @Date: 2021-10-14 14:32:49
- * @LastEditTime: 2021-10-20 00:42:36
+ * @LastEditTime: 2021-10-25 19:33:30
  */
 #pragma once
 #include <memory>
 #include <iostream>
 #include <vector>
+#include <typeinfo>
+#include "typeName.h"
 //template <typename T> class BlobPtr;
 template <typename T>
 class Blob
@@ -19,7 +21,7 @@ public:
     typedef typename std::vector<T>::size_type sizeType; //typename告诉编译器sizetype是一个类型而不是静态成员
     Blob();
     template <typename It>
-    Blob(It b, It e) :data(std::make_shared<std::vector<T>>(b, e)) {}
+    Blob(It b, It e) : data(std::make_shared<std::vector<T>>(b, e)) {}
     Blob(std::initializer_list<T> il);
     sizeType size() const { return data->size(); }
     bool empty() const { return data->empty(); }
@@ -28,6 +30,8 @@ public:
     void popBack();
     T &back();
     T &operator[](sizeType i); //内部用vector实现，不能用const元素初始化，所以没必要设置const版的重载
+    virtual ~Blob() = default;
+
 private:
     void check(sizeType i, const std::string &msg) const;
     void handle_out_of_memory(const std::exception &e)
@@ -69,6 +73,42 @@ void Blob<T>::popBack()
 {
     check(0, "popback on empty Blob");
     data->pop_back();
+}
+template <typename T>
+class DeriveBlob : public Blob<T>
+{
+};
+template <typename T>
+Blob<T> &CastTest(DeriveBlob<T> &d)
+{
+    Blob<T> tmp;
+    Blob<T> &b = tmp;
+    try
+    {
+        std::cout << typeid(d).name() << " to " << typeid(b).name() << std::endl;
+        b = dynamic_cast<Blob<T> &>(d); //内部定义的变量对外部不可见
+    }
+    catch (const std::bad_cast bad)
+    {
+        std::cerr << "Caught:" << bad.what() << std::endl;
+    }
+    return b;
+}
+template <typename T>
+DeriveBlob<T> &CastTest(Blob<T> &b)
+{
+    DeriveBlob<T> tmp;
+    DeriveBlob<T> &d = tmp;
+    try
+    {
+        std::cout << typeid(b).name() << " to " << typeid(d).name() << std::endl;
+        d = dynamic_cast<DeriveBlob<T> &>(b);
+    }
+    catch (const std::bad_cast bad)
+    {
+        std::cerr << "Caught:" << bad.what() << '\n';
+    }
+    return d;
 }
 template <typename T> //指向Blob中的元素
 class BlobPtr

@@ -44249,8 +44249,636 @@ namespace std __attribute__ ((__visibility__ ("default")))
 }
 # 10 "../src/blob.h" 2
 
+# 1 "../src/typeName.h" 1
+# 9 "../src/typeName.h"
+# 1 "/usr/include/c++/9/cxxabi.h" 1 3
+# 44 "/usr/include/c++/9/cxxabi.h" 3
+       
+# 45 "/usr/include/c++/9/cxxabi.h" 3
 
-# 11 "../src/blob.h"
+#pragma GCC visibility push(default)
+
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h" 1 3 4
+# 49 "/usr/include/c++/9/cxxabi.h" 2 3
+
+# 1 "/usr/include/x86_64-linux-gnu/c++/9/bits/cxxabi_tweaks.h" 1 3
+# 34 "/usr/include/x86_64-linux-gnu/c++/9/bits/cxxabi_tweaks.h" 3
+namespace __cxxabiv1
+{
+  extern "C"
+  {
+# 46 "/usr/include/x86_64-linux-gnu/c++/9/bits/cxxabi_tweaks.h" 3
+  __extension__ typedef int __guard __attribute__((mode (__DI__)));
+
+
+  typedef void __cxa_vec_ctor_return_type;
+
+
+  typedef void __cxa_cdtor_return_type;
+
+
+  }
+}
+# 51 "/usr/include/c++/9/cxxabi.h" 2 3
+
+
+
+
+namespace __cxxabiv1
+{
+  extern "C"
+  {
+
+
+  typedef __cxa_cdtor_return_type (*__cxa_cdtor_type)(void *);
+
+
+  void*
+  __cxa_vec_new(size_t __element_count, size_t __element_size,
+  size_t __padding_size, __cxa_cdtor_type __constructor,
+  __cxa_cdtor_type __destructor);
+
+  void*
+  __cxa_vec_new2(size_t __element_count, size_t __element_size,
+   size_t __padding_size, __cxa_cdtor_type __constructor,
+   __cxa_cdtor_type __destructor, void *(*__alloc) (size_t),
+   void (*__dealloc) (void*));
+
+  void*
+  __cxa_vec_new3(size_t __element_count, size_t __element_size,
+   size_t __padding_size, __cxa_cdtor_type __constructor,
+   __cxa_cdtor_type __destructor, void *(*__alloc) (size_t),
+   void (*__dealloc) (void*, size_t));
+
+
+  __cxa_vec_ctor_return_type
+  __cxa_vec_ctor(void* __array_address, size_t __element_count,
+   size_t __element_size, __cxa_cdtor_type __constructor,
+   __cxa_cdtor_type __destructor);
+
+  __cxa_vec_ctor_return_type
+  __cxa_vec_cctor(void* __dest_array, void* __src_array,
+    size_t __element_count, size_t __element_size,
+    __cxa_cdtor_return_type (*__constructor) (void*, void*),
+    __cxa_cdtor_type __destructor);
+
+
+  void
+  __cxa_vec_dtor(void* __array_address, size_t __element_count,
+   size_t __element_size, __cxa_cdtor_type __destructor);
+
+  void
+  __cxa_vec_cleanup(void* __array_address, size_t __element_count, size_t __s,
+      __cxa_cdtor_type __destructor) noexcept;
+
+
+  void
+  __cxa_vec_delete(void* __array_address, size_t __element_size,
+     size_t __padding_size, __cxa_cdtor_type __destructor);
+
+  void
+  __cxa_vec_delete2(void* __array_address, size_t __element_size,
+      size_t __padding_size, __cxa_cdtor_type __destructor,
+      void (*__dealloc) (void*));
+
+  void
+  __cxa_vec_delete3(void* __array_address, size_t __element_size,
+      size_t __padding_size, __cxa_cdtor_type __destructor,
+      void (*__dealloc) (void*, size_t));
+
+  int
+  __cxa_guard_acquire(__guard*);
+
+  void
+  __cxa_guard_release(__guard*) noexcept;
+
+  void
+  __cxa_guard_abort(__guard*) noexcept;
+
+
+  int
+  __cxa_atexit(void (*)(void*), void*, void*) noexcept;
+
+  int
+  __cxa_finalize(void*);
+
+
+  int
+  __cxa_thread_atexit(void (*)(void*), void*, void *) noexcept;
+
+
+  void
+  __cxa_pure_virtual(void) __attribute__ ((__noreturn__));
+
+  void
+  __cxa_deleted_virtual(void) __attribute__ ((__noreturn__));
+
+
+  void
+  __cxa_bad_cast() __attribute__((__noreturn__));
+
+  void
+  __cxa_bad_typeid() __attribute__((__noreturn__));
+
+  void
+  __cxa_throw_bad_array_new_length() __attribute__((__noreturn__));
+# 195 "/usr/include/c++/9/cxxabi.h" 3
+  char*
+  __cxa_demangle(const char* __mangled_name, char* __output_buffer,
+   size_t* __length, int* __status);
+
+
+  }
+}
+
+
+
+
+
+
+namespace __cxxabiv1
+{
+
+  class __fundamental_type_info : public std::type_info
+  {
+  public:
+    explicit
+    __fundamental_type_info(const char* __n) : std::type_info(__n) { }
+
+    virtual
+    ~__fundamental_type_info();
+  };
+
+
+  class __array_type_info : public std::type_info
+  {
+  public:
+    explicit
+    __array_type_info(const char* __n) : std::type_info(__n) { }
+
+    virtual
+    ~__array_type_info();
+  };
+
+
+  class __function_type_info : public std::type_info
+  {
+  public:
+    explicit
+    __function_type_info(const char* __n) : std::type_info(__n) { }
+
+    virtual
+    ~__function_type_info();
+
+  protected:
+
+    virtual bool
+    __is_function_p() const;
+  };
+
+
+  class __enum_type_info : public std::type_info
+  {
+  public:
+    explicit
+    __enum_type_info(const char* __n) : std::type_info(__n) { }
+
+    virtual
+    ~__enum_type_info();
+  };
+
+
+  class __pbase_type_info : public std::type_info
+  {
+  public:
+    unsigned int __flags;
+    const std::type_info* __pointee;
+
+    explicit
+    __pbase_type_info(const char* __n, int __quals,
+        const std::type_info* __type)
+    : std::type_info(__n), __flags(__quals), __pointee(__type)
+    { }
+
+    virtual
+    ~__pbase_type_info();
+
+
+    enum __masks
+      {
+ __const_mask = 0x1,
+ __volatile_mask = 0x2,
+ __restrict_mask = 0x4,
+ __incomplete_mask = 0x8,
+ __incomplete_class_mask = 0x10,
+ __transaction_safe_mask = 0x20,
+ __noexcept_mask = 0x40
+      };
+
+  protected:
+    __pbase_type_info(const __pbase_type_info&);
+
+    __pbase_type_info&
+    operator=(const __pbase_type_info&);
+
+
+    virtual bool
+    __do_catch(const std::type_info* __thr_type, void** __thr_obj,
+        unsigned int __outer) const;
+
+    inline virtual bool
+    __pointer_catch(const __pbase_type_info* __thr_type, void** __thr_obj,
+      unsigned __outer) const;
+  };
+
+  inline bool __pbase_type_info::
+  __pointer_catch (const __pbase_type_info *thrown_type,
+     void **thr_obj,
+     unsigned outer) const
+  {
+    return __pointee->__do_catch (thrown_type->__pointee, thr_obj, outer + 2);
+  }
+
+
+  class __pointer_type_info : public __pbase_type_info
+  {
+  public:
+    explicit
+    __pointer_type_info(const char* __n, int __quals,
+   const std::type_info* __type)
+    : __pbase_type_info (__n, __quals, __type) { }
+
+
+    virtual
+    ~__pointer_type_info();
+
+  protected:
+
+    virtual bool
+    __is_pointer_p() const;
+
+    virtual bool
+    __pointer_catch(const __pbase_type_info* __thr_type, void** __thr_obj,
+      unsigned __outer) const;
+  };
+
+  class __class_type_info;
+
+
+  class __pointer_to_member_type_info : public __pbase_type_info
+  {
+  public:
+    __class_type_info* __context;
+
+    explicit
+    __pointer_to_member_type_info(const char* __n, int __quals,
+      const std::type_info* __type,
+      __class_type_info* __klass)
+    : __pbase_type_info(__n, __quals, __type), __context(__klass) { }
+
+    virtual
+    ~__pointer_to_member_type_info();
+
+  protected:
+    __pointer_to_member_type_info(const __pointer_to_member_type_info&);
+
+    __pointer_to_member_type_info&
+    operator=(const __pointer_to_member_type_info&);
+
+
+    virtual bool
+    __pointer_catch(const __pbase_type_info* __thr_type, void** __thr_obj,
+      unsigned __outer) const;
+  };
+
+
+  class __base_class_type_info
+  {
+  public:
+    const __class_type_info* __base_type;
+
+
+
+    long __offset_flags;
+
+
+    enum __offset_flags_masks
+      {
+ __virtual_mask = 0x1,
+ __public_mask = 0x2,
+ __hwm_bit = 2,
+ __offset_shift = 8
+      };
+
+
+    bool
+    __is_virtual_p() const
+    { return __offset_flags & __virtual_mask; }
+
+    bool
+    __is_public_p() const
+    { return __offset_flags & __public_mask; }
+
+    ptrdiff_t
+    __offset() const
+    {
+
+
+
+      return static_cast<ptrdiff_t>(__offset_flags) >> __offset_shift;
+    }
+  };
+
+
+  class __class_type_info : public std::type_info
+  {
+  public:
+    explicit
+    __class_type_info (const char *__n) : type_info(__n) { }
+
+    virtual
+    ~__class_type_info ();
+
+
+
+
+
+
+    enum __sub_kind
+      {
+
+ __unknown = 0,
+
+
+
+ __not_contained,
+
+
+ __contained_ambig,
+
+
+ __contained_virtual_mask = __base_class_type_info::__virtual_mask,
+
+
+ __contained_public_mask = __base_class_type_info::__public_mask,
+
+
+ __contained_mask = 1 << __base_class_type_info::__hwm_bit,
+
+ __contained_private = __contained_mask,
+ __contained_public = __contained_mask | __contained_public_mask
+      };
+
+    struct __upcast_result;
+    struct __dyncast_result;
+
+  protected:
+
+    virtual bool
+    __do_upcast(const __class_type_info* __dst_type, void**__obj_ptr) const;
+
+    virtual bool
+    __do_catch(const type_info* __thr_type, void** __thr_obj,
+        unsigned __outer) const;
+
+  public:
+
+
+    virtual bool
+    __do_upcast(const __class_type_info* __dst, const void* __obj,
+  __upcast_result& __restrict __result) const;
+
+
+
+
+
+
+
+    inline __sub_kind
+    __find_public_src(ptrdiff_t __src2dst, const void* __obj_ptr,
+        const __class_type_info* __src_type,
+        const void* __src_ptr) const;
+# 478 "/usr/include/c++/9/cxxabi.h" 3
+    virtual bool
+    __do_dyncast(ptrdiff_t __src2dst, __sub_kind __access_path,
+   const __class_type_info* __dst_type, const void* __obj_ptr,
+   const __class_type_info* __src_type, const void* __src_ptr,
+   __dyncast_result& __result) const;
+
+
+
+
+
+    virtual __sub_kind
+    __do_find_public_src(ptrdiff_t __src2dst, const void* __obj_ptr,
+    const __class_type_info* __src_type,
+    const void* __src_ptr) const;
+  };
+
+
+  class __si_class_type_info : public __class_type_info
+  {
+  public:
+    const __class_type_info* __base_type;
+
+    explicit
+    __si_class_type_info(const char *__n, const __class_type_info *__base)
+    : __class_type_info(__n), __base_type(__base) { }
+
+    virtual
+    ~__si_class_type_info();
+
+  protected:
+    __si_class_type_info(const __si_class_type_info&);
+
+    __si_class_type_info&
+    operator=(const __si_class_type_info&);
+
+
+    virtual bool
+    __do_dyncast(ptrdiff_t __src2dst, __sub_kind __access_path,
+   const __class_type_info* __dst_type, const void* __obj_ptr,
+   const __class_type_info* __src_type, const void* __src_ptr,
+   __dyncast_result& __result) const;
+
+    virtual __sub_kind
+    __do_find_public_src(ptrdiff_t __src2dst, const void* __obj_ptr,
+    const __class_type_info* __src_type,
+    const void* __sub_ptr) const;
+
+    virtual bool
+    __do_upcast(const __class_type_info*__dst, const void*__obj,
+  __upcast_result& __restrict __result) const;
+  };
+
+
+  class __vmi_class_type_info : public __class_type_info
+  {
+  public:
+    unsigned int __flags;
+    unsigned int __base_count;
+
+
+
+
+    __base_class_type_info __base_info[1];
+
+    explicit
+    __vmi_class_type_info(const char* __n, int ___flags)
+    : __class_type_info(__n), __flags(___flags), __base_count(0) { }
+
+    virtual
+    ~__vmi_class_type_info();
+
+
+    enum __flags_masks
+      {
+ __non_diamond_repeat_mask = 0x1,
+ __diamond_shaped_mask = 0x2,
+ __flags_unknown_mask = 0x10
+      };
+
+  protected:
+
+    virtual bool
+    __do_dyncast(ptrdiff_t __src2dst, __sub_kind __access_path,
+   const __class_type_info* __dst_type, const void* __obj_ptr,
+   const __class_type_info* __src_type, const void* __src_ptr,
+   __dyncast_result& __result) const;
+
+    virtual __sub_kind
+    __do_find_public_src(ptrdiff_t __src2dst, const void* __obj_ptr,
+    const __class_type_info* __src_type,
+    const void* __src_ptr) const;
+
+    virtual bool
+    __do_upcast(const __class_type_info* __dst, const void* __obj,
+  __upcast_result& __restrict __result) const;
+  };
+
+
+  struct __cxa_exception;
+  struct __cxa_refcounted_exception;
+  struct __cxa_dependent_exception;
+  struct __cxa_eh_globals;
+
+  extern "C"
+  {
+# 591 "/usr/include/c++/9/cxxabi.h" 3
+  void*
+  __dynamic_cast(const void* __src_ptr,
+   const __class_type_info* __src_type,
+   const __class_type_info* __dst_type,
+   ptrdiff_t __src2dst);
+# 604 "/usr/include/c++/9/cxxabi.h" 3
+  __cxa_eh_globals*
+  __cxa_get_globals() noexcept __attribute__ ((__const__));
+
+  __cxa_eh_globals*
+  __cxa_get_globals_fast() noexcept __attribute__ ((__const__));
+
+
+  void
+  __cxa_free_exception(void*) noexcept;
+
+
+  void
+  __cxa_throw(void*, std::type_info*, void ( *) (void *))
+  __attribute__((__noreturn__));
+
+
+  void*
+  __cxa_get_exception_ptr(void*) noexcept __attribute__ ((__pure__));
+
+  void*
+  __cxa_begin_catch(void*) noexcept;
+
+  void
+  __cxa_end_catch();
+
+  void
+  __cxa_rethrow() __attribute__((__noreturn__));
+
+
+
+  std::type_info*
+  __cxa_current_exception_type() noexcept __attribute__ ((__pure__));
+
+
+
+
+  __cxa_dependent_exception*
+  __cxa_allocate_dependent_exception() noexcept;
+
+
+  void
+  __cxa_free_dependent_exception(__cxa_dependent_exception*) noexcept;
+
+  }
+
+
+
+  class __foreign_exception
+  {
+    virtual ~__foreign_exception() throw();
+    virtual void __pure_dummy() = 0;
+  };
+
+}
+# 679 "/usr/include/c++/9/cxxabi.h" 3
+namespace abi = __cxxabiv1;
+
+namespace __gnu_cxx
+{
+# 696 "/usr/include/c++/9/cxxabi.h" 3
+  class recursive_init_error: public std::exception
+  {
+  public:
+    recursive_init_error() noexcept;
+    virtual ~recursive_init_error() noexcept;
+  };
+}
+
+
+#pragma GCC visibility pop
+# 10 "../src/typeName.h" 2
+
+
+
+# 1 "/usr/include/c++/9/cstdlib" 1 3
+# 39 "/usr/include/c++/9/cstdlib" 3
+       
+# 40 "/usr/include/c++/9/cstdlib" 3
+# 14 "../src/typeName.h" 2
+
+
+# 15 "../src/typeName.h"
+template <class T>
+std::string
+type_name()
+{
+    typedef typename std::remove_reference<T>::type TR;
+    std::unique_ptr<char, void (*)(void *)> own(
+
+        abi::__cxa_demangle(typeid(TR).name(), nullptr,
+                            nullptr, nullptr),
+
+
+
+        std::free);
+    std::string r = own != nullptr ? own.get() : typeid(TR).name();
+    if (std::is_const<TR>::value)
+        r += " const";
+    if (std::is_volatile<TR>::value)
+        r += " volatile";
+    if (std::is_lvalue_reference<T>::value)
+        r += "&";
+    else if (std::is_rvalue_reference<T>::value)
+        r += "&&";
+    return r;
+}
+# 12 "../src/blob.h" 2
+
 template <typename T>
 class Blob
 {
@@ -44262,7 +44890,7 @@ public:
     typedef typename std::vector<T>::size_type sizeType;
     Blob();
     template <typename It>
-    Blob(It b, It e) :data(std::make_shared<std::vector<T>>(b, e)) {}
+    Blob(It b, It e) : data(std::make_shared<std::vector<T>>(b, e)) {}
     Blob(std::initializer_list<T> il);
     sizeType size() const { return data->size(); }
     bool empty() const { return data->empty(); }
@@ -44271,6 +44899,8 @@ public:
     void popBack();
     T &back();
     T &operator[](sizeType i);
+    virtual ~Blob() = default;
+
 private:
     void check(sizeType i, const std::string &msg) const;
     void handle_out_of_memory(const std::exception &e)
@@ -44312,6 +44942,42 @@ void Blob<T>::popBack()
 {
     check(0, "popback on empty Blob");
     data->pop_back();
+}
+template <typename T>
+class DeriveBlob : public Blob<T>
+{
+};
+template <typename T>
+Blob<T> &CastTest(DeriveBlob<T> &d)
+{
+    Blob<T> tmp;
+    Blob<T> &b = tmp;
+    try
+    {
+        std::cout << typeid(d).name() << " to " << typeid(b).name() << std::endl;
+        b = dynamic_cast<Blob<T> &>(d);
+    }
+    catch (const std::bad_cast bad)
+    {
+        std::cerr << "Caught:" << bad.what() << std::endl;
+    }
+    return b;
+}
+template <typename T>
+DeriveBlob<T> &CastTest(Blob<T> &b)
+{
+    DeriveBlob<T> tmp;
+    DeriveBlob<T> &d = tmp;
+    try
+    {
+        std::cout << typeid(b).name() << " to " << typeid(d).name() << std::endl;
+        d = dynamic_cast<DeriveBlob<T> &>(b);
+    }
+    catch (const std::bad_cast bad)
+    {
+        std::cerr << "Caught:" << bad.what() << '\n';
+    }
+    return d;
 }
 template <typename T>
 class BlobPtr
@@ -44369,9 +45035,25 @@ std::shared_ptr<std::vector<T>> BlobPtr<T>::check(size_t size, const std::string
     return std::shared_ptr<std::vector<T>>(ptr);
 }
 # 8 "../main2.cpp" 2
+template <typename T>
+std::ostream &print(std::ostream &out, const T &t)
+{
+    return out << t << std::endl;
+}
+template <typename T, typename... Args>
+std::ostream &print(std::ostream &out, const T &t, const Args &...rest)
+{
+    out << t << ' ';
+    print(out, rest...);
+}
+template <typename T, typename... Args>
+void count(Args... args)
+{
+    std::cout << sizeof...(Args) << sizeof...(args) << std::endl;
+};
 int main()
 {
-# 20 "../main2.cpp"
+# 36 "../main2.cpp"
     Blob<std::string> blob = {"hehe", "lala"};
     std::cout << blob.back() << std::endl;
     blob.popBack();
@@ -44383,9 +45065,16 @@ int main()
     blob.pushBack("huhu");
     std::cout << blob.back() << std::endl;
     Blob<int> blob2 = {1, 2, 3};
-    BlobPtr<std::string> blobptr(blob,0);
-    std::cout <<' '<<*(blobptr)<<std::endl;
-    std::vector<int> v{0,1,2,3,4,5};
-    Blob<int>test(v.begin(),v.end());
-    std::cout <<test.size() << std::endl;
+    BlobPtr<std::string> blobptr(blob, 0);
+    std::cout << ' ' << *(blobptr) << std::endl;
+    std::vector<int> v{0, 1, 2, 3, 4, 5};
+    Blob<int> test(v.begin(), v.end());
+    std::cout << test.size() << std::endl;
+    Blob<int> &t = test;
+    DeriveBlob<int> &d = CastTest(t);
+    DeriveBlob<int> tmp;
+    DeriveBlob<int> &d1 = tmp;
+    Blob<int> &b = CastTest(d1);
+    count<int>(1, 2, 3, 4, 5);
+    print(std::cout, 1);
 }

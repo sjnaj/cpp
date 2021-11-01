@@ -1,11 +1,12 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-21 17:41:47
- * @LastEditTime: 2021-09-18 00:45:48
+ * @LastEditTime: 2021-10-31 17:19:46
  */
 #include "BinaryTree.cpp"
 int main()
 {
+  BinTree p=new TreeNode;
     BinTree T; 
     int i = 0;
     int h = 0;
@@ -52,6 +53,7 @@ int main()
     cout << endl;*/
  //   cout << CountNode(T, 2) << ' ' << Count(T) << endl;
     cout << IsBalance(T, h) <<' '<<h<<' '<<Height(T)<< endl;
+    PrintRecess(T,0);
    // cout << NodeHeight(T, T->lchild) << endl;
   //  cout << MaxEle(T) << ' ' << MinEle(T) << endl;
     FreeTree(T);

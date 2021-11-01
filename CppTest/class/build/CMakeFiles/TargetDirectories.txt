@@ -33,6 +33,7 @@
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ExperimentalBuild.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ExperimentalUpdate.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ContinuousStart.dir
+/home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/maintest1.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ContinuousMemCheck.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ContinuousTest.dir
 /home/fengsc/Desktop/cpp/CppTest/class/build/CMakeFiles/ContinuousSubmit.dir

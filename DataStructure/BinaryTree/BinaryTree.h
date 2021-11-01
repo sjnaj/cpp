@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-20 22:59:05
- * @LastEditTime: 2021-10-05 23:23:13
+ * @LastEditTime: 2021-11-01 18:26:44
  */
 #pragma once  
 //在一个文件里只包含一次
@@ -21,9 +21,7 @@ class TreeNode
 public:
     DataType data;
     TreeNode *lchild, *rchild;
-    TreeNode() : data(0), lchild(nullptr), rchild(nullptr) {}
-    TreeNode(DataType val) : data(val), lchild(nullptr), rchild(nullptr) {}
-    TreeNode(DataType val, TreeNode *lptr, TreeNode *rptr) : data(val), lchild(lptr), rchild(rptr) {}
+    TreeNode(DataType val=0, TreeNode *lptr=nullptr, TreeNode *rptr=nullptr) : data(val), lchild(lptr), rchild(rptr) {}
 };
 typedef TreeNode *BinTree;
 void Create(BinTree &T, string s, int &i);           //用广义表初始化，+(*(4,*(3,2)),+(*(3,2),1))，(a(b,c(d,)))
@@ -33,7 +31,7 @@ void CreateExpression(BinTree &T, string S);         //用算数表达式初始�
 int ComputeExpression(BinTree &T);
 int DoOperator(char op,int x,int y);
 void PreOrder(BinTree &T);
-void Inorder(BinTree &T);
+void InOrder(BinTree &T);
 void Postorder(BinTree &T);
 void PreOrderUnrecur(BinTree &T);
 void PreOrderUnrecur1(BinTree &T); //非通用
@@ -44,6 +42,7 @@ void TraverseGeneral(BinTree &T, int flags);//flags=1,2,3;pre，in,post;
 void Print(BinTree &T);            //广义表形式
 void PrintPreOrderExp(BinTree &T); //先序序列形式
 void PrintLevel(BinTree &T);//类树形打印，仅适用于完全二叉树
+void PrintRecess(BinTree &T,int k);//凹入表
 void FreeTree(BinTree &T);
 int Height(BinTree &T);
 int NodeHeight(BinTree &T,BinTree &p);//结点深度

@@ -1,13 +1,13 @@
 <!--
  * @Author: fengsc
  * @Date: 2021-08-02 18:59:05
- * @LastEditTime: 2021-10-21 23:06:02
+ * @LastEditTime: 2021-11-01 00:31:12
 -->
 - [STL](#stl)
   - [基本](#基本)
   - [序列式容器](#序列式容器)
-    - [array](#array)
-    - [vector](#vector)
+    - [array(静态数组)](#array静态数组)
+    - [vector(动态数组)](#vector动态数组)
     - [deque](#deque)
     - [list](#list)
   - [容器适配器](#容器适配器)
@@ -15,6 +15,7 @@
     - [queue](#queue)
     - [priority_queue](#priority_queue)
     - [pair and make_pair](#pair-and-make_pair)
+    - [tuple](#tuple)
   
 # STL
 
@@ -116,11 +117,15 @@ p[i]：返回 p 后面第 i 个元素的引用。
 
 ## 序列式容器
 
-### array
+### array(静态数组)
 
 ```cpp
 #include <array>
 std::array<double, 10> values {0.5,1.0,1.5,,2.0};
+
+//C++17以后可以自动推导类型和数量，但不能部分指定。
+//不会像普通数组那样退化为指针，例如传参时丢失size
+//由于要显式指定大小，传参较为不方便，一般配合模板使用
 ```
 
 可部分初始化
@@ -207,7 +212,7 @@ else
 }
 ```
 
-### vector
+### vector(动态数组)
 
 vector 容器是 STL 中最常用的容器之一，它和 array 容器非常类似，都可以看做是对 C++ 普通数组的“升级版”。不同之处在于，**array 实现的是静态数组（容量固定的数组），而 vector 实现的是一个动态数组，**即可以进行元素的插入和删除，在此过程中，vector 会动态调整所占用的内存空间，整个过程无需人工干预。
 
@@ -368,6 +373,8 @@ vector 容器扩容的整个过程，和 realloc() 函数的实现方法类似�
 只要有新元素要添加到 vector 容器中而恰好此时 vector 容器的容量不足时，该容器就会自动扩容。
 避免 vector 容器执行不必要的扩容操作的关键在于，在使用 vector 容器初期，就要将其容量设为足够大的值。换句话说，在 vector 容器刚刚构造出来的那一刻，就应该**借助 reserve() 成员方法为其扩充足够大的容量**。
 
+**注意reverse和定义时的初始化不一样，后者会构造对象，前者只是预留空间**。
+
 **利用swap调整容量**：vector\<T\>(x).swap(x);
 
 1) 先执行 vector|<int\>(myvector)，此表达式会调用 vector 模板类中的拷贝构造函数，从而创建出一个临时的 vector 容器（后续称其为 tempvector）。
@@ -449,7 +456,7 @@ splic 用法
  queue	基础容器需包含以下成员函数： empty()size()front()back()push_back()pop_front() | 满足条件的基础容器有 deque、list。	deque |
 | priority_queue	基础容器需包含以下成员函数： |empty() size()front()push_back()pop_back() | 满足条件的基础容器有vector、deque。	vector |
 
-**都没有迭代器，只能遍历访问，也不能直接初始化赋值**
+**都没有迭代器，只能遍历访问，也不能直接初始化赋值**.
 
 ### stack
 
@@ -461,6 +468,7 @@ std::list<int> values{ 1, 2, 3 };
 std::stack<int, std::list<int>> my_stack1(values);
 std::stack<int, std::list<int>> my_stack=my_stack1;
 //std::stack<int, std::list<int>> my_stack(my_stack1);
+//类似vector，建议用emplace代替push
 
 ```
 
@@ -598,4 +606,63 @@ pair<string, double> product1("tomatoes", 3.25);
     return 0;
 ```
 
+### tuple
+
+```cpp
+#include <iostream>     // std::cout
+#include <tuple>        // std::tuple
+using std::tuple;
+int main()
+{
+    std::tuple<int, char> first;                             // 1)   first{}
+    std::tuple<int, char> second(first);                     // 2)   second{}
+    std::tuple<int, char> third(std::make_tuple(20, 'b'));   // 3)   third{20,'b'}
+    std::tuple<long, char> fourth(third);                    // 4)的左值方式, fourth{20,'b'}
+    std::tuple<int, char> fifth(10, 'a');                    // 5)的右值方式, fifth{10.'a'}
+    std::tuple<int, char> sixth(std::make_pair(30, 'c'));    // 6)的右值方式, sixth{30,''c}
+    return 0;
+}
+explicit tuple (const Types&... elems);  //左值方式
+template <class... UTypes>
+    explicit tuple (UTypes&&... elems);  //右值方式
+    //显式的，不能隐式转换，例如 std::tuple<int, char> fifth={10, 'a'}是错误的
+```
+
+```cpp
+auto first = std::make_tuple (10,'a');   // tuple < int, char >
+const int a = 0; int b[3];
+auto second = std::make_tuple (a,b);     // tuple < int, int* >
+```
+
+![支持的操作](https://i.loli.net/2021/10/27/nhyGYJblk2gL3N6.png)
+
+```cpp
+int size;
+    //创建一个 tuple 对象存储 10 和 'x'
+    std::tuple<int, char> mytuple(10, 'x');
+    //计算 mytuple 存储元素的个数
+    size = std::tuple_size<decltype(mytuple)>::value;
+    //输出 mytuple 中存储的元素
+    std::cout << std::get<0>(mytuple) << " " << std::get<1>(mytuple) << std::endl;
+    //修改指定的元素
+    std::get<0>(mytuple) = 100;
+    std::cout << std::get<0>(mytuple) << std::endl;
+    //使用 makde_tuple() 创建一个 tuple 对象
+    auto bar = std::make_tuple("test", 3.1, 14);
+    //拆解 bar 对象，分别赋值给 mystr、mydou、myint
+    const char* mystr = nullptr;
+    double mydou;
+    int myint;
+    //使用 tie() 时，如果不想接受某个元素的值，实参可以用 std::ignore 代替
+    std::tie(mystr, mydou, myint) = bar;
+    //std::tie(std::ignore, std::ignore, myint) = bar;  //只接收第 3 个整形值
+    //将 mytuple 和 bar 中的元素整合到 1 个 tuple 对象中
+    auto mycat = std::tuple_cat(mytuple, bar);
+    size = std::tuple_size<decltype(mycat)>::value;
+    std::cout << size << std::endl;
+    return 0;
+}
+```
+
+和pair都可以用于多返回值函数，有时引用或利用自定义结构体更方便。
 

@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-11 22:53:37
- * @LastEditTime: 2021-08-16 23:48:51
+ * @LastEditTime: 2021-10-27 01:31:53
  */
 #ifndef _Stack_H
 #include "Stack.h"
@@ -64,7 +64,7 @@ void ReverseArrayUsingStack(DataType C[], int size)
     SeqStack S(size);
     int i;
     for (i = 0; i < size; i++)
-        Push(S, C[i]);
+        Push(S, C[i]);  
     for (i = 0; i < size; i++)
         C[i] = Top(S);
 }

@@ -49,7 +49,9 @@
         "bit": "cpp",
         "complex": "cpp",
         "iomanip": "cpp",
-        "dense": "cpp"
+        "dense": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.default.configurationProvider": "go2sh.cmake-integration"

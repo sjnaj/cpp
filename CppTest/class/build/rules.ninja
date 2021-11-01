@@ -117,6 +117,25 @@ rule CXX_EXECUTABLE_LINKER__main
 #############################################
 # Rule for compiling CXX files.
 
+rule CXX_COMPILER__maintest1
+  depfile = $DEP_FILE
+  deps = gcc
+  command = /bin/x86_64-linux-gnu-g++-9  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking CXX executable.
+
+rule CXX_EXECUTABLE_LINKER__maintest1
+  command = $PRE_LINK && /bin/x86_64-linux-gnu-g++-9  $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  description = Linking CXX executable $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling CXX files.
+
 rule CXX_COMPILER__LINK
   depfile = $DEP_FILE
   deps = gcc
