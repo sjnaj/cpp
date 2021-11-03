@@ -1,14 +1,13 @@
 /*
  * @Author: fengsc
  * @Date: 2021-10-31 14:11:31
- * @LastEditTime: 2021-11-01 19:00:13
+ * @LastEditTime: 2021-11-02 18:50:03
  */
 #pragma once
 #include <iostream>
 #include <string>
 #include <vector>
 #include <stack>
-#include <array>
 #include <queue>
 #include "BinaryTree.cpp"
 using DataType = char;

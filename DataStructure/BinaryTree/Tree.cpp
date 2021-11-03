@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-10-31 14:55:19
- * @LastEditTime: 2021-11-01 19:12:52
+ * @LastEditTime: 2021-11-01 19:43:56
  */
 #ifndef _Tree_H
 #include "Tree.h"
@@ -35,7 +35,7 @@ CSTree createByGeneralLists(const string &str)
     int flag;
     char ch;
     CSTree t = new Node(str[0]); //确定根结点
-    CSTree p = t, ptr;
+    CSTree p = t, ptr;  
     for (int i = 1; i < str.length(); i++)
     {
         ch = str[i];

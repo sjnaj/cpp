@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-21 17:41:47
- * @LastEditTime: 2021-10-31 17:19:46
+ * @LastEditTime: 2021-11-02 16:19:31
  */
 #include "BinaryTree.cpp"
 int main()
@@ -54,6 +54,13 @@ int main()
  //   cout << CountNode(T, 2) << ' ' << Count(T) << endl;
     cout << IsBalance(T, h) <<' '<<h<<' '<<Height(T)<< endl;
     PrintRecess(T,0);
+    BinTree T1=CreateUnrecur("3(5(6,2(7,4)),1(0,8))");
+  
+    cout<<Find(T1->lchild,'7')<<endl;
+    cout<<Find(T1->lchild,'4')<<endl;
+    BinTree p1= new TreeNode('4'),q1= new TreeNode('7');
+    cout<<lowestCommonAncestor(T1,p1,q1)->data<<endl;
+    cout<<CreatePreOrderList(T1)<<endl;
    // cout << NodeHeight(T, T->lchild) << endl;
   //  cout << MaxEle(T) << ' ' << MinEle(T) << endl;
     FreeTree(T);

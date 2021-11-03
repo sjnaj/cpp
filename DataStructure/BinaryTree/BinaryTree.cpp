@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-21 17:41:34
- * @LastEditTime: 2021-11-01 16:06:58
+ * @LastEditTime: 2021-11-02 23:54:22
  */
 #ifndef _BinaryTree_h
 #include "BinaryTree.h"
@@ -30,13 +30,13 @@ void Create(BinTree &T, string s, int &i) //
         }
     }
 }
-void CreateUnrecur(BinTree &T, string s)
+BinTree CreateUnrecur(string s)
 {
     stack<BinTree> S;
     int flag;
     char ch;
-    T = new TreeNode(s[0]); //确定根结点
-    BinTree p = T, prt;     //p需要在T初始化后确定
+    BinTree T = new TreeNode(s[0]); //确定根结点
+    BinTree p = T, prt;             //p需要在T初始化后确定
     for (int i = 1; i < s.length(); i++)
     {
         ch = s[i];
@@ -61,6 +61,7 @@ void CreateUnrecur(BinTree &T, string s)
                 prt->rchild = p;
         }
     }
+    return T;
 }
 void CreateExpression(BinTree &T, string S)
 {
@@ -123,17 +124,33 @@ int DoOperator(char op, int x, int y)
         exit(-1);
     }
 }
-void CreateByPreQrder(BinTree &T, string S, int &i)
+BinTree CreateByPreQrder(string &S)
 {
-    DataType ch = S[i++];
-    if (ch == '#')
-        T = nullptr;
-    else
+    if (S[0] == '#')
     {
-        T = new TreeNode(ch);
-        CreateByPreQrder(T->lchild, S, i);
-        CreateByPreQrder(T->rchild, S, i);
+        S.erase(0, 1);
+        return nullptr;
     }
+    /*size_t size;//数据为整形时使用
+    BinTree root = new TreeNode(stoi(S, size));
+    S.erase(0, size + 1);*/
+    //数据为char类型
+    BinTree root = new TreeNode(S[0]);
+    root->lchild = CreateByPreQrder(S);
+    root->rchild = CreateByPreQrder(S);
+    return root;
+}
+string CreatePreOrderList(BinTree &root)
+{
+    if (!root)
+        return "#";
+    string ans;
+    ans.push_back(root->data);
+    /*数据为整数时需要在数据之间插入间隔符
+    ans += to_string(root->data) + ",";*/
+    ans += CreatePreOrderList(root->lchild);
+    ans += CreatePreOrderList(root->rchild);
+    return ans;
 }
 void PreOrder(BinTree &T)
 {
@@ -375,12 +392,16 @@ void LevelOrder(BinTree &T)
             if (p->rchild)
                 Q.push(p->rchild);
         }
-        cout << endl;//分层
+        cout << endl; //分层
     }
 }
 void Visit(BinTree &t)
 {
-    cout << t->data << ' ';
+    if (t)
+        cout << t->data;
+    else
+        cout << ' ';
+    cout << ' ';
 }
 void GoAlongLeftBranch(BinTree &t, stack<BinTree> &S)
 {
@@ -392,39 +413,36 @@ void GoAlongLeftBranch(BinTree &t, stack<BinTree> &S)
 }
 void PrintBlank(int n)
 {
-    while (n--)
-        cout << " ";
+    if (n >= 1)
+        while (n--)
+            cout << " ";
 }
 void PrintLevel(BinTree &T)
 {
     queue<BinTree> Q;
-    int h = Height(T);
-    int i = 0, cnt = 0;
-    BinTree p = T;
+    BinTree p;
+    int size;
     Q.push(T);
-    PrintBlank((int)pow(2, h - 1));
+    int gap = pow(2, Height(T));
     while (!Q.empty())
     {
-        if (cnt == (int)pow(2, i))
+        PrintBlank(gap / 2 - 1); //行首空格
+        size = Q.size();
+        while (size--)
         {
-            i++;
-            cnt = 0;
-            cout << endl;
-            PrintBlank((int)pow(2, h - i - 1));
+            p = Q.front();
+            Q.pop();
+            Visit(p);
+            PrintBlank(gap-2);
+            if (p)
+            {
+                Q.push(p->lchild);
+                Q.push(p->rchild);
+            }
         }
-        p = Q.front();
-        Q.pop();
-        Visit(p);
-        cnt++;
-        PrintBlank((int)pow(2, h - i) - 1);
-        if (p->lchild)
-        {
-            Q.push(p->lchild);
-        }
-        if (p->rchild)
-            Q.push(p->rchild);
+        gap /= 2;
+        cout << endl; //分层
     }
-    cout << endl;
 }
 int CountNode(BinTree &T, int degree)
 {
@@ -533,4 +551,34 @@ bool IsSameTree(BinTree p, BinTree q)
     if (p->data != q->data)
         return false;
     return IsSameTree(p->lchild, q->lchild) && IsSameTree(p->rchild, q->rchild);
+}
+bool Find(BinTree &T, DataType val)
+{
+    if (!T)
+        return false;
+    if (T->data == val)
+        return true;
+    return Find(T->lchild, val) || Find(T->rchild, val);
+}
+TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
+{
+    bool findInLeft_p, findInLeft_q;
+    TreeNode *tmp = root;
+    while (1)
+    {
+        if (tmp->lchild && ((findInLeft_q = Find(tmp->lchild, q->data)) | (findInLeft_p = Find(tmp->lchild, p->data))))
+        {
+            if (findInLeft_p && findInLeft_q)
+                tmp = tmp->lchild;
+            else //从两个都有变为一个有一个没有，说明有一个在另一个子树上或在结点上，本结点就是最近公共祖先
+                return tmp;
+        }
+        else //没在左子树就在右子树
+        {
+            if (Find(tmp->rchild, p->data) && Find(tmp->rchild, q->data))
+                tmp = tmp->rchild;
+            else
+                return tmp;
+        }
+    }
 }

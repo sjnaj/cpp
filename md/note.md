@@ -2751,7 +2751,7 @@ string 类重载了输入输出运算符，可以像对待普通变量那样对�
 
 在比较两个string对象时是可以**利用“==”的，相等的话，则表达式的返回值为1，不等为0** 。
 
-**通过 "+="可以连接两个字符串（在一个string对象后追加）**，特别的string s="Hello"+"world"是错误的，因为两个字符串字面量都是const char*类型,不能被修改。可以写作string s="Hello";s+="world".或string s= string("Hello")+"world";采用给string追加的方式追加。
+**通过 "+="可以连接两个字符串（在一个string对象后追加）**，特别的string s="Hello"+"world"是错误的，因为两个字符串字面量都是const char*类型,不能被修改。可以写作string s="Hello";s+="world".或string s= string("Hello")+"world"或s="Hello"s+"world";采用给string追加的方式追加。
 
 insert() 函数可以在 string 字符串中指定的位置插入另一个字符串，它的一种原型为：
 string& insert (size_t pos, const string& str);
@@ -2796,6 +2796,8 @@ int main(){
     s1 = s2 = s3 = "1234567890";
     s2.erase(5);
     s3.erase(5, 3);
+   data.erase(0, 1);
+   //可以不用显式调用迭代器
     cout<< s1 <<endl;
     cout<< s2 <<endl;
     cout<< s3 <<endl;
@@ -2834,6 +2836,13 @@ int main(){
 运行结果：
 first second third
 second
+```
+
+```cpp
+string s="lalal";
+s.push_back("lala");//没有emplace_back();
+s.pop_back();
+
 ```
 
 系统对 substr() 参数的处理和 erase() 类似：
@@ -2991,7 +3000,9 @@ int main()
 //char16_t和char32_t是对应unicode字符的,通常unicode字符是不会拿来直接做输入输出的，需要转换后才能做输入输出。
 using namespace std::string_literals;
   std::string s="lalala"s+"lala""leilei";// s返回一个string，可以进行连接
-
+  //等同于s=string("lalala")+"lala";
+  char ch ='s';
+    s+=ch+","s;
 //宽字符输出中文
   const auto *chinese=L"啦啦啦";
 std::ios::sync_with_stdio(false);    // Linux gcc.
@@ -4214,7 +4225,7 @@ binops.insert({'+',add}); //pair
 //但lambda函数没有函数名，不符合map的元素类型
 ```
 
-![function类](![heh.png](https://i.loli.net/2021/10/17/AGBpg26UqsKalI8.png))
+![function类](https://i.loli.net/2021/10/17/AGBpg26UqsKalI8.png)
 
 ```cpp
 function<int(int,int)>f1=add;//函数指针
