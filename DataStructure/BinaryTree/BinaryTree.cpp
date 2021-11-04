@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-21 17:41:34
- * @LastEditTime: 2021-11-02 23:54:22
+ * @LastEditTime: 2021-11-04 17:45:18
  */
 #ifndef _BinaryTree_h
 #include "BinaryTree.h"
@@ -398,10 +398,7 @@ void LevelOrder(BinTree &T)
 void Visit(BinTree &t)
 {
     if (t)
-        cout << t->data;
-    else
-        cout << ' ';
-    cout << ' ';
+        cout << t->data << ' ';
 }
 void GoAlongLeftBranch(BinTree &t, stack<BinTree> &S)
 {
@@ -424,21 +421,33 @@ void PrintLevel(BinTree &T)
     int size;
     Q.push(T);
     int gap = pow(2, Height(T));
-    while (!Q.empty())
+    bool hasNode = true;
+    while (1)
     {
-        PrintBlank(gap / 2 - 1); //行首空格
+        PrintBlank(gap - 3); //行首空格
         size = Q.size();
+        if (hasNode)
+            hasNode = false;
+        else
+            break;
         while (size--)
         {
             p = Q.front();
             Q.pop();
-            Visit(p);
-            PrintBlank(gap-2);
             if (p)
             {
+                hasNode = true;
+                cout << p->data << ' ';
                 Q.push(p->lchild);
                 Q.push(p->rchild);
             }
+            else
+            {
+                cout << "   ";
+                Q.push(nullptr);
+                Q.push(nullptr);
+            }
+            PrintBlank(2 * gap - 3);
         }
         gap /= 2;
         cout << endl; //分层
@@ -581,4 +590,66 @@ TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
                 return tmp;
         }
     }
+}
+BinTree CreateByInAndLevel(string in, string level, int ie, int is, int ls)
+{
+    if (is > ie)
+        return nullptr;
+    int index = -1;
+    while (index == -1)//找出层次序列中第一个出现在当前中序序列的元素（越过另一子树的元素）
+    {
+        for (size_t i = is; i <= ie; i++)
+        {
+            if (in[i] == level[ls])
+            {
+                index = i;
+                break;
+            }
+        }
+        ls++;
+    }
+    ls--; //多加了一个
+    BinTree root = new TreeNode(level[ls]);
+    root->lchild = CreateByInAndLevel(in, level, index - 1,is, ++ls);
+    root->rchild = CreateByInAndLevel(in, level, ie, index+1, ++ls);
+    return root;
+}
+bool IsRootValSmallest(BinTree &T, DataType *pval) //基于先序遍历
+{
+    if (!T)
+        return true;
+    if (pval && T->data <= *pval) //\*pval父节点的值,空指针使第一次比较恒成立，代替设立绝对的极值
+        return false;
+    return IsRootValSmallest(T->lchild, &T->data) && IsRootValSmallest(T->rchild, &T->data);
+}
+BinTree Copy(BinTree &T)
+{
+    if (!T)
+        return nullptr;
+    BinTree root = new TreeNode(T->data);
+    root->lchild = Copy(T->lchild);
+    root->rchild = Copy(T->rchild);
+    return root;
+}
+void DeleteSubTree(BinTree &T, DataType val)
+{
+    if (!T)
+        return;
+    if (T->data == val)
+    {
+        FreeTree(T);
+        return;
+    }
+    if (T->lchild && T->lchild->data == val)
+    {
+        FreeTree(T->lchild);
+        T->lchild = nullptr;
+    }
+    if (T->rchild && T->rchild->data == val)
+    {
+        FreeTree(T->rchild);
+        T->rchild = nullptr;
+    }
+    DeleteSubTree(T->lchild, val);
+    DeleteSubTree(T->rchild, val);
 }

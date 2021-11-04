@@ -2643,6 +2643,7 @@ Function for_each(InputIterator beg, InputIterator end, Function f)  {
 ![i.png](https://i.loli.net/2021/10/27/btFcXpISNfKUqur.png)
 
 ```cpp
+//bitset的大小在编译时就需要确定。如果想要不确定长度的bitset，可以使用奇葩的vector<bool>。
  bitset<32> bitvec1(0xbeef); //小于高位补零，大于截高
     bitset<32> bitvec2(0ULL) ;   //0 :unsigned  long  long
         bitset<32>

@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-11-02 22:32:41
- * @LastEditTime: 2021-11-03 13:00:51
+ * @LastEditTime: 2021-11-04 21:32:44
  */
 /*
  * @Author: fengsc
@@ -11,7 +11,7 @@
 #ifndef _HFTree_H
 #include "HFTree.h"
 #endif // !_HFTree_H
-void select1(HFTree &HF, int end, size_t &s1, size_t &s2)
+void select(HFTree &HF, int end, size_t &s1, size_t &s2)
 {
     double min1 = DBL_MAX, min2 = DBL_MAX;
     s1 = s2 = 0;
@@ -49,7 +49,7 @@ HFTree createHFTree(DataType val[], double w[], int n)
     size_t s1, s2;
     for (int i = HF.leafNum; i < HF.totalNum; i++)
     {
-        select1(HF, i, s1, s2); //查找最小的两个，在当前位置之前的非子树中
+        select(HF, i, s1, s2);  //查找最小的两个，在当前位置之前的非子树中
         HF.elem[i].lchild = s1; //设定左比右小，唯一确定
         HF.elem[i].rchild = s2;
         HF.elem[s1].parent = HF.elem[s2].parent = i;
@@ -57,7 +57,18 @@ HFTree createHFTree(DataType val[], double w[], int n)
     }
     return *HFp;
 }
-void PrintHFTree(HFTree &HF, int phl)
+BinTree convert(HFTree &HF, int index)
+{
+    BinTree root = new TreeNode(HF.elem[index].data);
+    root->weight = HF.elem[index].weight;
+    int lchild = HF.elem[index].lchild, rchild = HF.elem[index].rchild;
+    if (lchild != -1)
+        root->lchild = convert(HF, lchild);
+    if (rchild != -1)
+        root->rchild = convert(HF, rchild);
+    return root;
+}
+void printHFTree(HFTree &HF, int phl)
 {
     BinTree T = convert(HF, HF.root);
     queue<BinTree> Q;
@@ -65,25 +76,74 @@ void PrintHFTree(HFTree &HF, int phl)
     int size;
     Q.push(T);
     int gap = pow(2, Height(T));
-    while (!Q.empty())
+    bool hasNode=true;
+    while (1)
     {
         PrintBlank(gap - 3); //行首空格
         size = Q.size();
+        if (hasNode)
+            hasNode = false;
+        else
+            break;
         while (size--)
         {
             p = Q.front();
             Q.pop();
             if (p)
             {
+                hasNode = true;
                 cout << p->data << '(' << p->weight << ')';
                 Q.push(p->lchild);
                 Q.push(p->rchild);
             }
             else
-                PrintBlank(phl); //占位，'('占半位
+            {
+                PrintBlank(phl); //空占位
+                Q.push(nullptr);
+                Q.push(nullptr);
+            }
             PrintBlank(2 * gap - 3);
         }
         gap /= 2;
         cout << endl; //分层
     }
+}
+void encode(HFTree &HF)
+{
+    string bits;
+    for (int i = 0; i < HF.leafNum; i++)
+    {
+        bits = "";
+        for (int cur = i, prt = HF.elem[cur].parent; prt != -1; cur = prt, prt = HF.elem[prt].parent)
+        {
+            if (HF.elem[prt].lchild == cur)
+                bits = '0' + bits; //由底向上，在前面添加
+            else
+                bits = '1' + bits;
+        }
+        HF.elem[i].code = bits;
+    }
+    for (int i = 0; i < HF.leafNum; i++)
+        HF.averageCodingLength += HF.elem[i].code.length() * HF.elem[i].weight;
+}
+void printCode(HFTree &HF)
+{
+    for (int i = 0; i < HF.leafNum; i++)
+        cout << HF.elem[i].data << ':' << HF.elem[i].code << endl;
+    cout << "averageCodingLength is:" << HF.averageCodingLength << endl;
+}
+DataType decode(HFTree &HF, string code)
+{
+    size_t i = 0, j = HF.root;
+    while (i < code.length() && j != -1)
+        if (code[i++] == '0')   
+            j = HF.elem[j].lchild;
+        else
+            j = HF.elem[j].rchild;
+    if (j == -1)
+    {
+        cout << "Can not decode the code" << endl;
+        return 0;
+    }
+    return HF.elem[j].data;
 }
