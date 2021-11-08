@@ -1,14 +1,15 @@
 /*
  * @Author: fengsc
  * @Date: 2021-11-04 21:31:34
- * @LastEditTime: 2021-11-04 23:40:50
+ * @LastEditTime: 2021-11-07 03:21:22
  */
 #ifndef _BSTree_H
 #include "BSTree.h"
-#endif                                                           // !_BSTree_H
-BSTree search(const BSTree &root, BSTDataType x, BSTree &father) //设置哨兵father记录查找失败时访问最后一个结点或成功时结点的父亲
+#endif
+template <typename Tree, typename DataType = char>      // !_BSTree_H
+Tree search(const Tree &root, DataType x, Tree &father) //设置哨兵father记录查找失败时访问最后一个结点或成功时结点的父亲
 {
-    BSTree p = root;
+    Tree p = root;
     father = nullptr;
     while (p && p->data != x)
     {
@@ -38,43 +39,38 @@ bool insert(BSTree &root, BSTDataType x)
         x < father->data ? father->lchild = cur : father->rchild = cur;
     return true;
 }
-BSTree createCSTree(string s)
+template <typename Tree>
+Tree create(string s)
 {
-    BSTree root = nullptr; //不置空则第一次查找时会出现错误
+    Tree root = nullptr; //不置空则第一次查找时会出现错误
     for (int i = 0; i < s.length(); i++)
         insert(root, s[i]);
     return root;
 }
-void printInorder(const BSTree &root)
+template <typename Tree, typename DataType = char>
+Tree deleteNode(Tree &root, DataType x)
 {
-    if (!root)
-        return;
-    printInorder(root->lchild);
-    cout << root->data << ' ';
-    printInorder(root->rchild);
-}
-bool deleteBSNode(BSTree root, BSTDataType x)
-{
-    BSTree father, cur, p;
+    Tree father, cur, p;
     if (!(cur = search(root, x, father)))
-        return false;
+        return nullptr;
     if (cur->lchild && cur->rchild) //寻找中序直接后继(右子树里的最左端)，并对调数据，使情况归于travial
     {
         p = cur->rchild;
-        father = p;
+        father = cur;
         while (p->lchild)
         {
             father = p;
             p = p->lchild;
         }
-        swap(cur->data, p->data);
-        cur = p;//将cur移到待删处
+        cur->data=p->data;//更换被删节点原位置的值为其后继的值，注意不能改变p的值，因为最后要判别方向
+        cur = p; //将cur移到待删处
     }
     p = cur->lchild ? cur->lchild : cur->rchild; //将要被链接的结点，cur至多有一个子树
     if (!father)                                 //被删的为根结点
         root = p;
-    else //p是否存在都要链接，不存在时要置空
-        cur->data < father->data ? father->lchild = p : father->rchild = p;
+    else //一棵或零棵子树，为零则置空
+    cur->data<father->data?father->lchild=p:father->rchild=p;  
     delete cur;
-    return true;
+    cur = nullptr;
+    return father;
 }

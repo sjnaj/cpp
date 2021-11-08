@@ -39,12 +39,14 @@
     - [constexpr和const变量](#constexpr和const变量)
     - [constexpr函数](#constexpr函数)
     - [const和volatile](#const和volatile)
-    - [\#define,using和typedef的一些补充](#defineusing和typedef的一些补充)
+    - [\#define,using和typedef以及条件表达式的一些补充](#defineusing和typedef以及条件表达式的一些补充)
     - [decltype](#decltype)
+    - [is_same](#is_same)
     - [列表初始化](#列表初始化)
     - [返回数组指针和函数指针](#返回数组指针和函数指针)
     - [lambda匿名函数](#lambda匿名函数)
     - [bitset](#bitset)
+    - [随机数](#随机数)
   - [C++string](#cstring)
     - [基本](#基本)
     - [\<cctype\>](#cctype)
@@ -111,7 +113,7 @@
     - [模板类继承](#模板类继承)
     - [重载与模板](#重载与模板)
     - [可变参数函数模板](#可变参数函数模板)
-    - [模板特例化](#模板特例化)
+    - [模板特例化(显式具体化)](#模板特例化显式具体化)
   - [threat](#threat)
     - [basic](#basic)
   
@@ -752,6 +754,8 @@ for(auto p=begin(ai);p!=end(ai);p++)//简洁版
                { cout << col << endl;}
             cout<endl;
 
+①因为new申请的数组是动态的，因此不能使用begin()和end()函数对动态数组进行操作
+②不能使用for each对数组进行遍历，但是可以使用for循环操作动态数组
 ```
 
 ### 从assert到static_assert
@@ -2223,11 +2227,11 @@ void IRS()
 /*多线程应用中被多个任务共享的变量。 当多个线程共享某一个变量时，该变量的值会被某一个线程更改，应该用 volatile 声明。作用是防止编译器优化把变量从内存装入CPU寄存器中，当一个线程更改变量后，未及时同步到其它线程中导致程序出错。volatile的意思是让编译器每次操作该变量时一定要从内存中真正取出，而不是使用已经存在寄存器中的值。*/
 ```
 
-### \#define,using和typedef的一些补充
+### \#define,using和typedef以及条件表达式的一些补充
 
 [详见](https://www.cnblogs.com/kevinWu7/p/10163447.html)
 
-C++语言允许宏带有参数。在宏定义中的参数称为形式参数，在宏调用中的参数称为实际参数。
+[宏用法](https://blog.csdn.net/yasi_xi/article/details/19483197)
 
 ```cpp
 #define add(x,y) (x+y)   //此处要打括号，不然执行2*add(x,y) 会变成 2*x + y
@@ -2244,7 +2248,110 @@ stmt2; \
 /* ... */ \
 } while(0) /* (no trailing ; ) */
 
+#define func(x)              \
+    {                          \
+              语句1;语句2; 
+    }
+//代码块
+用{}定义的宏的问题在于在if else语句中会多拓展出一个分号(只有一个if时不会)，可以用do while(0)解决
+
+它的作用有
+
+（1）空的宏定义避免warning:
+　　#define foo() do{}while(0)
+　　（2）存在一个独立的block，可以用来进行变量定义，进行比较复杂的实现。
+　　（3）如果出现在判断语句过后的宏，这样可以保证作为一个整体来是实现：
+　　　　  #define foo(x) \
+　　　　　　　 action1(); \
+　　　　　　 　action2();
+　　　　在以下情况下：
+　　　　if(NULL == pPointer)
+ 　　　　　　  foo();
+　　　　就会出现action1和action2不会同时被执行的情况，而这显然不是程序设计的目的。
+　　（4）以上的第3种情况用单独的{}也可以实现，但是为什么一定要一个do{}while(0)呢，看以下代码：
+　　　　　　#define switch(x,y) {int tmp; tmp="x";x=y;y=tmp;}
+　　　　　　if(x>y)
+　　　　　　　　switch(x,y);
+　　　　　　else       //error, parse error before else
+　　　　　　otheraction();
+　　　　在把宏引入代码中，会多出一个分号，从而会报错。这对这一点，可以将if和else语句用{}括起来，可以避免分号错误。
+
 ```
+
+带返回值的宏定义
+
+```cpp
+
+一般用条件表达式
+
+#define getHeight(x) ((x) ? (x)->height : 0)
+
+
+//有时不能根据条件判断，例如首先要执行一个void返回值函数或返回值恒定
+//这时可以用逗号表达式，从左到右计算每个式子的值（语句不能是void类型，例如控制语句和定义语句）， 整个表达式的值等于最后一个式子的值，优先级很低，需要用括号括起来,它也可以用于三元条件运算符，实现分支执行多条语句；
+
+#define func(x)              \
+    (                  
+        int i，     \ //非法
+              语句1,语句2 \
+            //return 1//非法
+            //break;//非法
+        )
+
+#define func(x)\
+(\
+    {\
+    int i;\ //合法
+        语句1；语句2;\
+    return 1;//非法
+    break;//合法；此时表达式类型为void
+    }\
+)\
+//只有一个代码块成员的逗号表达式，表达式的值也是最后一个语句的值，不能返回值,
+逗号表达式定义的可以当做普通意义上的函数，可以在if-else语句里作为独立语句或取它们的返回值(如果有)
+
+在条件运算符中使用的演示(没有实际意义)
+if (G.bridges[j].broken == false)
+                select(2) ? (
+                                {
+                                    G.bridges[j].broken = true;
+                                    continue;//使类型一致
+                                })
+                          : (
+                                {
+                                    G.players[i].outLocation = j;
+                                    G.survialNumber--;
+                                    break;//有控制语句所以要用({})
+                                });
+```
+
+条件运算符的类型问题(**后面两个表达式的类型一致或可以类型转换到一致或存在throw语句时合法**)
+
+>Conditional expressions group right-to-left. The first expression is implicitly converted to bool (clause 4). It is evaluated and if it is true, the result of the conditional expression is the value of the second expression, otherwise that of the third expression. All side effects of the first expression except for destruction of temporaries (12.2) happen before the second or third expression is evaluated. Only one of the second and third expressions is evaluated.
+>If either the second or the third operand has type (possibly cv-qualified) void, then the lvalue-to-rvalue (4.1), array-to-pointer (4.2), and function-to-pointer (4.3) standard conversions are performed on the second and third operands, and one of the following shall hold:
+>
+>> - The second or the third operand (but not both) is a throw-expression (15.1); the result is of the type of the other and is an rvalue.
+>> - Both the second and the third operands have type void; the result is of type void and is an rvalue.
+>> - Note: this includes the case where both operands are throw-expressions. 
+>
+>Otherwise, if the second and third operand have different types, and either has (possibly cv-qualified) class type, an attempt is made to convert each of those operands to the type of the other. The process for determining whether an operand expression E1 of type T1 can be converted to match an operand expression E2 of type T2 is defined as follows:
+>
+>>3.a: If E2 is an lvalue: E1 can be converted to match E2 if E1 can be implicitly converted (clause 4) to the type “reference to T2”, subject to the constraint that in the conversion the reference must bind directly (8.5.3) to E1.
+>>3.b: If E2 is an rvalue, or if the conversion above cannot be done:
+>>
+>> - e class of, the class of T1, and the cv-qualification of T2 is the same cv-qualification as, or a greater cvqualification than, the cv-qualification of T1. If the conversion is applied, E1 is changed to an rvalue of type T2 that still refers to the original source class object (or the appropriate subobject thereof). (Note: that is, no copy is made. )
+>> - 3.b.2 : Otherwise (i.e., if E1 or E2 has a nonclass type, or if they both have class types but the underlying classes are not either the same or one a base class of the other): E1 can be converted to match E2 if E1 can be implicitly converted to the type that expression E2 would have if E2 were converted to an rvalue (or the type it has, if E2 is an rvalue).
+>>
+>
+>Using this process, it is determined whether the second operand can be converted to match the third operand, and whether the third operand can be converted to match the second operand. If both can be converted, or one can be converted but the conversion is ambiguous, the program is ill-formed. If neither can be converted, the operands are left unchanged and further checking is performed as described below. If exactly one conversion is possible, that conversion is applied to the chosen operand and the converted operand is used in place of the original operand for the remainder of this section.
+>If the second and third operands are lvalues and have the same type, the result is of that type and is an lvalue.
+>Otherwise, the result is an rvalue. If the second and third operand do not have the same type, and either has (possibly cv-qualified) class type, overload resolution is used to determine the conversions (if any) to be applied to the operands (13.3.1.2, 13.6). If the overload resolution fails, the program is ill-formed. Otherwise, the conversions thus determined are applied, and the converted operands are used in place of the original operands for the remainder of this section.
+>Lvalue-to-rvalue (4.1), array-to-pointer (4.2), and function-to-pointer (4.3) standard conversions are performed on the second and third operands. After those conversions, one of the following shall hold:
+>
+>>6.a: The second and third operands have the same type; the result is of that type.
+>>6.b: The second and third operands have arithmetic or enumeration type; the usual arithmetic conversions are performed to bring them to a common type, and the result is of that type.
+>>6.c: second and third operands have pointer type, or one has pointer type and the other is a null pointer constant; pointer conversions (4.10) and qualification conversions (4.4) are performed to bring them to their composite pointer type (5.9). The result is of the composite pointer type.
+>>6.d: The second and third operands have pointer to member type, or one has pointer to member type and the other is a null pointer constant; pointer to member conversions (4.11) and qualification conversions (4.4) are performed to bring them to a common type, whose cv-qualification shall match the cvqualification of either the second or the third operand. The result is of the common type.
 
 define 中的# ## 一般是用来拼接字符串的
 
@@ -2301,7 +2408,12 @@ using Vec = MyVector<T, MyAlloc<T>>;
     // usage
 Vec<int> vec;
 
-这一切都会非常的自然。
+template <typename T> using BinNodePosi = BinNode<T>*; //节点位置
+   BinNodePosi<T> parent, lc, rc; //父节点及左、右孩子
+
+使用时在普通类型别名语法的基础上增加 template 的参数列表
+
+
 
 
 那么，若你使用typedef来做这一切：
@@ -2361,7 +2473,7 @@ int i = 4;
  
     decltype (ptr) var2;//int *  标记符表达式
  
-    decltype(s.d) var3;//doubel 成员访问表达式
+    decltype(s.d) var3;//double 成员访问表达式
  
     //decltype(Overloaded) var4;//重载函数。编译错误。
  
@@ -2379,7 +2491,9 @@ int i = 4;
  
     decltype(arr[5]) var9 = i;//int&. []操作返回左值
  
-    decltype(*ptr)var10 = i;//int& *操作返回左值
+    decltype(*ptr)var10 = i;//int& 解引用操作返回左值
+
+     typedef std::remove_reference<decltype(*b)>::type Type;//得到b的类型,b必须已经初始化，可用于模板函数体中所需类型的推断(传入类型为对象指针，但要new一个对象)
  
     decltype("hello")var11 = "hello"; //const char(&)[9]  字符串字面常量为左值，且为const左值。
 
@@ -2427,6 +2541,49 @@ decltype(anon_s) as ;//定义了一个上面匿名的结构体
   cout << is_rvalue_reference<decltype(++i)>::value << endl;//0
   //对于i++推导类型为右值，所以都是0
  ```
+
+### is_same
+
+可以用于模板根据不同的参数类型做出不同的操作
+
+```cpp
+    template<typename TYPE>
+typeCheck(TYPE data)
+{
+    if(std::is_same<TYPE,int>::value)
+    {
+        std::cout<<"int type";
+        //do something int 
+    }
+    else
+    {
+        //.........
+    }
+}
+int main()
+{
+    std::cout << std::boolalpha;
+
+    std::cout << std::is_same<int, int32_t>::value << '\n';   // true
+    std::cout << std::is_same<int, int64_t>::value << '\n';   // false
+    std::cout << std::is_same<float, int32_t>::value << '\n'; // false
+
+    print_separator();
+
+    std::cout << std::is_same<int, int>::value << "\n";          // true
+    std::cout << std::is_same<int, unsigned int>::value << "\n"; // false
+    std::cout << std::is_same<int, signed int>::value << "\n";   // true
+
+    print_separator();
+
+    // unlike other types 'char' is not 'unsigned' and not 'signed'
+    std::cout << std::is_same<char, char>::value << "\n";          // true
+    std::cout << std::is_same<char, unsigned char>::value << "\n"; // false
+    std::cout << std::is_same<char, signed char>::value << "\n";   // false
+}
+
+//也可以配合decltype比较变量的类型
+```
 
 ### 列表初始化
 
@@ -2699,13 +2856,86 @@ bitvec.reset(x);
 
 ```
 
+### 随机数
+
+在转换rand()(产生0到32767(系统相关)之间的数)的范围，类型或分布使其满足所需条件(浮点数，非均匀等)时常常会引入非随机性
+
+random头文件中的随机数库可以解决这个问题，它由一组协作的类:随机数引擎和随机数分布类组成，前者生成一个随机数序列，后者利用该随机数序列得到符合要求的随机数
+
+```cpp
+#include <random>
+default_random_engine e;//最常用
+for(size_t i=0;i<10;i++)
+cout<<e();
+//会得到一组随机数列；但范围不定，不能直接使用
+//随机数引擎操作
+Engine e;//默认种子
+Engine e(s);//整形s作为种子，如果用time(NULL)(秒级)可能会多次使用同一个对象
+e.seed(s);
+e.min(),e.max();
+Engine::result_type;
+```
+
+一个随机数发生器是指分布对象和引擎对象的组合
+
+```cpp
+default_random_engine e;
+//定义分布类型对象
+uniform_int_distribution<unsigned> u(0,9)//生成随机整数
+u(e);//产生0到9的随机数
+uniform_real_distribution<double> u(0,1)//生成随机实数默认参数为double，用rand()的结果除以RAND_MAX可以获得，但不够随机
+u(e);//产生0到1的随机小数
+vector<unsigned> v;
+for(size_t i=0;i<100;i++)//如果要多次调用这段生成代码则会产生相同的vector，因为一个给定的随机数发生器会产生相同的序列
+v.emplace_back(u(e));
+
+//要解决这个问题需要将两个对象定义为静态的，第一次调用会获取前100个，第二次获取后一百个；
+
+//分布类型的操作
+d(e);
+d.min();
+d.max();
+d.reset();//重建d的状态
+```
+
+```cpp 
+//生成非均匀分布的额随机数
+default_random_engine e;
+normal_distribution<> n(4,1,5);//正太分布，均值4，标准差1.5
+vector<unsigned>vals(9);
+for(size_t i = 0; i !=200;i++)
+{
+    unsigned v=lround(n(e));//舍入为最接近的整数(cmath)
+        if(v<val.size())//统计在范围内的
+        ++val[v];
+}
+for(size_t j=0;j!=vals.size();j++)//打印
+cout<<j<<string(val[j],'*')<endl;
+
+```
+
+```cpp
+//0/1随机数
+default_random_engine e;
+bernoulli_distribution b;//伯努利分布
+b(e);//返回随机布尔值;
+
+bernoulli_distribution b(.55);//提供先行优势，0.55/0.45
+```
+
+两个要点
+
+1、随机数发生器使用同一种子会生成相同序列的随机数序列
+
+2、为了让程序每次运行都会生成不同的随机结果，我们可以使用 time(0) 产生一个随机数种(两次程序运行间隔一般不会低于秒级)
+
 ## C++string
 
 ### 基本
 
 C++ 大大增强了对字符串的支持，除了可以使用C风格的字符串，还可以使用内置的 string 类。string 类处理起字符串来会方便很多，完全可以代替C语言中的字符数组或字符串指针。
 
-使用 string 类需要包含头文件 `<string>`，下面的例子介绍了几种定义 string 变量（对象）的方法：
+使用 string 类需要包含头文件 \<string>，下面的例子介绍了几种定义 string 变量（对象）的方法：
 
 ```cpp
 #include <iostream>
@@ -3469,7 +3699,7 @@ pa 本来是基类 A 的指针，现在指向了派生类 D 的对象，这使�
 
 基类的引用也可以指向派生类的对象，并且它的表现和指针是类似的。
 
-当用一个派生类对象为一个基类对象初始化或赋值时，只有基类部分会被拷贝，移动或赋值，其它部分会被切掉。
+当用一个派生类对象为一个基类对象初始化或赋值时，只有基类部分会被拷贝，移动或赋值，**其它部分会被切掉**。
 例如一个函数形参是基类，实参是派生类的情况，当**使用引用或指针时可以避免被切掉**。
 
 ## 多态和虚函数
@@ -3494,7 +3724,7 @@ C++提供多态的目的是：可以通过基类指针对所有派生类（包�
 
 2) *可以只将基类中的函数声明为虚函数*，这样所有派生类中具有遮蔽关系的同名函数都将自动成为虚函数。
 
-3) 当在基类中定义了虚函数时，如果派生类没有定义新的函数来遮蔽此函数，那么将使用基类的虚函数。
+3) 当在基类中定义了虚函数时，**如果派生类没有定义新的函数来遮蔽此函数，那么将使用基类的虚函数**。
 
 4) 只有派生类的虚函数覆盖基类的虚函数（函数原型相同）才能构成多态（通过基类指针访问派生类函数）。例如基类虚函数的原型为virtual void func();，派生类虚函数的原型为virtual void func(int);，那么当基类指针 p 指向派生类对象时，语句p -> func(100);将会出错，而语句p -> func();将调用基类的函数。
 
@@ -3518,7 +3748,7 @@ inline virtual **唯一可以内联的时候是：编译器知道所调用的对
 
 对于指向派生类的基类指针，在没有虚函数的情况下只能调用基类的析构函数，这会产生未定义的行为（例如导致delete调用基类析构函数在释放内存时，没有将派生类对象产生的堆内存释放掉），导致内存泄露
 
-只要基类的析构函数是虚函数，那么派生类的析构函数不论是否用virtual关键字声明，都自动成为虚析构函数。
+**只要基类的析构函数是虚函数，那么派生类的析构函数不论是否用virtual关键字声明，都自动成为虚析构函数**。
 
 虚析构函数原理
 
@@ -5074,9 +5304,11 @@ template <typename T>class Blob
 
 ### 控制实例化
 
-显式实例化
+显式实例化:区别于模板被使用时才进行的隐式实例化，相当于放入一个普通实体函数的定义
 
 防止不同文件出现重复的实例化(不同文件有相同的模板和函数参数)，使不同文件共享某一个文件里的实例化定义
+
+如果调用其它文件的模板函数也可以用显式实例化作为声明标识，代替使用注释标识
 
 ```cpp
 extern template class<Blob>;//extern声明实例化定义在外部，将调用该实例化定义，本文件不会生成实例化代码，extern声明需要出现在需要实例化定义的片段之前。
@@ -5332,7 +5564,7 @@ void func(Args&&... args)
 }
 ```
 
-### 模板特例化
+### 模板特例化(显式具体化)
 
 单一模板不一定能匹配所有情况，所以需要一个不平凡的特例
 
@@ -5356,7 +5588,7 @@ const char *p1="alalla",*p2="lilili";
 compare(p1,p2);//将调用模板1,但无法判断出来两个字符串的大小
 compare("hi","huhu");//将调用模板2,因为无法将指针转化为数组的引用
 
-template<>
+template<>//注意与显式实例化的区别 
 compare(const char *const &p,const char * const &q)//模板1的特例化版本，T会被推断为const char*
 {
  return strcmp(p,q);

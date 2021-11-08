@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-10-28 21:16:08
- * @LastEditTime: 2021-10-28 21:42:35
+ * @LastEditTime: 2021-11-08 16:33:09
  */
 #include <iostream>
 #include <chrono>
@@ -18,6 +18,6 @@ struct Timer
     {
         end = std::chrono::high_resolution_clock::now();
         duration = end - start;
-        std::cout << "Timer took" << duration.count()*1000 << "ms" << std::endl;
+        std::cout << "Timer took " << duration.count()*1000 << "ms" << std::endl;
     }
 };

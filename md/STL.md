@@ -1,7 +1,7 @@
 <!--
  * @Author: fengsc
  * @Date: 2021-08-02 18:59:05
- * @LastEditTime: 2021-11-01 00:31:12
+ * @LastEditTime: 2021-11-08 12:59:35
 -->
 - [STL](#stl)
   - [基本](#基本)
@@ -247,6 +247,21 @@ void assign ( InputIterator first, InputIterator last );
 void assign ( size_type n, const T& u );*/
  vector<vector<int>> h(m,vector<int>(n)) = {0};//二维
 
+//C++11以后在vector类成员可以在定义时初始化，之前只能在构造函数中初始化
+
+class Foo(){
+private:
+    vector<string> name = vector<string>(5);
+    vector<int> val{vector<int>(5,0)};
+};
+//C++11之前
+class Foo {
+private:
+    vector<string> name;
+    vector<int> val;
+ public:
+  Foo() : name(5), val(5,0) {}
+};
 //将一个vector分成两半
    auto First = lists.begin();
        auto Second = lists.begin() + lists.size() / 2;
@@ -415,7 +430,7 @@ STL list 容器，又称双向链表容器，即该容器的底层是以双向�
 
 list 容器具有一些其它容器（array、vector 和 deque）所不具备的优势，即它可以在序列已知的任何位置快速插入或删除元素（时间复杂度为O(1)）。并且在 list 容器中移动元素，也比其它容器的效率高。
 
-使用 list 容器的缺点是，它不能像 array 和 vector 那样，通过位置直接访问元素。举个例子，如果要访问 list 容器中的第 6 个元素，它不支持容器对象名\[6\]这种语法格式，正确的做法是从容器中第一个元素或最后一个元素开始遍历容器，直到找到该位置。
+使用 list 容器的缺点是，它不能像 array 和 vector 那样，通过位置直接访问元素。举个例子，如果要访问 list 容器中的第 6 个元素，它不支持容器对象名\[6]这种语法格式，正确的做法是从容器中第一个元素或最后一个元素开始遍历容器，直到找到该位置。
 
 \#include \<list\>
 

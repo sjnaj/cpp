@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-21 17:41:34
- * @LastEditTime: 2021-11-04 17:45:18
+ * @LastEditTime: 2021-11-06 20:18:07
  */
 #ifndef _BinaryTree_h
 #include "BinaryTree.h"
@@ -75,7 +75,7 @@ void CreateExpression(BinTree &T, string S)
             BinTree p = new TreeNode(S[i]);
             P.push(p); //数字进栈
         }
-        else
+        else//可略加修改使支持一元运算符
         {
             n2 = P.top();
             P.pop();
@@ -89,6 +89,8 @@ void CreateExpression(BinTree &T, string S)
 }
 int ComputeExpression(BinTree &T)
 {
+    if (!T)
+        return 0;
     if (T->lchild)
         return DoOperator(T->data, ComputeExpression(T->lchild), ComputeExpression(T->rchild));
     else
@@ -152,7 +154,8 @@ string CreatePreOrderList(BinTree &root)
     ans += CreatePreOrderList(root->rchild);
     return ans;
 }
-void PreOrder(BinTree &T)
+template <typename Tree>
+void PreOrder(Tree &T)
 {
     if (T)
     {
@@ -161,7 +164,8 @@ void PreOrder(BinTree &T)
         PreOrder(T->rchild);
     }
 }
-void InOrder(BinTree &T)
+template <typename Tree>
+void InOrder(Tree &T)
 {
     if (T)
     {
@@ -170,7 +174,8 @@ void InOrder(BinTree &T)
         InOrder(T->rchild);
     }
 }
-void PostOrder(BinTree &T)
+template <typename Tree>
+void PostOrder(Tree &T)
 {
     if (T)
     {
@@ -179,7 +184,8 @@ void PostOrder(BinTree &T)
         Visit(T);
     }
 }
-void Print(BinTree &T)
+template <typename Tree>
+void Print(Tree &T)
 {
     if (T)
     {
@@ -205,7 +211,8 @@ void PrintPreOrderExp(BinTree &T)
     else
         cout << '#';
 }
-void FreeTree(BinTree &T)
+template <typename Tree>
+void FreeTree(Tree &T)
 {
     if (T)
     {
@@ -233,10 +240,11 @@ void PrintRecess(BinTree &T, int k)
         PrintRecess(T->rchild, k);
     }
 }
-int Height(BinTree &T) //基于后序遍历
+template<typename Tree>
+int Height(Tree &T) //基于后序遍历
 {
     if (T)
-        return max(Height(T->lchild) + 1, Height(T->rchild) + 1);
+        return max(Height(T->lchild) , Height(T->rchild))+1;
     else
         return 0;
 }
@@ -395,7 +403,8 @@ void LevelOrder(BinTree &T)
         cout << endl; //分层
     }
 }
-void Visit(BinTree &t)
+template<typename Tree>
+void Visit(Tree &t)
 {
     if (t)
         cout << t->data << ' ';
@@ -414,10 +423,11 @@ void PrintBlank(int n)
         while (n--)
             cout << " ";
 }
-void PrintLevel(BinTree &T)
+template <typename Tree>
+void PrintTree(Tree &T)
 {
-    queue<BinTree> Q;
-    BinTree p;
+    queue<Tree> Q;
+    Tree p;
     int size;
     Q.push(T);
     int gap = pow(2, Height(T));
@@ -596,7 +606,7 @@ BinTree CreateByInAndLevel(string in, string level, int ie, int is, int ls)
     if (is > ie)
         return nullptr;
     int index = -1;
-    while (index == -1)//找出层次序列中第一个出现在当前中序序列的元素（越过另一子树的元素）
+    while (index == -1) //找出层次序列中第一个出现在当前中序序列的元素（越过另一子树的元素）
     {
         for (size_t i = is; i <= ie; i++)
         {
@@ -610,8 +620,8 @@ BinTree CreateByInAndLevel(string in, string level, int ie, int is, int ls)
     }
     ls--; //多加了一个
     BinTree root = new TreeNode(level[ls]);
-    root->lchild = CreateByInAndLevel(in, level, index - 1,is, ++ls);
-    root->rchild = CreateByInAndLevel(in, level, ie, index+1, ++ls);
+    root->lchild = CreateByInAndLevel(in, level, index - 1, is, ++ls);
+    root->rchild = CreateByInAndLevel(in, level, ie, index + 1, ++ls);
     return root;
 }
 bool IsRootValSmallest(BinTree &T, DataType *pval) //基于先序遍历

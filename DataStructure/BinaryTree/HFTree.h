@@ -1,12 +1,9 @@
 /*
  * @Author: fengsc
  * @Date: 2021-11-02 19:58:31
- * @LastEditTime: 2021-11-03 17:41:53
+ * @LastEditTime: 2021-11-06 20:07:11
  */
 #pragma once
-#include <iostream>
-#include <climits>
-#include <cfloat>
 #include "BinaryTree.cpp"
 using DataType = char;
 struct HFNode
@@ -30,7 +27,8 @@ struct HFTree
 void select(HFTree &HF, int end, size_t &s1, size_t &s2); //找出权值最小和次小的树对应的下标
 HFTree createHFTree(DataType val[], double w[], int n);   //构造哈夫曼树
 BinTree convert(HFTree &HF, int root);
+template void FreeTree(BinTree &T);
 void PrintHFTree(HFTree &HF, int phl = 3); //placeholderlength,打印时的空位占位符长度，默认为3(数据和权值是1位)
 void encode(HFTree &HT);                   //编码并计算平均编码长度
 void PrintCode(HFTree &HF);
-DataType decode(HFTree &HF, string code);
+DataType decode(HFTree &HF, string code);//解码

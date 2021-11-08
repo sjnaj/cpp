@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-15 08:28:10
- * @LastEditTime: 2021-08-22 19:11:26
+ * @LastEditTime: 2021-11-05 12:29:22
  */
 #include <iostream>
 #include <stack>
@@ -87,23 +87,23 @@ void InfixToPostfix(string &s)
         else
         {
             t = Icp(s[i]) - Isp(Optr.top());
-            if (t > 0)
+            if (t > 0)//操作符继续进栈
                 Optr.push(s[i++]);
-            else if (t < 0)
+            else if (t < 0)//退栈将操作符赋给结果串
             {
                 s[k++] = Optr.top();
                 Optr.pop();
             }
             else
             {
-                if ('(' == Optr.top())
+                if ('(' == Optr.top())//括号配对
                 {
                     i++;
                     Optr.pop();
                 }
                 else //结尾'\0'
                 {
-                    s.erase(k, s.length() - k); //除去剩余部分（括号消去，会剩余没有访问的部分）
+                    s.erase(k, s.length() - k); //除去剩余部分（括号消去长度变短，会剩余原串中没有访问的部分）
                     break;
                 }
             }

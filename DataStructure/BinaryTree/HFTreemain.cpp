@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-11-02 21:27:43
- * @LastEditTime: 2021-11-03 21:00:21
+ * @LastEditTime: 2021-11-06 20:07:38
  */
 #include "HFTree.cpp"
 using namespace std;
@@ -19,4 +19,5 @@ int main()
     encode(HF);
     printCode(HF);
     cout << decode(HF, "001") << endl;
+    FreeTree(T);
 }
