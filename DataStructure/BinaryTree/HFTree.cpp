@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-11-02 22:32:41
- * @LastEditTime: 2021-11-04 21:32:44
+ * @LastEditTime: 2021-11-09 20:44:06
  */
 /*
  * @Author: fengsc
@@ -79,7 +79,8 @@ void printHFTree(HFTree &HF, int phl)
     bool hasNode=true;
     while (1)
     {
-        PrintBlank(gap - 3); //行首空格
+        if(gap-3>0)
+        cout<<string(' ',gap-3);
         size = Q.size();
         if (hasNode)
             hasNode = false;
@@ -98,11 +99,12 @@ void printHFTree(HFTree &HF, int phl)
             }
             else
             {
-                PrintBlank(phl); //空占位
+                cout<<string(phl,' ');
                 Q.push(nullptr);
                 Q.push(nullptr);
             }
-            PrintBlank(2 * gap - 3);
+            if(2*gap-3>0)
+           cout<<string(2*gap-3,' ');
         }
         gap /= 2;
         cout << endl; //分层

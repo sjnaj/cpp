@@ -52,7 +52,7 @@
     - [\<cctype\>](#cctype)
     - [size_type](#size_type)
     - [字符串字面量(String literal)](#字符串字面量string-literal)
-    - [getline and stringstream](#getline-and-stringstream)
+    - [stringstream](#stringstream)
   - [C++引用](#c引用)
     - [基本()](#基本-1)
     - [返回引用](#返回引用)
@@ -217,6 +217,11 @@ using namespace std;，它声明了命名空间 std，后续如果有未指定�
 
 ```cpp
 cin>>a>>b;
+char c;
+string str;
+//利用空的char和string占位，实现类似scanf的操作
+cin<<a<<c<<b;
+cin<<str<<a;
     cout<<a<<b<<endl;//count<<x<<'\n';//count<<"a is :\n"<<a;
 ```
 
@@ -441,6 +446,7 @@ int* buffer = new int[512](5); // 语法错误！！！
 int* buffer = new int[512]{}; // 512个int都初始化为0
 int* buffer = new int[512]{5}; // 第一个int初始化为5，其余初始化为0
 int* buffer = new int[512]{1, 2, 3, 4}; // 前4个int分别初始化为1、2、3、4，其余int初始化为0
+Student *stud=new Student[3]{Student(1001,18,87),Student(1002,19,76),Student(1003,18,72)};
 ```
 
 ```cpp
@@ -2814,7 +2820,7 @@ Function for_each(InputIterator beg, InputIterator end, Function f)  {
      bitvec2=bitvec1|bitvec2;
      bitvec3~=bitvec4;
      bitvec3=bitvec1&bitvec5;
-```
+``` 
 
 ```cpp
 bitset<32>bitvec(1U);
@@ -2893,7 +2899,7 @@ v.emplace_back(u(e));
 
 //分布类型的操作
 d(e);
-d.min();
+d.min();    
 d.max();
 d.reset();//重建d的状态
 ```
@@ -3244,7 +3250,13 @@ std::ios::sync_with_stdio(false);    // Linux gcc.
     
 ```
 
-### getline and stringstream
+### stringstream
+
+包括ostringstream和istringstream
+
+继承关系如下
+
+![1](https://img-blog.csdnimg.cn/20190407152136561.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXdlaXl1eGlhbmc=,size_16,color_FFFFFF,t_70)
 
 ```cpp
 istream& getline (istream&  is, string& str, char delim);
@@ -3252,13 +3264,42 @@ istream& getline (istream&  is, string& str, char delim);
 
 The extraction also stops if the *end of file* is reached in is or if some other *error* occurs during the input operation.
 
-If the delimiter is found, it is *extracted and discarded* (i.e. it is not stored and the next input operation will begin after it).
+If the delimiter is found, it is *extracted and discarded* (i.e. **it is not stored and the next input operation will begin after it**).
 
 Note that any content in str before the call is *replaced* by the newly extracted sequence.
 */
-/*delim的缺省值是'\n',istream一般用cin，但当需要重复提取一个输入时，串结束时getline不会返回0使得循环结束，只能ctrl+d结束流使得读取结束(读取结束时最后的部分没有delim符也会被读取)，解决方法就是用<sstream>里的stringstream函数将string变成流,这样就可以顺利读取并返回0退出循环，stringstream ss(s);*/
+/*delim的缺省值是'\n',istream一般用cin，但当需要重复提取一个输入时，串结束时getline不会返回0使得循环结束，只能ctrl+d结束流使得读取结束(读取结束时最后的部分没有delim符也会被读取)，解决方法就是用<sstream>里的stringstream函数将string变成流,这样就可以顺利读取并返回0退出循环(最后一段读取会遇到流里面的EOF)，stringstream ss(s);*/
 
+```
 
+**效果类似将一个txt输入文件重定向**.
+
+```cpp
+  string pairstr = "(1,2)(3,4)(7,9)(4,6)(6,1)(0,5)";
+    stringstream ss(pairstr);
+    vector<pair<int, int>> pairs;
+    pair<int, int> p;
+    char c;
+    // ss.rdbuf()->in_avail() != 0//一种判空方式
+    while (ss >> c >> p.first >> c >> p.second >> c)
+    { 
+        pairs.emplace_back(p);
+    }
+//对同一个stringstream对象重复赋值要清空流
+     ss.clear();//清空流(缓存还在)
+    ss.str("");//清空流缓存
+    ss.str().length();
+//to_string原理
+    void to_string(string & result,const T& t)
+{
+    ostringstream oss;       //创建一个输出流
+    oss << t;               //把值传递如流中
+    result = oss.str();     //获取转换后的字符转并将其写入result
+}
+string ss = "10000";//模拟atoi
+int n = 0;
+stream << ss;
+stream >> n;              //n等于10000
 ```
 
 ## C++引用

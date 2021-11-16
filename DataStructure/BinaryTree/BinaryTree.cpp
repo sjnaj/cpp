@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-21 17:41:34
- * @LastEditTime: 2021-11-06 20:18:07
+ * @LastEditTime: 2021-11-09 20:42:04
  */
 #ifndef _BinaryTree_h
 #include "BinaryTree.h"
@@ -417,12 +417,6 @@ void GoAlongLeftBranch(BinTree &t, stack<BinTree> &S)
         t = t->lchild;
     }
 }
-void PrintBlank(int n)
-{
-    if (n >= 1)
-        while (n--)
-            cout << " ";
-}
 template <typename Tree>
 void PrintTree(Tree &T)
 {
@@ -434,7 +428,8 @@ void PrintTree(Tree &T)
     bool hasNode = true;
     while (1)
     {
-        PrintBlank(gap - 3); //行首空格
+        if(gap-3>0)
+        cout<<string(gap-3,' '); //行首空格
         size = Q.size();
         if (hasNode)
             hasNode = false;
@@ -457,7 +452,8 @@ void PrintTree(Tree &T)
                 Q.push(nullptr);
                 Q.push(nullptr);
             }
-            PrintBlank(2 * gap - 3);
+            if(2*gap-3>0)
+            cout<<string(2 * gap - 3,' ');
         }
         gap /= 2;
         cout << endl; //分层

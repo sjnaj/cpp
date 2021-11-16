@@ -7,7 +7,8 @@
         "*.tcc": "cpp",
         "type_traits": "cpp",
         "algorithm": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "iostream": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
