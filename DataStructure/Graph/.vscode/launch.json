@@ -1,0 +1,30 @@
+{
+    "configurations": [
+    {
+        "name": "(gdb) 启动",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",//可执行文件地址，出问题找不到文件时可以删除json内容再复制回来或重写
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${fileDirname}",
+        "preLaunchTask": "build",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "为 gdb 启用整齐打印",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+    }
+    ]
+    
+       
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    
+}

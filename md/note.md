@@ -378,6 +378,7 @@ int main(int argc, const char * argv[])
     return 0;
 }
 ```
+
 ### bool and const
 
 C++ 新增了 bool 类型（布尔类型），它一般占用 1个字节长度。bool 类型只有两个取值，true 和 false：true 表示“真”，false 表示“假”
@@ -429,6 +430,10 @@ delete[] p;
 用 new[] 分配的内存需要用 delete[] 释放，它们是一一对应的。
 
 和 malloc() 一样，new 也是在堆区分配内存，必须手动释放，否则只能等到程序运行结束由操作系统回收。为了避免内存泄露，**通常 new 和 delete、new[] 和 delete[] 操作符应该成对出现**，并且不要和C语言中 malloc()、free() 一起混用。
+
+可以delete空指针，但不能重复释放一块空间
+
+删除指针后一定要置空
 
 malloc 申请完空间之后不会对内存进行必要的初始化，而 new 可以。
 
@@ -709,7 +714,7 @@ vector<int>vi(begin(a), end(a));
 vector<int>vi(a+1, a+4);
 //应尽量使用vector和迭代器，避免使用容易出错的内置数组和指针
 
-//type[size]:数组类型，type(*)[size]：数组指针
+//type[size]:数组类型;type(*)[size]：数组指针
 //数组名通常会被转换成指向首元素的常量指针,int [size]->int * const,
 //指向数组的指针和数组名都可以用[]访问元素，但指针是迭代器，而数组名不能通过自增自减的方式访问
 //数组指针自增一次偏移量是整个数组的大小
@@ -780,7 +785,7 @@ static_assert()接受两个参数。第1个参数是整型常量表达式，第2
 static_assert(sizeof(double) == 2 * sizeof(int), "double not twice int size");
 ```
 
-assert()可以导致正在运行的程序中止，而static_assert()可以导致程序无法通过编译。
+assert()可以导致正在运行的程序中止，而static_assert()会导致程序无法通过编译。
 
 ### C和C++混合编程和debug模式条件编译
 
@@ -1592,6 +1597,8 @@ const引用传参：
 1.**对于非内部数据类型的输入参数（复制代价大），应该将“值传递”的方式改为“const 引用传递”**，目的是提高效率。例如将void func(A a) 改为void func(const A &a)。一个额外的好处是这样**可以接收右值**，例如临时对象。
 
 2.**对于内部数据类型的输入参数（复制代价小），不要将“值传递”的方式改为“const 引用传递”**。否则既达不到提高效率的目的，又降低了函数的可理解性。例如void func(int x) 不应该改为void func(const int &x)。
+
+**参数对象(传参进入的本类对象)不能调用非const的成员函数，因为this指针是const的**.
 
 ### const和static成员函数都可以通过参数访问私有变量，限制只是局限于它们的默认调用
 
@@ -2553,6 +2560,7 @@ decltype(anon_s) as ;//定义了一个上面匿名的结构体
 可以用于模板根据不同的参数类型做出不同的操作
 
 ```cpp
+#include <type_traits>
     template<typename TYPE>
 typeCheck(TYPE data)
 {
@@ -2690,7 +2698,25 @@ lambda 表达式还可以通过捕获列表捕获一定范围内的变量：
 [&,=foo],与上一个配套
 [bar] 按值捕获 bar 变量，同时不捕获其他变量。
 [this] 捕获当前类中的 this 指针，让 lambda 表达式拥有和当前类成员函数同样的访问权限。如果已经使用了 & 或者 =，就默认添加此选项。捕获 this 的目的是可以在 lamda 中使用当前类的成员函数和成员变量。
+
+A lambda can only capture local variables. When a lambda is defined within a member function, you may believe that you are capturing a member variable of the current class, but in fact, what you are capturing is this. This may be very surprising, and lead to bugs if the lambda is then used after the current object has been destroyed.
+
+//在类中定义lambda表达式函数时对成员变量的访问是通过捕获的this指针而不是直接访问主调对象成员，在类成员函数中调用lambda表达式**可能会不能正确捕获到当前对象的this指针**。
+
+0x7fff8fd78ef0//对象地址
+0x7fff8fd78ef0//成员函数中的this
+0x7fff8fd78e60//成员函数中调用的lambda表达式中的this
+
+This rule does not apply if the capture list of the lambda contains *this (possible since C++17). In that situation, what is captured is not the pointer this, but a local copy of the object pointed-to by this and any reference to this (explicit or implicit) in the lambda body then refers to this local copy
+
+向捕获列表传入*this可解决,但不能修改
+
+function里的lambda不能用，会出奇怪的错误
+
+ It's useful when you need a copy of *this - for example, when this itself is no longer valid by the time the lambda is evaluated.
+
 ```
+![a](https://cdn.nextptr.com/images/uimages/SpPZ6mR7ZHbGok_e9eTsj902.png)
 
 ```cpp
 class A
@@ -3530,9 +3556,9 @@ int main(){
 
 以下是两种典型的使用继承的场景：
 
-1) 当你创建的新类与现有的类相似，只是多出若干成员变量或成员函数时，可以使用继承，这样不但会减少代码量，而且新类会拥有基类的所有功能。
+**1) 当你创建的新类与现有的类相似，只是多出若干成员变量或成员函数时，可以使用继承，这样不但会减少代码量，而且新类会拥有基类的所有功能**。
 
-2) 当你需要创建多个类，它们拥有很多相似的成员变量或成员函数时，也可以使用继承。可以将这些类的共同成员提取出来，定义为基类，然后从基类继承，既可以节省代码，也方便后续修改成员。
+**2) 当你需要创建多个类，它们拥有很多相似的成员变量或成员函数时，也可以使用继承。可以将这些类的共同成员提取出来，定义为基类，然后从基类继承，既可以节省代码，也方便后续修改成员**.
 
 class Student: public People
 
@@ -3625,7 +3651,7 @@ struct Derived : Base
 
 ### 基类和派生类构造和析构函数
 
-构造函数和析构函数都不能被继承
+构造函数和析构函数都不能被继承,只能使用
 
 ```cpp
 Student::Student(char *name, int age, float score): People(name, age), m_score(score){ }
@@ -3633,7 +3659,7 @@ Student::Student(char *name, int age, float score): People(name, age), m_score(s
 
 不管它们的顺序如何，派生类构造函数总是**先调用基类构造函数再执行其他代码**（包括参数初始化表以及函数体中的代码)
 
-因为基类构造函数不会被继承，不能当做普通的成员函数来调用。换句话说，只能将**基类构造函数的调用放在函数头部**，不能放在函数体中,**构造函数访问基类变量则只能放在函数体中，不能放在头部**。
+因为基类构造函数不会被继承，不能当做普通的成员函数来调用。换句话说，只能将**基类构造函数的调用放在初始化列表**，不能放在函数体中,***构造函数访问基类变量则只能放在函数体中，不能放在头部,并要用this指向***。
 
 构造函数的调用顺序是按照继承的层次自顶向下、从基类再到派生类的。
 
@@ -3749,7 +3775,7 @@ pa 本来是基类 A 的指针，现在指向了派生类 D 的对象，这使�
 
 让基类指针能够访问派生类的成员函数，C++ 增加了虚函数（Virtual Function）
 
-在同名函数前加 virtual 即可。
+在同名函数声明前加 virtual 即可，类外定义时不能加
 
 有了虚函数，基类指针指向基类对象时就使用基类的成员（包括成员函数和成员变量），指向派生类对象时就使用派生类的成员。换句话说，基类指针可以按照基类的方式来做事，也可以按照派生类的方式来做事，它有多种形态，或者说有多种表现方式，我们将这种现象称为多态（Polymorphism）。
 
@@ -3815,7 +3841,7 @@ virtual 返回值类型 函数名 (函数参数) = 0;
 
 包含纯虚函数的类称为抽象类（*Abstract Class*）。之所以说它抽象，是因为它**无法实例化**，也就是无法创建对象。原因很明显，纯虚函数没有函数体，不是完整的函数，无法调用，也无法为其分配内存空间。
 
-抽象类通常是作为基类，让派生类去实现纯虚函数。**派生类必须实现纯虚函数才能被实例化**。
+抽象类通常是作为基类，让派生类去实现纯虚函数。**派生类必须实现纯虚函数才能被实例化**,因为否则会继承基类的纯虚函数而称为抽象类。
 
 在实际开发中，你可以定义一个抽象基类，只完成部分功能，未完成的功能交给派生类去实现（谁派生谁实现）。这部分未完成的功能，往往是基类不需要的，或者在基类中无法实现的。虽然抽象基类没有完成，但是却强制要求派生类完成，这就是抽象基类的“霸王条款”。
 
@@ -4255,13 +4281,20 @@ stopwatch stopwatch::operator++(int n){//参数n是没有任何意义的，它�
 ```
 
 ```cpp
+Matrix<T> Matrix<T>::operator*=(const Matrix &m)
+{
+    return *this = *this * m;//借用重载的*
+}
+```
+
+```cpp
 以成员函数的形式重载 new 运算符：
 void * className::operator new( size_t size ){
     //TODO:
 }
 
 以全局函数的形式重载 new 运算符：
-void * operator new( size_t size ){
+void * operator new( size_t size ){ 
     //TODO:
 }
 
@@ -5101,6 +5134,15 @@ if(shared_ptr<int>np=wp.lock())//不能直接访问，必须调用lock返回一�
 
 模板形参不能为空。
 
+模板的派生类访问基类成员必须显式调用，因为编译第一阶段会忽视与模板相关的，于是会找不到派生类中使用的基类成员变量
+
+```cpp
+SeqList<T>::m_array = space;  //法1
+//父类是模板可以用this来调用父类成员
+        this->length = 0;//法2，这个较为简便
+        //把查找延迟到第二阶段，注意两个都不能用在初始化列表里
+```
+
 ### 函数模板
 
 模板函数应尽量减少对实参类型的要求(也是泛型编程的原则)，除了函数体所使用的语句和函数要注意，还应尽量使用**const引用参数减小复制时间和对参数的要求**(如果确保参数只可能是内置类型可以不用太执着)。
@@ -5123,6 +5165,8 @@ T max(T a, T b, T c){ //函数头
 }
 函数模板声明为inline或constexpr时说明符放在模板参数之后。
 template<typename T> inline T max(T a, T b, T c);
+
+//类型可以显式指定，注意定义时函数名中不能出现参数类型列表，而类模板需要参数列表<T>
 
 ```
 
@@ -5221,7 +5265,7 @@ Point<float, float> *p1 = new Point<float, float>(10.6, 109.3);//赋值号两边
 Point<char*, char*> *p = new Point<char*, char*>("东经180度", "北纬210度");
 ```
 
-在类的作用域之内(类的定义和外部函数在类名之后的部分)写类名时***不用写实参列表**。class\<T\>-\>class
+在类的作用域之内(**类的定义和外部函数在类名之后的部分**)写类名时**不用写实参列表**。class\<T\>-\>class
 
 仅针对本类，其它同模板类在本类作用域内也要加实参列表.
 
@@ -5274,6 +5318,7 @@ template <typename T> class C
     friend class Pal<C>;//限制用C初始化的为友元
     template<typename X> friend class Pal2;//所有实例都是C的友元，不用前置声明，注意typename不能写成本类的T(会被外部的T屏蔽)，实例化时可以任意
 };
+//如果成员函数要访问本类的其它实例，则需要将自己声明为友元类(特定实例或所有实例)，因为不同实例相当于不同的类
 将自己的模板参数声明为友元
 template <typename T> class C
 {
