@@ -1,7 +1,7 @@
 <!--
  * @Author: fengsc
  * @Date: 2021-08-02 18:59:05
- * @LastEditTime: 2021-11-18 20:23:10
+ * @LastEditTime: 2021-12-05 10:31:29
 -->
 - [STL](#stl)
   - [基本](#基本)
@@ -347,7 +347,7 @@ swap和remove是标准库函数，其它是成员函数
  demo.erase(remove(demo.begin(), demo.end(), 3),demo.end());//实现真正删除
  demo.erase(iter, demo.end());
 
- demo.clear();//清空vector，size归零,并不会把所有元素清零并不会把所有元素清零.
+ demo.clear();//清空vector,原本的内存不变，size归零,用于多次利用同一个向量
 
  demo.shrink_to_fit();使capacity和size一样
 
@@ -394,6 +394,8 @@ vector 容器扩容的整个过程，和 realloc() 函数的实现方法类似�
 只要有新元素要添加到 vector 容器中而恰好此时 vector 容器的容量不足时，该容器就会自动扩容。
 避免 vector 容器执行不必要的扩容操作的关键在于，在使用 vector 容器初期，就要将其容量设为足够大的值。换句话说，在 vector 容器刚刚构造出来的那一刻，就应该**借助 reserve() 成员方法为其扩充足够大的容量**。
 
+reserve所得空间不可以用下标访问，resize的可以；
+
 **注意reverse和定义时的初始化不一样，后者会构造对象，前者只是预留空间**。
 
 **利用swap调整容量**：vector\<T\>(x).swap(x);
@@ -412,6 +414,16 @@ vector<int>(myvector).swap(myvector);//调用复制构造函数
 //相当于myvector.shrink_to_fit();
 vector<int>().swap(myvector);//调用默认构造函数得到空vector
 //相当于myvector.clear();
+```
+
+```cpp
+vector<char>与string互相转换
+vector<char>vec;
+string s(vec.begin(), vec.end());
+vector<char>vec2(s.begin(), s.end());
+s.assign(vec2.begin(), vec2.end());
+vec.assign(s.begin(), s.end());
+cout<<string(vec.begin(), vec.end())<<endl;//简便输出vector
 ```
 
 ### deque

@@ -1,13 +1,31 @@
 [
 {
   "directory": "/home/fengsc/Desktop/cpp/DataStructure/Graph/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I.   -save-temps=obj -std=c++17 -fno-schedule-insns2 -g   -o CMakeFiles/mainRelation.dir/mainRelation.cpp.o -c /home/fengsc/Desktop/cpp/DataStructure/Graph/mainRelation.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -o CMakeFiles/mainRelation.dir/mainRelation.cpp.o -c /home/fengsc/Desktop/cpp/DataStructure/Graph/mainRelation.cpp",
   "file": "/home/fengsc/Desktop/cpp/DataStructure/Graph/mainRelation.cpp"
 },
 
 {
   "directory": "/home/fengsc/Desktop/cpp/DataStructure/Graph/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I.   -save-temps=obj -std=c++17 -fno-schedule-insns2 -g   -o CMakeFiles/main.dir/main.cpp.o -c /home/fengsc/Desktop/cpp/DataStructure/Graph/main.cpp",
-  "file": "/home/fengsc/Desktop/cpp/DataStructure/Graph/main.cpp"
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -o CMakeFiles/mainMXGraph.dir/mainMXGraph.cpp.o -c /home/fengsc/Desktop/cpp/DataStructure/Graph/mainMXGraph.cpp",
+  "file": "/home/fengsc/Desktop/cpp/DataStructure/Graph/mainMXGraph.cpp"
+},
+
+{
+  "directory": "/home/fengsc/Desktop/cpp/DataStructure/Graph/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -o CMakeFiles/mainMin.dir/mainMin.cpp.o -c /home/fengsc/Desktop/cpp/DataStructure/Graph/mainMin.cpp",
+  "file": "/home/fengsc/Desktop/cpp/DataStructure/Graph/mainMin.cpp"
+},
+
+{
+  "directory": "/home/fengsc/Desktop/cpp/DataStructure/Graph/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -o CMakeFiles/mainProject.dir/mainProject.cpp.o -c /home/fengsc/Desktop/cpp/DataStructure/Graph/mainProject.cpp",
+  "file": "/home/fengsc/Desktop/cpp/DataStructure/Graph/mainProject.cpp"
+},
+
+{
+  "directory": "/home/fengsc/Desktop/cpp/DataStructure/Graph/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -o CMakeFiles/mainALGraph.dir/mainALGraph.cpp.o -c /home/fengsc/Desktop/cpp/DataStructure/Graph/mainALGraph.cpp",
+  "file": "/home/fengsc/Desktop/cpp/DataStructure/Graph/mainALGraph.cpp"
 }
 ]

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Linux-x86_64-linux-gnu-g++-9"
+	BuildStamp="20211205-0059-Continuous"
+	Name="ubuntu"
+	Generator="ctest-3.16.3"
+	CompilerName="/bin/x86_64-linux-gnu-g++-9"
+	CompilerVersion="9.3.0"
+	OSName="Linux"
+	Hostname="ubuntu"
+	OSRelease="5.11.0-41-generic"
+	OSVersion="#45~20.04.1-Ubuntu SMP Wed Nov 10 10:20:10 UTC 2021"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="142"
+	ProcessorCacheSize="6144"
+	NumberOfLogicalCPU="8"
+	NumberOfPhysicalCPU="8"
+	TotalVirtualMemory="923"
+	TotalPhysicalMemory="7922"
+	LogicalProcessorsPerPhysical="1"
+	ProcessorClockFrequency="2112"
+	>
+	<Build>
+		<StartDateTime>Dec 05 08:59 CST</StartDateTime>
+		<StartBuildTime>1638665956</StartBuildTime>
+		<BuildCommand>/usr/bin/cmake --build . --config "Release"</BuildCommand>
+		<Error>
+			<BuildLogLine>6</BuildLogLine>
+			<Text>../mainALGraph.cpp:74:12: error: no match for ‘operator-’ (operand types are ‘std::string’ {aka ‘std::__cxx11::basic_string&lt;char&gt;’} and ‘std::string’ {aka ‘std::__cxx11::basic_string&lt;char&gt;’})</Text>
+			<SourceFile>mainALGraph.cpp</SourceFile>
+			<SourceLineNumber>74</SourceLineNumber>
+			<PreContext>[1/3] Linking CXX executable mainMXGraph
+[2/3] Building CXX object CMakeFiles/mainALGraph.dir/mainALGraph.cpp.o
+FAILED: CMakeFiles/mainALGraph.dir/mainALGraph.cpp.o 
+/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I. -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g -MD -MT CMakeFiles/mainALGraph.dir/mainALGraph.cpp.o -MF CMakeFiles/mainALGraph.dir/mainALGraph.cpp.o.d -o CMakeFiles/mainALGraph.dir/mainALGraph.cpp.o -c ../mainALGraph.cpp
+../mainALGraph.cpp: In function ‘int main()’:
+</PreContext>
+			<PostContext>   74 |     cout&lt;&lt;s-g;
+      |           ~^~
+      |           | |
+      |           | basic_string&lt;[...]&gt;
+      |           basic_string&lt;[...]&gt;
+In file included from /usr/include/c++/9/bits/stl_algobase.h:67,
+                 from /usr/include/c++/9/bits/char_traits.h:39,
+                 from /usr/include/c++/9/ios:40,
+                 from /usr/include/c++/9/ostream:38,
+                 from /usr/include/c++/9/iostream:39,</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Error>
+		<Warning>
+			<BuildLogLine>21</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_iterator.h:415:5: note: candidate: ‘template&lt;class _IteratorL, class _IteratorR&gt; constexpr decltype ((__y.base() - __x.base())) std::operator-(const std::reverse_iterator&lt;_Iterator&gt;&amp;, const std::reverse_iterator&lt;_IteratorR&gt;&amp;)’</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_iterator.h</SourceFile>
+			<SourceLineNumber>415</SourceLineNumber>
+			<PreContext>                 from ../src/Graph.h:7,
+                 from ../src/GraphMatrix.h:7,
+                 from ../src/GraphAdjacencyList.h:6,
+                 from ../mainALGraph.cpp:6:
+</PreContext>
+			<PostContext>  415 |     operator-(const reverse_iterator&lt;_IteratorL&gt;&amp; __x,
+      |     ^~~~~~~~
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>24</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_iterator.h:415:5: note:   template argument deduction/substitution failed:</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_iterator.h</SourceFile>
+			<SourceLineNumber>415</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext></PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>25</BuildLogLine>
+			<Text>../mainALGraph.cpp:74:13: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string&lt;char&gt;’} is not derived from ‘const std::reverse_iterator&lt;_Iterator&gt;’</Text>
+			<SourceFile>mainALGraph.cpp</SourceFile>
+			<SourceLineNumber>74</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext>   74 |     cout&lt;&lt;s-g;
+      |             ^
+In file included from /usr/include/c++/9/bits/stl_algobase.h:67,
+                 from /usr/include/c++/9/bits/char_traits.h:39,
+                 from /usr/include/c++/9/ios:40,
+                 from /usr/include/c++/9/ostream:38,
+                 from /usr/include/c++/9/iostream:39,
+                 from ../src/Graph.h:7,
+                 from ../src/GraphMatrix.h:7,
+                 from ../src/GraphAdjacencyList.h:6,</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>37</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_iterator.h:1212:5: note: candidate: ‘template&lt;class _IteratorL, class _IteratorR&gt; constexpr decltype ((__x.base() - __y.base())) std::operator-(const std::move_iterator&lt;_IteratorL&gt;&amp;, const std::move_iterator&lt;_IteratorR&gt;&amp;)’</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_iterator.h</SourceFile>
+			<SourceLineNumber>1212</SourceLineNumber>
+			<PreContext>                 from ../mainALGraph.cpp:6:
+</PreContext>
+			<PostContext> 1212 |     operator-(const move_iterator&lt;_IteratorL&gt;&amp; __x,
+      |     ^~~~~~~~
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>40</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_iterator.h:1212:5: note:   template argument deduction/substitution failed:</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_iterator.h</SourceFile>
+			<SourceLineNumber>1212</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext></PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>41</BuildLogLine>
+			<Text>../mainALGraph.cpp:74:13: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string&lt;char&gt;’} is not derived from ‘const std::move_iterator&lt;_IteratorL&gt;’</Text>
+			<SourceFile>mainALGraph.cpp</SourceFile>
+			<SourceLineNumber>74</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext>   74 |     cout&lt;&lt;s-g;
+      |             ^
+In file included from /usr/include/c++/9/vector:68,
+                 from ../src/Graph.h:9,
+                 from ../src/GraphMatrix.h:7,
+                 from ../src/GraphAdjacencyList.h:6,
+                 from ../mainALGraph.cpp:6:
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>49</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_bvector.h:214:3: note: candidate: ‘std::ptrdiff_t std::operator-(const std::_Bit_iterator_base&amp;, const std::_Bit_iterator_base&amp;)’</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_bvector.h</SourceFile>
+			<SourceLineNumber>214</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext>  214 |   operator-(const _Bit_iterator_base&amp; __x, const _Bit_iterator_base&amp; __y)
+      |   ^~~~~~~~
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>52</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_bvector.h:214:39: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string&lt;char&gt;’} to ‘const std::_Bit_iterator_base&amp;’</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_bvector.h</SourceFile>
+			<SourceLineNumber>214</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext>  214 |   operator-(const _Bit_iterator_base&amp; __x, const _Bit_iterator_base&amp; __y)
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+In file included from /usr/include/c++/9/deque:67,
+                 from /usr/include/c++/9/queue:60,
+                 from ../src/Graph.h:11,
+                 from ../src/GraphMatrix.h:7,
+                 from ../src/GraphAdjacencyList.h:6,
+                 from ../mainALGraph.cpp:6:
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>61</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_deque.h:370:5: note: candidate: ‘template&lt;class _Tp, class _Ref, class _Ptr&gt; typename std::_Deque_iterator&lt;_Tp, _Ref, _Ptr&gt;::difference_type std::operator-(const std::_Deque_iterator&lt;_Tp, _Ref, _Ptr&gt;&amp;, const std::_Deque_iterator&lt;_Tp, _Ref, _Ptr&gt;&amp;)’</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_deque.h</SourceFile>
+			<SourceLineNumber>370</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext>  370 |     operator-(const _Deque_iterator&lt;_Tp, _Ref, _Ptr&gt;&amp; __x,
+      |     ^~~~~~~~
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>64</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_deque.h:370:5: note:   template argument deduction/substitution failed:</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_deque.h</SourceFile>
+			<SourceLineNumber>370</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext></PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>65</BuildLogLine>
+			<Text>../mainALGraph.cpp:74:13: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string&lt;char&gt;’} is not derived from ‘const std::_Deque_iterator&lt;_Tp, _Ref, _Ptr&gt;’</Text>
+			<SourceFile>mainALGraph.cpp</SourceFile>
+			<SourceLineNumber>74</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext>   74 |     cout&lt;&lt;s-g;
+      |             ^
+In file included from /usr/include/c++/9/deque:67,
+                 from /usr/include/c++/9/queue:60,
+                 from ../src/Graph.h:11,
+                 from ../src/GraphMatrix.h:7,
+                 from ../src/GraphAdjacencyList.h:6,
+                 from ../mainALGraph.cpp:6:
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>74</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_deque.h:382:5: note: candidate: ‘template&lt;class _Tp, class _RefL, class _PtrL, class _RefR, class _PtrR&gt; typename std::_Deque_iterator&lt;_Tp, _Ref, _Ptr&gt;::difference_type std::operator-(const std::_Deque_iterator&lt;_Tp, _Ref, _Ptr&gt;&amp;, const std::_Deque_iterator&lt;_Tp, _RefR, _PtrR&gt;&amp;)’</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_deque.h</SourceFile>
+			<SourceLineNumber>382</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext>  382 |     operator-(const _Deque_iterator&lt;_Tp, _RefL, _PtrL&gt;&amp; __x,
+      |     ^~~~~~~~
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>77</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_deque.h:382:5: note:   template argument deduction/substitution failed:</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_deque.h</SourceFile>
+			<SourceLineNumber>382</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext></PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>78</BuildLogLine>
+			<Text>../mainALGraph.cpp:74:13: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string&lt;char&gt;’} is not derived from ‘const std::_Deque_iterator&lt;_Tp, _Ref, _Ptr&gt;’</Text>
+			<SourceFile>mainALGraph.cpp</SourceFile>
+			<SourceLineNumber>74</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext>   74 |     cout&lt;&lt;s-g;
+      |             ^
+In file included from /usr/include/c++/9/bits/stl_algobase.h:67,
+                 from /usr/include/c++/9/bits/char_traits.h:39,
+                 from /usr/include/c++/9/ios:40,
+                 from /usr/include/c++/9/ostream:38,
+                 from /usr/include/c++/9/iostream:39,
+                 from ../src/Graph.h:7,
+                 from ../src/GraphMatrix.h:7,
+                 from ../src/GraphAdjacencyList.h:6,</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>90</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_iterator.h:977:5: note: candidate: ‘template&lt;class _IteratorL, class _IteratorR, class _Container&gt; decltype ((__lhs.base() - __rhs.base())) __gnu_cxx::operator-(const __gnu_cxx::__normal_iterator&lt;_IteratorL, _Container&gt;&amp;, const __gnu_cxx::__normal_iterator&lt;_IteratorR, _Container&gt;&amp;)’</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_iterator.h</SourceFile>
+			<SourceLineNumber>977</SourceLineNumber>
+			<PreContext>                 from ../mainALGraph.cpp:6:
+</PreContext>
+			<PostContext>  977 |     operator-(const __normal_iterator&lt;_IteratorL, _Container&gt;&amp; __lhs,
+      |     ^~~~~~~~
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>93</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_iterator.h:977:5: note:   template argument deduction/substitution failed:</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_iterator.h</SourceFile>
+			<SourceLineNumber>977</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext></PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>94</BuildLogLine>
+			<Text>../mainALGraph.cpp:74:13: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string&lt;char&gt;’} is not derived from ‘const __gnu_cxx::__normal_iterator&lt;_IteratorL, _Container&gt;’</Text>
+			<SourceFile>mainALGraph.cpp</SourceFile>
+			<SourceLineNumber>74</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext>   74 |     cout&lt;&lt;s-g;
+      |             ^
+In file included from /usr/include/c++/9/bits/stl_algobase.h:67,
+                 from /usr/include/c++/9/bits/char_traits.h:39,
+                 from /usr/include/c++/9/ios:40,
+                 from /usr/include/c++/9/ostream:38,
+                 from /usr/include/c++/9/iostream:39,
+                 from ../src/Graph.h:7,
+                 from ../src/GraphMatrix.h:7,
+                 from ../src/GraphAdjacencyList.h:6,</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>106</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_iterator.h:989:5: note: candidate: ‘template&lt;class _Iterator, class _Container&gt; typename __gnu_cxx::__normal_iterator&lt;_Iterator, _Container&gt;::difference_type __gnu_cxx::operator-(const __gnu_cxx::__normal_iterator&lt;_Iterator, _Container&gt;&amp;, const __gnu_cxx::__normal_iterator&lt;_Iterator, _Container&gt;&amp;)’</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_iterator.h</SourceFile>
+			<SourceLineNumber>989</SourceLineNumber>
+			<PreContext>                 from ../mainALGraph.cpp:6:
+</PreContext>
+			<PostContext>  989 |     operator-(const __normal_iterator&lt;_Iterator, _Container&gt;&amp; __lhs,
+      |     ^~~~~~~~
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>109</BuildLogLine>
+			<Text>/usr/include/c++/9/bits/stl_iterator.h:989:5: note:   template argument deduction/substitution failed:</Text>
+			<SourceFile>/usr/include/c++/9/bits/stl_iterator.h</SourceFile>
+			<SourceLineNumber>989</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext></PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>110</BuildLogLine>
+			<Text>../mainALGraph.cpp:74:13: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string&lt;char&gt;’} is not derived from ‘const __gnu_cxx::__normal_iterator&lt;_Iterator, _Container&gt;’</Text>
+			<SourceFile>mainALGraph.cpp</SourceFile>
+			<SourceLineNumber>74</SourceLineNumber>
+			<PreContext></PreContext>
+			<PostContext>   74 |     cout&lt;&lt;s-g;
+      |             ^
+ninja: build stopped: subcommand failed.
+</PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Warning>
+			<BuildLogLine>1</BuildLogLine>
+			<Text>*** WARNING non-zero return value in ctest from: /usr/bin/cmake</Text>
+			<PreContext></PreContext>
+			<PostContext></PostContext>
+			<RepeatCount>0</RepeatCount>
+		</Warning>
+		<Log Encoding="base64" Compression="bin/gzip"/>
+		<EndDateTime>Dec 05 08:59 CST</EndDateTime>
+		<EndBuildTime>1638665957</EndBuildTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Build>
+</Site>

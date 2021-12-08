@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-10-31 14:11:31
- * @LastEditTime: 2021-11-02 18:50:03
+ * @LastEditTime: 2021-12-07 22:42:06
  */
 #pragma once
 #include <iostream>
@@ -10,7 +10,7 @@
 #include <stack>
 #include <queue>
 #include "BinaryTree.cpp"
-using DataType = char;
+using DataType = int;
 using namespace std;
 struct Node
 {

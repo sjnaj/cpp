@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "mainRelation"
+			"path" : "mainMXGraph"
 		}
 	],
 	"backtrace" : 1,
@@ -11,6 +11,7 @@
 		"commands" : 
 		[
 			"add_executable",
+			"add_definitions",
 			"include_directories"
 		],
 		"files" : 
@@ -25,13 +26,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 23,
+				"line" : 22,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 19,
+				"line" : 29,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 18,
 				"parent" : 0
 			}
 		]
@@ -42,13 +49,20 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : " -save-temps=obj -std=c++17 -fno-schedule-insns2 -g  "
+					"fragment" : " -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g  "
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 2,
+					"define" : "_DEBUG"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 2,
+					"backtrace" : 3,
 					"path" : "/home/fengsc/Desktop/cpp/DataStructure/Graph/build"
 				}
 			],
@@ -59,13 +73,13 @@
 			]
 		}
 	],
-	"id" : "mainRelation::@6890427a1f51a3e7e1df",
+	"id" : "mainMXGraph::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-save-temps=obj -std=c++17 -fno-schedule-insns2 -g",
+				"fragment" : "-save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g",
 				"role" : "flags"
 			},
 			{
@@ -75,8 +89,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "mainRelation",
-	"nameOnDisk" : "mainRelation",
+	"name" : "mainMXGraph",
+	"nameOnDisk" : "mainMXGraph",
 	"paths" : 
 	{
 		"build" : ".",
@@ -97,7 +111,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "mainRelation.cpp",
+			"path" : "mainMXGraph.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Linux-x86_64-linux-gnu-g++-9"
+	BuildStamp="20211205-0059-Continuous"
+	Name="ubuntu"
+	Generator="ctest-3.16.3"
+	CompilerName="/bin/x86_64-linux-gnu-g++-9"
+	CompilerVersion="9.3.0"
+	OSName="Linux"
+	Hostname="ubuntu"
+	OSRelease="5.11.0-41-generic"
+	OSVersion="#45~20.04.1-Ubuntu SMP Wed Nov 10 10:20:10 UTC 2021"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="142"
+	ProcessorCacheSize="6144"
+	NumberOfLogicalCPU="8"
+	NumberOfPhysicalCPU="8"
+	TotalVirtualMemory="923"
+	TotalPhysicalMemory="7922"
+	LogicalProcessorsPerPhysical="1"
+	ProcessorClockFrequency="2112"
+	>
+	<Configure>
+		<StartDateTime>Dec 05 08:59 CST</StartDateTime>
+		<StartConfigureTime>1638665956</StartConfigureTime>
+		<ConfigureCommand>"/usr/bin/cmake" "/home/fengsc/Desktop/cpp/DataStructure/Graph"</ConfigureCommand>
+		<Log>-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/fengsc/Desktop/cpp/DataStructure/Graph/build
+</Log>
+		<ConfigureStatus>0</ConfigureStatus>
+		<EndDateTime>Dec 05 08:59 CST</EndDateTime>
+		<EndConfigureTime>1638665956</EndConfigureTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Configure>
+</Site>

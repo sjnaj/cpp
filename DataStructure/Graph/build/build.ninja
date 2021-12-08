@@ -75,8 +75,9 @@ build package_source: phony CMakeFiles/package_source.util
 build cmake_object_order_depends_target_mainRelation: phony || CMakeFiles/mainRelation.dir
 
 build CMakeFiles/mainRelation.dir/mainRelation.cpp.o: CXX_COMPILER__mainRelation ../mainRelation.cpp || cmake_object_order_depends_target_mainRelation
+  DEFINES = -D_DEBUG
   DEP_FILE = CMakeFiles/mainRelation.dir/mainRelation.cpp.o.d
-  FLAGS = -save-temps=obj -std=c++17 -fno-schedule-insns2 -g
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
   INCLUDES = -I.
   OBJECT_DIR = CMakeFiles/mainRelation.dir
   OBJECT_FILE_DIR = CMakeFiles/mainRelation.dir
@@ -90,13 +91,47 @@ build CMakeFiles/mainRelation.dir/mainRelation.cpp.o: CXX_COMPILER__mainRelation
 # Link the executable mainRelation
 
 build mainRelation: CXX_EXECUTABLE_LINKER__mainRelation CMakeFiles/mainRelation.dir/mainRelation.cpp.o
-  FLAGS = -save-temps=obj -std=c++17 -fno-schedule-insns2 -g
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
   LINK_FLAGS = -rdynamic
   OBJECT_DIR = CMakeFiles/mainRelation.dir
   POST_BUILD = :
   PRE_LINK = :
   TARGET_FILE = mainRelation
   TARGET_PDB = mainRelation.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target mainMXGraph
+
+
+#############################################
+# Order-only phony target for mainMXGraph
+
+build cmake_object_order_depends_target_mainMXGraph: phony || CMakeFiles/mainMXGraph.dir
+
+build CMakeFiles/mainMXGraph.dir/mainMXGraph.cpp.o: CXX_COMPILER__mainMXGraph ../mainMXGraph.cpp || cmake_object_order_depends_target_mainMXGraph
+  DEFINES = -D_DEBUG
+  DEP_FILE = CMakeFiles/mainMXGraph.dir/mainMXGraph.cpp.o.d
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
+  INCLUDES = -I.
+  OBJECT_DIR = CMakeFiles/mainMXGraph.dir
+  OBJECT_FILE_DIR = CMakeFiles/mainMXGraph.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target mainMXGraph
+
+
+#############################################
+# Link the executable mainMXGraph
+
+build mainMXGraph: CXX_EXECUTABLE_LINKER__mainMXGraph CMakeFiles/mainMXGraph.dir/mainMXGraph.cpp.o
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
+  LINK_FLAGS = -rdynamic
+  OBJECT_DIR = CMakeFiles/mainMXGraph.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = mainMXGraph
+  TARGET_PDB = mainMXGraph.dbg
 
 
 #############################################
@@ -114,6 +149,12 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for NightlyMemCheck
 
 build NightlyMemCheck: phony CMakeFiles/NightlyMemCheck
+
+
+#############################################
+# Utility command for NightlyTest
+
+build NightlyTest: phony CMakeFiles/NightlyTest
 
 
 #############################################
@@ -138,6 +179,40 @@ build NightlyConfigure: phony CMakeFiles/NightlyConfigure
 # Utility command for NightlyMemoryCheck
 
 build NightlyMemoryCheck: phony CMakeFiles/NightlyMemoryCheck
+
+# =============================================================================
+# Object build statements for EXECUTABLE target mainMin
+
+
+#############################################
+# Order-only phony target for mainMin
+
+build cmake_object_order_depends_target_mainMin: phony || CMakeFiles/mainMin.dir
+
+build CMakeFiles/mainMin.dir/mainMin.cpp.o: CXX_COMPILER__mainMin ../mainMin.cpp || cmake_object_order_depends_target_mainMin
+  DEFINES = -D_DEBUG
+  DEP_FILE = CMakeFiles/mainMin.dir/mainMin.cpp.o.d
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
+  INCLUDES = -I.
+  OBJECT_DIR = CMakeFiles/mainMin.dir
+  OBJECT_FILE_DIR = CMakeFiles/mainMin.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target mainMin
+
+
+#############################################
+# Link the executable mainMin
+
+build mainMin: CXX_EXECUTABLE_LINKER__mainMin CMakeFiles/mainMin.dir/mainMin.cpp.o
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
+  LINK_FLAGS = -rdynamic
+  OBJECT_DIR = CMakeFiles/mainMin.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = mainMin
+  TARGET_PDB = mainMin.dbg
 
 
 #############################################
@@ -195,45 +270,6 @@ build Continuous: phony CMakeFiles/Continuous
 
 
 #############################################
-# Utility command for NightlyTest
-
-build NightlyTest: phony CMakeFiles/NightlyTest
-
-# =============================================================================
-# Object build statements for EXECUTABLE target main
-
-
-#############################################
-# Order-only phony target for main
-
-build cmake_object_order_depends_target_main: phony || CMakeFiles/main.dir
-
-build CMakeFiles/main.dir/main.cpp.o: CXX_COMPILER__main ../main.cpp || cmake_object_order_depends_target_main
-  DEP_FILE = CMakeFiles/main.dir/main.cpp.o.d
-  FLAGS = -save-temps=obj -std=c++17 -fno-schedule-insns2 -g
-  INCLUDES = -I.
-  OBJECT_DIR = CMakeFiles/main.dir
-  OBJECT_FILE_DIR = CMakeFiles/main.dir
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target main
-
-
-#############################################
-# Link the executable main
-
-build main: CXX_EXECUTABLE_LINKER__main CMakeFiles/main.dir/main.cpp.o
-  FLAGS = -save-temps=obj -std=c++17 -fno-schedule-insns2 -g
-  LINK_FLAGS = -rdynamic
-  OBJECT_DIR = CMakeFiles/main.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  TARGET_FILE = main
-  TARGET_PDB = main.dbg
-
-
-#############################################
 # Utility command for Nightly
 
 build Nightly: phony CMakeFiles/Nightly
@@ -280,6 +316,40 @@ build CMakeFiles/package.util: CUSTOM_COMMAND all
 
 build package: phony CMakeFiles/package.util
 
+# =============================================================================
+# Object build statements for EXECUTABLE target mainProject
+
+
+#############################################
+# Order-only phony target for mainProject
+
+build cmake_object_order_depends_target_mainProject: phony || CMakeFiles/mainProject.dir
+
+build CMakeFiles/mainProject.dir/mainProject.cpp.o: CXX_COMPILER__mainProject ../mainProject.cpp || cmake_object_order_depends_target_mainProject
+  DEFINES = -D_DEBUG
+  DEP_FILE = CMakeFiles/mainProject.dir/mainProject.cpp.o.d
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
+  INCLUDES = -I.
+  OBJECT_DIR = CMakeFiles/mainProject.dir
+  OBJECT_FILE_DIR = CMakeFiles/mainProject.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target mainProject
+
+
+#############################################
+# Link the executable mainProject
+
+build mainProject: CXX_EXECUTABLE_LINKER__mainProject CMakeFiles/mainProject.dir/mainProject.cpp.o
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
+  LINK_FLAGS = -rdynamic
+  OBJECT_DIR = CMakeFiles/mainProject.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = mainProject
+  TARGET_PDB = mainProject.dbg
+
 
 #############################################
 # Utility command for NightlyBuild
@@ -310,6 +380,40 @@ build ContinuousStart: phony CMakeFiles/ContinuousStart
 
 build ContinuousMemCheck: phony CMakeFiles/ContinuousMemCheck
 
+# =============================================================================
+# Object build statements for EXECUTABLE target mainALGraph
+
+
+#############################################
+# Order-only phony target for mainALGraph
+
+build cmake_object_order_depends_target_mainALGraph: phony || CMakeFiles/mainALGraph.dir
+
+build CMakeFiles/mainALGraph.dir/mainALGraph.cpp.o: CXX_COMPILER__mainALGraph ../mainALGraph.cpp || cmake_object_order_depends_target_mainALGraph
+  DEFINES = -D_DEBUG
+  DEP_FILE = CMakeFiles/mainALGraph.dir/mainALGraph.cpp.o.d
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
+  INCLUDES = -I.
+  OBJECT_DIR = CMakeFiles/mainALGraph.dir
+  OBJECT_FILE_DIR = CMakeFiles/mainALGraph.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target mainALGraph
+
+
+#############################################
+# Link the executable mainALGraph
+
+build mainALGraph: CXX_EXECUTABLE_LINKER__mainALGraph CMakeFiles/mainALGraph.dir/mainALGraph.cpp.o
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
+  LINK_FLAGS = -rdynamic
+  OBJECT_DIR = CMakeFiles/mainALGraph.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = mainALGraph
+  TARGET_PDB = mainALGraph.dbg
+
 
 #############################################
 # Utility command for ContinuousTest
@@ -328,6 +432,14 @@ build ContinuousSubmit: phony CMakeFiles/ContinuousSubmit
 
 build CMakeFiles/NightlyMemCheck: CUSTOM_COMMAND
   COMMAND = cd /home/fengsc/Desktop/cpp/DataStructure/Graph/build && /usr/bin/ctest -D NightlyMemCheck
+  pool = console
+
+
+#############################################
+# Custom command for CMakeFiles/NightlyTest
+
+build CMakeFiles/NightlyTest: CUSTOM_COMMAND
+  COMMAND = cd /home/fengsc/Desktop/cpp/DataStructure/Graph/build && /usr/bin/ctest -D NightlyTest
   pool = console
 
 
@@ -432,14 +544,6 @@ build CMakeFiles/ExperimentalConfigure: CUSTOM_COMMAND
 
 build CMakeFiles/Continuous: CUSTOM_COMMAND
   COMMAND = cd /home/fengsc/Desktop/cpp/DataStructure/Graph/build && /usr/bin/ctest -D Continuous
-  pool = console
-
-
-#############################################
-# Custom command for CMakeFiles/NightlyTest
-
-build CMakeFiles/NightlyTest: CUSTOM_COMMAND
-  COMMAND = cd /home/fengsc/Desktop/cpp/DataStructure/Graph/build && /usr/bin/ctest -D NightlyTest
   pool = console
 
 
@@ -557,7 +661,7 @@ build CMakeFiles/ContinuousSubmit: CUSTOM_COMMAND
 #############################################
 # Folder: /home/fengsc/Desktop/cpp/DataStructure/Graph/build
 
-build all: phony mainRelation main
+build all: phony mainRelation mainMXGraph mainMin mainProject mainALGraph
 
 # =============================================================================
 # Unknown Build Time Dependencies.

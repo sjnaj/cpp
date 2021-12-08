@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-11-10 15:54:52
- * @LastEditTime: 2021-11-10 16:08:39
+ * @LastEditTime: 2021-12-07 22:17:00
  */
 #include <iostream>
 #include <cmath>
@@ -25,5 +25,4 @@ void dfs(vector<int> chess, vector<vector<int>> &ans, int k)
             }
         }
     }
-}
 }
