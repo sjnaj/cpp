@@ -15691,7 +15691,7 @@ _ZlsIbERSoS0_RK6MatrixIT_E:
 	cmpq	%rax, -24(%rbp)
 	jnb	.L846
 	.loc 13 218 33 discriminator 2
-	movl	$2, %edi
+	movl	$3, %edi
 	call	_ZSt4setwi
 	movl	%eax, %edx
 	movq	-40(%rbp), %rax

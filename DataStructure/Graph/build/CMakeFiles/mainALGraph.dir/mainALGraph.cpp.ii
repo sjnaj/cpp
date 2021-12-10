@@ -58908,1723 +58908,14 @@ lexicographical_compare(_ExecutionPolicy&& __exec, _ForwardIterator1 __first1, _
 }
 # 72 "/usr/include/c++/9/algorithm" 2 3
 # 14 "../src/Graph.h" 2
-# 1 "/home/fengsc/Desktop/cpp/CppTest/class/src/timeCount.h" 1
 
 
 
 
 
 
-# 1 "/usr/include/c++/9/chrono" 1 3
-# 32 "/usr/include/c++/9/chrono" 3
-       
-# 33 "/usr/include/c++/9/chrono" 3
 
-
-
-
-
-# 1 "/usr/include/c++/9/ratio" 1 3
-# 32 "/usr/include/c++/9/ratio" 3
-       
-# 33 "/usr/include/c++/9/ratio" 3
-# 41 "/usr/include/c++/9/ratio" 3
-namespace std __attribute__ ((__visibility__ ("default")))
-{
-
-# 53 "/usr/include/c++/9/ratio" 3
-  template<intmax_t _Pn>
-    struct __static_sign
-    : integral_constant<intmax_t, (_Pn < 0) ? -1 : 1>
-    { };
-
-  template<intmax_t _Pn>
-    struct __static_abs
-    : integral_constant<intmax_t, _Pn * __static_sign<_Pn>::value>
-    { };
-
-  template<intmax_t _Pn, intmax_t _Qn>
-    struct __static_gcd
-    : __static_gcd<_Qn, (_Pn % _Qn)>
-    { };
-
-  template<intmax_t _Pn>
-    struct __static_gcd<_Pn, 0>
-    : integral_constant<intmax_t, __static_abs<_Pn>::value>
-    { };
-
-  template<intmax_t _Qn>
-    struct __static_gcd<0, _Qn>
-    : integral_constant<intmax_t, __static_abs<_Qn>::value>
-    { };
-
-
-
-
-
-
-
-  template<intmax_t _Pn, intmax_t _Qn>
-    struct __safe_multiply
-    {
-    private:
-      static const uintmax_t __c = uintmax_t(1) << (sizeof(intmax_t) * 4);
-
-      static const uintmax_t __a0 = __static_abs<_Pn>::value % __c;
-      static const uintmax_t __a1 = __static_abs<_Pn>::value / __c;
-      static const uintmax_t __b0 = __static_abs<_Qn>::value % __c;
-      static const uintmax_t __b1 = __static_abs<_Qn>::value / __c;
-
-      static_assert(__a1 == 0 || __b1 == 0,
-      "overflow in multiplication");
-      static_assert(__a0 * __b1 + __b0 * __a1 < (__c >> 1),
-      "overflow in multiplication");
-      static_assert(__b0 * __a0 <= 0x7fffffffffffffffL,
-      "overflow in multiplication");
-      static_assert((__a0 * __b1 + __b0 * __a1) * __c
-      <= 0x7fffffffffffffffL - __b0 * __a0,
-      "overflow in multiplication");
-
-    public:
-      static const intmax_t value = _Pn * _Qn;
-    };
-
-
-
-  template<uintmax_t __hi1, uintmax_t __lo1, uintmax_t __hi2, uintmax_t __lo2>
-    struct __big_less
-    : integral_constant<bool, (__hi1 < __hi2
-          || (__hi1 == __hi2 && __lo1 < __lo2))>
-    { };
-
-  template<uintmax_t __hi1, uintmax_t __lo1, uintmax_t __hi2, uintmax_t __lo2>
-    struct __big_add
-    {
-      static constexpr uintmax_t __lo = __lo1 + __lo2;
-      static constexpr uintmax_t __hi = (__hi1 + __hi2 +
-      (__lo1 + __lo2 < __lo1));
-    };
-
-
-  template<uintmax_t __hi1, uintmax_t __lo1, uintmax_t __hi2, uintmax_t __lo2>
-    struct __big_sub
-    {
-      static_assert(!__big_less<__hi1, __lo1, __hi2, __lo2>::value,
-      "Internal library error");
-      static constexpr uintmax_t __lo = __lo1 - __lo2;
-      static constexpr uintmax_t __hi = (__hi1 - __hi2 -
-      (__lo1 < __lo2));
-    };
-
-
-  template<uintmax_t __x, uintmax_t __y>
-    struct __big_mul
-    {
-    private:
-      static constexpr uintmax_t __c = uintmax_t(1) << (sizeof(intmax_t) * 4);
-      static constexpr uintmax_t __x0 = __x % __c;
-      static constexpr uintmax_t __x1 = __x / __c;
-      static constexpr uintmax_t __y0 = __y % __c;
-      static constexpr uintmax_t __y1 = __y / __c;
-      static constexpr uintmax_t __x0y0 = __x0 * __y0;
-      static constexpr uintmax_t __x0y1 = __x0 * __y1;
-      static constexpr uintmax_t __x1y0 = __x1 * __y0;
-      static constexpr uintmax_t __x1y1 = __x1 * __y1;
-      static constexpr uintmax_t __mix = __x0y1 + __x1y0;
-      static constexpr uintmax_t __mix_lo = __mix * __c;
-      static constexpr uintmax_t __mix_hi
-      = __mix / __c + ((__mix < __x0y1) ? __c : 0);
-      typedef __big_add<__mix_hi, __mix_lo, __x1y1, __x0y0> _Res;
-    public:
-      static constexpr uintmax_t __hi = _Res::__hi;
-      static constexpr uintmax_t __lo = _Res::__lo;
-    };
-
-
-
-  template<uintmax_t __n1, uintmax_t __n0, uintmax_t __d>
-    struct __big_div_impl
-    {
-    private:
-      static_assert(__d >= (uintmax_t(1) << (sizeof(intmax_t) * 8 - 1)),
-      "Internal library error");
-      static_assert(__n1 < __d, "Internal library error");
-      static constexpr uintmax_t __c = uintmax_t(1) << (sizeof(intmax_t) * 4);
-      static constexpr uintmax_t __d1 = __d / __c;
-      static constexpr uintmax_t __d0 = __d % __c;
-
-      static constexpr uintmax_t __q1x = __n1 / __d1;
-      static constexpr uintmax_t __r1x = __n1 % __d1;
-      static constexpr uintmax_t __m = __q1x * __d0;
-      static constexpr uintmax_t __r1y = __r1x * __c + __n0 / __c;
-      static constexpr uintmax_t __r1z = __r1y + __d;
-      static constexpr uintmax_t __r1
-      = ((__r1y < __m) ? ((__r1z >= __d) && (__r1z < __m))
-  ? (__r1z + __d) : __r1z : __r1y) - __m;
-      static constexpr uintmax_t __q1
-      = __q1x - ((__r1y < __m)
-   ? ((__r1z >= __d) && (__r1z < __m)) ? 2 : 1 : 0);
-      static constexpr uintmax_t __q0x = __r1 / __d1;
-      static constexpr uintmax_t __r0x = __r1 % __d1;
-      static constexpr uintmax_t __n = __q0x * __d0;
-      static constexpr uintmax_t __r0y = __r0x * __c + __n0 % __c;
-      static constexpr uintmax_t __r0z = __r0y + __d;
-      static constexpr uintmax_t __r0
-      = ((__r0y < __n) ? ((__r0z >= __d) && (__r0z < __n))
-  ? (__r0z + __d) : __r0z : __r0y) - __n;
-      static constexpr uintmax_t __q0
-      = __q0x - ((__r0y < __n) ? ((__r0z >= __d)
-      && (__r0z < __n)) ? 2 : 1 : 0);
-
-    public:
-      static constexpr uintmax_t __quot = __q1 * __c + __q0;
-      static constexpr uintmax_t __rem = __r0;
-
-    private:
-      typedef __big_mul<__quot, __d> _Prod;
-      typedef __big_add<_Prod::__hi, _Prod::__lo, 0, __rem> _Sum;
-      static_assert(_Sum::__hi == __n1 && _Sum::__lo == __n0,
-      "Internal library error");
-  };
-
-  template<uintmax_t __n1, uintmax_t __n0, uintmax_t __d>
-    struct __big_div
-    {
-    private:
-      static_assert(__d != 0, "Internal library error");
-      static_assert(sizeof (uintmax_t) == sizeof (unsigned long long),
-      "This library calls __builtin_clzll on uintmax_t, which "
-      "is unsafe on your platform. Please complain to "
-      "http://gcc.gnu.org/bugzilla/");
-      static constexpr int __shift = __builtin_clzll(__d);
-      static constexpr int __coshift_ = sizeof(uintmax_t) * 8 - __shift;
-      static constexpr int __coshift = (__shift != 0) ? __coshift_ : 0;
-      static constexpr uintmax_t __c1 = uintmax_t(1) << __shift;
-      static constexpr uintmax_t __c2 = uintmax_t(1) << __coshift;
-      static constexpr uintmax_t __new_d = __d * __c1;
-      static constexpr uintmax_t __new_n0 = __n0 * __c1;
-      static constexpr uintmax_t __n1_shifted = (__n1 % __d) * __c1;
-      static constexpr uintmax_t __n0_top = (__shift != 0) ? (__n0 / __c2) : 0;
-      static constexpr uintmax_t __new_n1 = __n1_shifted + __n0_top;
-      typedef __big_div_impl<__new_n1, __new_n0, __new_d> _Res;
-
-    public:
-      static constexpr uintmax_t __quot_hi = __n1 / __d;
-      static constexpr uintmax_t __quot_lo = _Res::__quot;
-      static constexpr uintmax_t __rem = _Res::__rem / __c1;
-
-    private:
-      typedef __big_mul<__quot_lo, __d> _P0;
-      typedef __big_mul<__quot_hi, __d> _P1;
-      typedef __big_add<_P0::__hi, _P0::__lo, _P1::__lo, __rem> _Sum;
-
-      static_assert(_P1::__hi == 0, "Internal library error");
-      static_assert(_Sum::__hi >= _P0::__hi, "Internal library error");
-
-      static_assert(_Sum::__hi == __n1 && _Sum::__lo == __n0,
-      "Internal library error");
-      static_assert(__rem < __d, "Internal library error");
-    };
-# 260 "/usr/include/c++/9/ratio" 3
-  template<intmax_t _Num, intmax_t _Den = 1>
-    struct ratio
-    {
-      static_assert(_Den != 0, "denominator cannot be zero");
-      static_assert(_Num >= -0x7fffffffffffffffL && _Den >= -0x7fffffffffffffffL,
-      "out of range");
-
-
-      static constexpr intmax_t num =
-        _Num * __static_sign<_Den>::value / __static_gcd<_Num, _Den>::value;
-
-      static constexpr intmax_t den =
-        __static_abs<_Den>::value / __static_gcd<_Num, _Den>::value;
-
-      typedef ratio<num, den> type;
-    };
-
-  template<intmax_t _Num, intmax_t _Den>
-    constexpr intmax_t ratio<_Num, _Den>::num;
-
-  template<intmax_t _Num, intmax_t _Den>
-    constexpr intmax_t ratio<_Num, _Den>::den;
-
-  template<typename _R1, typename _R2>
-    struct __ratio_multiply
-    {
-    private:
-      static const intmax_t __gcd1 =
-        __static_gcd<_R1::num, _R2::den>::value;
-      static const intmax_t __gcd2 =
-        __static_gcd<_R2::num, _R1::den>::value;
-
-    public:
-      typedef ratio<
-        __safe_multiply<(_R1::num / __gcd1),
-                        (_R2::num / __gcd2)>::value,
-        __safe_multiply<(_R1::den / __gcd2),
-                        (_R2::den / __gcd1)>::value> type;
-
-      static constexpr intmax_t num = type::num;
-      static constexpr intmax_t den = type::den;
-    };
-
-  template<typename _R1, typename _R2>
-    constexpr intmax_t __ratio_multiply<_R1, _R2>::num;
-
-  template<typename _R1, typename _R2>
-    constexpr intmax_t __ratio_multiply<_R1, _R2>::den;
-
-
-  template<typename _R1, typename _R2>
-    using ratio_multiply = typename __ratio_multiply<_R1, _R2>::type;
-
-  template<typename _R1, typename _R2>
-    struct __ratio_divide
-    {
-      static_assert(_R2::num != 0, "division by 0");
-
-      typedef typename __ratio_multiply<
-        _R1,
-        ratio<_R2::den, _R2::num>>::type type;
-
-      static constexpr intmax_t num = type::num;
-      static constexpr intmax_t den = type::den;
-    };
-
-  template<typename _R1, typename _R2>
-    constexpr intmax_t __ratio_divide<_R1, _R2>::num;
-
-  template<typename _R1, typename _R2>
-    constexpr intmax_t __ratio_divide<_R1, _R2>::den;
-
-
-  template<typename _R1, typename _R2>
-    using ratio_divide = typename __ratio_divide<_R1, _R2>::type;
-
-
-  template<typename _R1, typename _R2>
-    struct ratio_equal
-    : integral_constant<bool, _R1::num == _R2::num && _R1::den == _R2::den>
-    { };
-
-
-  template<typename _R1, typename _R2>
-    struct ratio_not_equal
-    : integral_constant<bool, !ratio_equal<_R1, _R2>::value>
-    { };
-
-
-  template<typename _R1, typename _R2,
-           typename _Left = __big_mul<_R1::num,_R2::den>,
-           typename _Right = __big_mul<_R2::num,_R1::den> >
-    struct __ratio_less_impl_1
-    : integral_constant<bool, __big_less<_Left::__hi, _Left::__lo,
-           _Right::__hi, _Right::__lo>::value>
-    { };
-
-  template<typename _R1, typename _R2,
-    bool = (_R1::num == 0 || _R2::num == 0
-     || (__static_sign<_R1::num>::value
-         != __static_sign<_R2::num>::value)),
-    bool = (__static_sign<_R1::num>::value == -1
-     && __static_sign<_R2::num>::value == -1)>
-    struct __ratio_less_impl
-    : __ratio_less_impl_1<_R1, _R2>::type
-    { };
-
-  template<typename _R1, typename _R2>
-    struct __ratio_less_impl<_R1, _R2, true, false>
-    : integral_constant<bool, _R1::num < _R2::num>
-    { };
-
-  template<typename _R1, typename _R2>
-    struct __ratio_less_impl<_R1, _R2, false, true>
-    : __ratio_less_impl_1<ratio<-_R2::num, _R2::den>,
-           ratio<-_R1::num, _R1::den> >::type
-    { };
-
-
-  template<typename _R1, typename _R2>
-    struct ratio_less
-    : __ratio_less_impl<_R1, _R2>::type
-    { };
-
-
-  template<typename _R1, typename _R2>
-    struct ratio_less_equal
-    : integral_constant<bool, !ratio_less<_R2, _R1>::value>
-    { };
-
-
-  template<typename _R1, typename _R2>
-    struct ratio_greater
-    : integral_constant<bool, ratio_less<_R2, _R1>::value>
-    { };
-
-
-  template<typename _R1, typename _R2>
-    struct ratio_greater_equal
-    : integral_constant<bool, !ratio_less<_R1, _R2>::value>
-    { };
-
-
-  template <typename _R1, typename _R2>
-    inline constexpr bool ratio_equal_v = ratio_equal<_R1, _R2>::value;
-  template <typename _R1, typename _R2>
-    inline constexpr bool ratio_not_equal_v = ratio_not_equal<_R1, _R2>::value;
-  template <typename _R1, typename _R2>
-    inline constexpr bool ratio_less_v = ratio_less<_R1, _R2>::value;
-  template <typename _R1, typename _R2>
-    inline constexpr bool ratio_less_equal_v =
-      ratio_less_equal<_R1, _R2>::value;
-  template <typename _R1, typename _R2>
-    inline constexpr bool ratio_greater_v = ratio_greater<_R1, _R2>::value;
-  template <typename _R1, typename _R2>
-    inline constexpr bool ratio_greater_equal_v
-    = ratio_greater_equal<_R1, _R2>::value;
-
-
-  template<typename _R1, typename _R2,
-      bool = (_R1::num >= 0),
-      bool = (_R2::num >= 0),
-      bool = ratio_less<ratio<__static_abs<_R1::num>::value, _R1::den>,
-        ratio<__static_abs<_R2::num>::value, _R2::den> >::value>
-    struct __ratio_add_impl
-    {
-    private:
-      typedef typename __ratio_add_impl<
-        ratio<-_R1::num, _R1::den>,
-        ratio<-_R2::num, _R2::den> >::type __t;
-    public:
-      typedef ratio<-__t::num, __t::den> type;
-    };
-
-
-  template<typename _R1, typename _R2, bool __b>
-    struct __ratio_add_impl<_R1, _R2, true, true, __b>
-    {
-    private:
-      static constexpr uintmax_t __g = __static_gcd<_R1::den, _R2::den>::value;
-      static constexpr uintmax_t __d2 = _R2::den / __g;
-      typedef __big_mul<_R1::den, __d2> __d;
-      typedef __big_mul<_R1::num, _R2::den / __g> __x;
-      typedef __big_mul<_R2::num, _R1::den / __g> __y;
-      typedef __big_add<__x::__hi, __x::__lo, __y::__hi, __y::__lo> __n;
-      static_assert(__n::__hi >= __x::__hi, "Internal library error");
-      typedef __big_div<__n::__hi, __n::__lo, __g> __ng;
-      static constexpr uintmax_t __g2 = __static_gcd<__ng::__rem, __g>::value;
-      typedef __big_div<__n::__hi, __n::__lo, __g2> __n_final;
-      static_assert(__n_final::__rem == 0, "Internal library error");
-      static_assert(__n_final::__quot_hi == 0 &&
-        __n_final::__quot_lo <= 0x7fffffffffffffffL, "overflow in addition");
-      typedef __big_mul<_R1::den / __g2, __d2> __d_final;
-      static_assert(__d_final::__hi == 0 &&
-        __d_final::__lo <= 0x7fffffffffffffffL, "overflow in addition");
-    public:
-      typedef ratio<__n_final::__quot_lo, __d_final::__lo> type;
-    };
-
-  template<typename _R1, typename _R2>
-    struct __ratio_add_impl<_R1, _R2, false, true, true>
-    : __ratio_add_impl<_R2, _R1>
-    { };
-
-
-  template<typename _R1, typename _R2>
-    struct __ratio_add_impl<_R1, _R2, true, false, false>
-    {
-    private:
-      static constexpr uintmax_t __g = __static_gcd<_R1::den, _R2::den>::value;
-      static constexpr uintmax_t __d2 = _R2::den / __g;
-      typedef __big_mul<_R1::den, __d2> __d;
-      typedef __big_mul<_R1::num, _R2::den / __g> __x;
-      typedef __big_mul<-_R2::num, _R1::den / __g> __y;
-      typedef __big_sub<__x::__hi, __x::__lo, __y::__hi, __y::__lo> __n;
-      typedef __big_div<__n::__hi, __n::__lo, __g> __ng;
-      static constexpr uintmax_t __g2 = __static_gcd<__ng::__rem, __g>::value;
-      typedef __big_div<__n::__hi, __n::__lo, __g2> __n_final;
-      static_assert(__n_final::__rem == 0, "Internal library error");
-      static_assert(__n_final::__quot_hi == 0 &&
-        __n_final::__quot_lo <= 0x7fffffffffffffffL, "overflow in addition");
-      typedef __big_mul<_R1::den / __g2, __d2> __d_final;
-      static_assert(__d_final::__hi == 0 &&
-        __d_final::__lo <= 0x7fffffffffffffffL, "overflow in addition");
-    public:
-      typedef ratio<__n_final::__quot_lo, __d_final::__lo> type;
-    };
-
-  template<typename _R1, typename _R2>
-    struct __ratio_add
-    {
-      typedef typename __ratio_add_impl<_R1, _R2>::type type;
-      static constexpr intmax_t num = type::num;
-      static constexpr intmax_t den = type::den;
-    };
-
-  template<typename _R1, typename _R2>
-    constexpr intmax_t __ratio_add<_R1, _R2>::num;
-
-  template<typename _R1, typename _R2>
-    constexpr intmax_t __ratio_add<_R1, _R2>::den;
-
-
-  template<typename _R1, typename _R2>
-    using ratio_add = typename __ratio_add<_R1, _R2>::type;
-
-  template<typename _R1, typename _R2>
-    struct __ratio_subtract
-    {
-      typedef typename __ratio_add<
-        _R1,
-        ratio<-_R2::num, _R2::den>>::type type;
-
-      static constexpr intmax_t num = type::num;
-      static constexpr intmax_t den = type::den;
-    };
-
-  template<typename _R1, typename _R2>
-    constexpr intmax_t __ratio_subtract<_R1, _R2>::num;
-
-  template<typename _R1, typename _R2>
-    constexpr intmax_t __ratio_subtract<_R1, _R2>::den;
-
-
-  template<typename _R1, typename _R2>
-    using ratio_subtract = typename __ratio_subtract<_R1, _R2>::type;
-
-
-  typedef ratio<1, 1000000000000000000> atto;
-  typedef ratio<1, 1000000000000000> femto;
-  typedef ratio<1, 1000000000000> pico;
-  typedef ratio<1, 1000000000> nano;
-  typedef ratio<1, 1000000> micro;
-  typedef ratio<1, 1000> milli;
-  typedef ratio<1, 100> centi;
-  typedef ratio<1, 10> deci;
-  typedef ratio< 10, 1> deca;
-  typedef ratio< 100, 1> hecto;
-  typedef ratio< 1000, 1> kilo;
-  typedef ratio< 1000000, 1> mega;
-  typedef ratio< 1000000000, 1> giga;
-  typedef ratio< 1000000000000, 1> tera;
-  typedef ratio< 1000000000000000, 1> peta;
-  typedef ratio< 1000000000000000000, 1> exa;
-
-
-
-}
-# 39 "/usr/include/c++/9/chrono" 2 3
-
-
-# 1 "/usr/include/c++/9/ctime" 1 3
-# 39 "/usr/include/c++/9/ctime" 3
-       
-# 40 "/usr/include/c++/9/ctime" 3
-# 58 "/usr/include/c++/9/ctime" 3
-namespace std
-{
-  using ::clock_t;
-  using ::time_t;
-  using ::tm;
-
-  using ::clock;
-  using ::difftime;
-  using ::mktime;
-  using ::time;
-  using ::asctime;
-  using ::ctime;
-  using ::gmtime;
-  using ::localtime;
-  using ::strftime;
-}
-
-
-
-namespace std
-{
-  using ::timespec;
-  using ::timespec_get;
-}
-# 42 "/usr/include/c++/9/chrono" 2 3
-# 1 "/usr/include/c++/9/bits/parse_numbers.h" 1 3
-# 33 "/usr/include/c++/9/bits/parse_numbers.h" 3
-       
-# 34 "/usr/include/c++/9/bits/parse_numbers.h" 3
-
-
-
-
-
-
-
-namespace std __attribute__ ((__visibility__ ("default")))
-{
-
-
-namespace __parse_int
-{
-  template<unsigned _Base, char _Dig>
-    struct _Digit;
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '0'> : integral_constant<unsigned, 0>
-    {
-      using __valid = true_type;
-    };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '1'> : integral_constant<unsigned, 1>
-    {
-      using __valid = true_type;
-    };
-
-  template<unsigned _Base, unsigned _Val>
-    struct _Digit_impl : integral_constant<unsigned, _Val>
-    {
-      static_assert(_Base > _Val, "invalid digit");
-      using __valid = true_type;
-    };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '2'> : _Digit_impl<_Base, 2>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '3'> : _Digit_impl<_Base, 3>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '4'> : _Digit_impl<_Base, 4>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '5'> : _Digit_impl<_Base, 5>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '6'> : _Digit_impl<_Base, 6>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '7'> : _Digit_impl<_Base, 7>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '8'> : _Digit_impl<_Base, 8>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '9'> : _Digit_impl<_Base, 9>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'a'> : _Digit_impl<_Base, 0xa>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'A'> : _Digit_impl<_Base, 0xa>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'b'> : _Digit_impl<_Base, 0xb>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'B'> : _Digit_impl<_Base, 0xb>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'c'> : _Digit_impl<_Base, 0xc>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'C'> : _Digit_impl<_Base, 0xc>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'd'> : _Digit_impl<_Base, 0xd>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'D'> : _Digit_impl<_Base, 0xd>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'e'> : _Digit_impl<_Base, 0xe>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'E'> : _Digit_impl<_Base, 0xe>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'f'> : _Digit_impl<_Base, 0xf>
-    { };
-
-  template<unsigned _Base>
-    struct _Digit<_Base, 'F'> : _Digit_impl<_Base, 0xf>
-    { };
-
-
-  template<unsigned _Base>
-    struct _Digit<_Base, '\''> : integral_constant<unsigned, 0>
-    {
-      using __valid = false_type;
-    };
-
-
-
-  template<unsigned long long _Val>
-    using __ull_constant = integral_constant<unsigned long long, _Val>;
-
-  template<unsigned _Base, char _Dig, char... _Digs>
-    struct _Power_help
-    {
-      using __next = typename _Power_help<_Base, _Digs...>::type;
-      using __valid_digit = typename _Digit<_Base, _Dig>::__valid;
-      using type
- = __ull_constant<__next::value * (__valid_digit{} ? _Base : 1ULL)>;
-    };
-
-  template<unsigned _Base, char _Dig>
-    struct _Power_help<_Base, _Dig>
-    {
-      using __valid_digit = typename _Digit<_Base, _Dig>::__valid;
-      using type = __ull_constant<__valid_digit::value>;
-    };
-
-  template<unsigned _Base, char... _Digs>
-    struct _Power : _Power_help<_Base, _Digs...>::type
-    { };
-
-  template<unsigned _Base>
-    struct _Power<_Base> : __ull_constant<0>
-    { };
-
-
-
-  template<unsigned _Base, unsigned long long _Pow, char _Dig, char... _Digs>
-    struct _Number_help
-    {
-      using __digit = _Digit<_Base, _Dig>;
-      using __valid_digit = typename __digit::__valid;
-      using __next = _Number_help<_Base,
-      __valid_digit::value ? _Pow / _Base : _Pow,
-      _Digs...>;
-      using type = __ull_constant<_Pow * __digit::value + __next::type::value>;
-      static_assert((type::value / _Pow) == __digit::value,
-      "integer literal does not fit in unsigned long long");
-    };
-
-
-  template<unsigned _Base, unsigned long long _Pow, char _Dig, char..._Digs>
-    struct _Number_help<_Base, _Pow, '\'', _Dig, _Digs...>
-    : _Number_help<_Base, _Pow, _Dig, _Digs...>
-    { };
-
-
-  template<unsigned _Base, char _Dig>
-    struct _Number_help<_Base, 1ULL, _Dig>
-    {
-      using type = __ull_constant<_Digit<_Base, _Dig>::value>;
-    };
-
-  template<unsigned _Base, char... _Digs>
-    struct _Number
-    : _Number_help<_Base, _Power<_Base, _Digs...>::value, _Digs...>::type
-    { };
-
-  template<unsigned _Base>
-    struct _Number<_Base>
-    : __ull_constant<0>
-    { };
-
-
-
-  template<char... _Digs>
-    struct _Parse_int;
-
-  template<char... _Digs>
-    struct _Parse_int<'0', 'b', _Digs...>
-    : _Number<2U, _Digs...>::type
-    { };
-
-  template<char... _Digs>
-    struct _Parse_int<'0', 'B', _Digs...>
-    : _Number<2U, _Digs...>::type
-    { };
-
-  template<char... _Digs>
-    struct _Parse_int<'0', 'x', _Digs...>
-    : _Number<16U, _Digs...>::type
-    { };
-
-  template<char... _Digs>
-    struct _Parse_int<'0', 'X', _Digs...>
-    : _Number<16U, _Digs...>::type
-    { };
-
-  template<char... _Digs>
-    struct _Parse_int<'0', _Digs...>
-    : _Number<8U, _Digs...>::type
-    { };
-
-  template<char... _Digs>
-    struct _Parse_int
-    : _Number<10U, _Digs...>::type
-    { };
-
-}
-
-
-namespace __select_int
-{
-  template<unsigned long long _Val, typename... _Ints>
-    struct _Select_int_base;
-
-  template<unsigned long long _Val, typename _IntType, typename... _Ints>
-    struct _Select_int_base<_Val, _IntType, _Ints...>
-    : conditional_t<(_Val <= std::numeric_limits<_IntType>::max()),
-      integral_constant<_IntType, _Val>,
-      _Select_int_base<_Val, _Ints...>>
-    { };
-
-  template<unsigned long long _Val>
-    struct _Select_int_base<_Val>
-    { };
-
-  template<char... _Digs>
-    using _Select_int = typename _Select_int_base<
- __parse_int::_Parse_int<_Digs...>::value,
- unsigned char,
- unsigned short,
- unsigned int,
- unsigned long,
- unsigned long long
-      >::type;
-
-}
-
-
-}
-# 43 "/usr/include/c++/9/chrono" 2 3
-
-namespace std __attribute__ ((__visibility__ ("default")))
-{
-
-# 59 "/usr/include/c++/9/chrono" 3
-  namespace chrono
-  {
-    template<typename _Rep, typename _Period = ratio<1>>
-      struct duration;
-
-    template<typename _Clock, typename _Dur = typename _Clock::duration>
-      struct time_point;
-  }
-
-
-
-  template<typename _CT, typename _Period1, typename _Period2>
-    struct __duration_common_type_wrapper
-    {
-    private:
-      typedef __static_gcd<_Period1::num, _Period2::num> __gcd_num;
-      typedef __static_gcd<_Period1::den, _Period2::den> __gcd_den;
-      typedef typename _CT::type __cr;
-      typedef ratio<__gcd_num::value,
-        (_Period1::den / __gcd_den::value) * _Period2::den> __r;
-    public:
-      typedef __success_type<chrono::duration<__cr, __r>> type;
-    };
-
-  template<typename _Period1, typename _Period2>
-    struct __duration_common_type_wrapper<__failure_type, _Period1, _Period2>
-    { typedef __failure_type type; };
-
-  template<typename _Rep1, typename _Period1, typename _Rep2, typename _Period2>
-    struct common_type<chrono::duration<_Rep1, _Period1>,
-             chrono::duration<_Rep2, _Period2>>
-    : public __duration_common_type_wrapper<typename __member_type_wrapper<
-             common_type<_Rep1, _Rep2>>::type, _Period1, _Period2>::type
-    { };
-
-
-
-  template<typename _CT, typename _Clock>
-    struct __timepoint_common_type_wrapper
-    {
-      typedef __success_type<chrono::time_point<_Clock, typename _CT::type>>
-        type;
-    };
-
-  template<typename _Clock>
-    struct __timepoint_common_type_wrapper<__failure_type, _Clock>
-    { typedef __failure_type type; };
-
-  template<typename _Clock, typename _Duration1, typename _Duration2>
-    struct common_type<chrono::time_point<_Clock, _Duration1>,
-             chrono::time_point<_Clock, _Duration2>>
-    : public __timepoint_common_type_wrapper<typename __member_type_wrapper<
-             common_type<_Duration1, _Duration2>>::type, _Clock>::type
-    { };
-
-  namespace chrono
-  {
-
-    template<typename _ToDur, typename _CF, typename _CR,
-      bool _NumIsOne = false, bool _DenIsOne = false>
-      struct __duration_cast_impl
-      {
- template<typename _Rep, typename _Period>
-   static constexpr _ToDur
-   __cast(const duration<_Rep, _Period>& __d)
-   {
-     typedef typename _ToDur::rep __to_rep;
-     return _ToDur(static_cast<__to_rep>(static_cast<_CR>(__d.count())
-       * static_cast<_CR>(_CF::num)
-       / static_cast<_CR>(_CF::den)));
-   }
-      };
-
-    template<typename _ToDur, typename _CF, typename _CR>
-      struct __duration_cast_impl<_ToDur, _CF, _CR, true, true>
-      {
- template<typename _Rep, typename _Period>
-   static constexpr _ToDur
-   __cast(const duration<_Rep, _Period>& __d)
-   {
-     typedef typename _ToDur::rep __to_rep;
-     return _ToDur(static_cast<__to_rep>(__d.count()));
-   }
-      };
-
-    template<typename _ToDur, typename _CF, typename _CR>
-      struct __duration_cast_impl<_ToDur, _CF, _CR, true, false>
-      {
- template<typename _Rep, typename _Period>
-   static constexpr _ToDur
-   __cast(const duration<_Rep, _Period>& __d)
-   {
-     typedef typename _ToDur::rep __to_rep;
-     return _ToDur(static_cast<__to_rep>(
-       static_cast<_CR>(__d.count()) / static_cast<_CR>(_CF::den)));
-   }
-      };
-
-    template<typename _ToDur, typename _CF, typename _CR>
-      struct __duration_cast_impl<_ToDur, _CF, _CR, false, true>
-      {
- template<typename _Rep, typename _Period>
-   static constexpr _ToDur
-   __cast(const duration<_Rep, _Period>& __d)
-   {
-     typedef typename _ToDur::rep __to_rep;
-     return _ToDur(static_cast<__to_rep>(
-       static_cast<_CR>(__d.count()) * static_cast<_CR>(_CF::num)));
-   }
-      };
-
-    template<typename _Tp>
-      struct __is_duration
-      : std::false_type
-      { };
-
-    template<typename _Rep, typename _Period>
-      struct __is_duration<duration<_Rep, _Period>>
-      : std::true_type
-      { };
-
-    template<typename _Tp>
-      using __enable_if_is_duration
- = typename enable_if<__is_duration<_Tp>::value, _Tp>::type;
-
-    template<typename _Tp>
-      using __disable_if_is_duration
- = typename enable_if<!__is_duration<_Tp>::value, _Tp>::type;
-
-
-    template<typename _ToDur, typename _Rep, typename _Period>
-      constexpr __enable_if_is_duration<_ToDur>
-      duration_cast(const duration<_Rep, _Period>& __d)
-      {
- typedef typename _ToDur::period __to_period;
- typedef typename _ToDur::rep __to_rep;
- typedef ratio_divide<_Period, __to_period> __cf;
- typedef typename common_type<__to_rep, _Rep, intmax_t>::type
-          __cr;
- typedef __duration_cast_impl<_ToDur, __cf, __cr,
-          __cf::num == 1, __cf::den == 1> __dc;
- return __dc::__cast(__d);
-      }
-
-
-    template<typename _Rep>
-      struct treat_as_floating_point
-      : is_floating_point<_Rep>
-      { };
-
-
-    template <typename _Rep>
-      inline constexpr bool treat_as_floating_point_v =
-        treat_as_floating_point<_Rep>::value;
-
-
-
-
-
-    template<typename _ToDur, typename _Rep, typename _Period>
-      constexpr __enable_if_is_duration<_ToDur>
-      floor(const duration<_Rep, _Period>& __d)
-      {
- auto __to = chrono::duration_cast<_ToDur>(__d);
- if (__to > __d)
-   return __to - _ToDur{1};
- return __to;
-      }
-
-    template<typename _ToDur, typename _Rep, typename _Period>
-      constexpr __enable_if_is_duration<_ToDur>
-      ceil(const duration<_Rep, _Period>& __d)
-      {
- auto __to = chrono::duration_cast<_ToDur>(__d);
- if (__to < __d)
-   return __to + _ToDur{1};
- return __to;
-      }
-
-    template <typename _ToDur, typename _Rep, typename _Period>
-      constexpr enable_if_t<
- __and_<__is_duration<_ToDur>,
-        __not_<treat_as_floating_point<typename _ToDur::rep>>>::value,
- _ToDur>
-      round(const duration<_Rep, _Period>& __d)
-      {
- _ToDur __t0 = chrono::floor<_ToDur>(__d);
- _ToDur __t1 = __t0 + _ToDur{1};
- auto __diff0 = __d - __t0;
- auto __diff1 = __t1 - __d;
- if (__diff0 == __diff1)
- {
-     if (__t0.count() & 1)
-  return __t1;
-     return __t0;
- }
- else if (__diff0 < __diff1)
-     return __t0;
- return __t1;
-      }
-
-    template<typename _Rep, typename _Period>
-      constexpr
-      enable_if_t<numeric_limits<_Rep>::is_signed, duration<_Rep, _Period>>
-      abs(duration<_Rep, _Period> __d)
-      {
- if (__d >= __d.zero())
-   return __d;
- return -__d;
-      }
-
-
-
-    template<typename _Rep>
-      struct duration_values
-      {
- static constexpr _Rep
- zero() noexcept
- { return _Rep(0); }
-
- static constexpr _Rep
- max() noexcept
- { return numeric_limits<_Rep>::max(); }
-
- static constexpr _Rep
- min() noexcept
- { return numeric_limits<_Rep>::lowest(); }
-      };
-
-    template<typename _Tp>
-      struct __is_ratio
-      : std::false_type
-      { };
-
-    template<intmax_t _Num, intmax_t _Den>
-      struct __is_ratio<ratio<_Num, _Den>>
-      : std::true_type
-      { };
-
-
-    template<typename _Rep, typename _Period>
-      struct duration
-      {
-      private:
- template<typename _Rep2>
-   using __is_float = treat_as_floating_point<_Rep2>;
-
-
- template<typename _Period2>
-   using __is_harmonic
-     = __bool_constant<ratio_divide<_Period2, _Period>::den == 1>;
-
-      public:
-
- typedef _Rep rep;
- typedef _Period period;
-
- static_assert(!__is_duration<_Rep>::value, "rep cannot be a duration");
- static_assert(__is_ratio<_Period>::value,
-        "period must be a specialization of ratio");
- static_assert(_Period::num > 0, "period must be positive");
-
-
- constexpr duration() = default;
-
- duration(const duration&) = default;
-
-
-
- template<typename _Rep2, typename = _Require<
-   is_convertible<const _Rep2&, rep>,
-   __or_<__is_float<rep>, __not_<__is_float<_Rep2>>>>>
-   constexpr explicit duration(const _Rep2& __rep)
-   : __r(static_cast<rep>(__rep)) { }
-
- template<typename _Rep2, typename _Period2, typename = _Require<
-   __or_<__is_float<rep>,
-         __and_<__is_harmonic<_Period2>,
-         __not_<__is_float<_Rep2>>>>>>
-   constexpr duration(const duration<_Rep2, _Period2>& __d)
-   : __r(duration_cast<duration>(__d).count()) { }
-
- ~duration() = default;
- duration& operator=(const duration&) = default;
-
-
- constexpr rep
- count() const
- { return __r; }
-
-
- constexpr duration
- operator+() const
- { return *this; }
-
- constexpr duration
- operator-() const
- { return duration(-__r); }
-
- constexpr duration&
- operator++()
- {
-   ++__r;
-   return *this;
- }
-
- constexpr duration
- operator++(int)
- { return duration(__r++); }
-
- constexpr duration&
- operator--()
- {
-   --__r;
-   return *this;
- }
-
- constexpr duration
- operator--(int)
- { return duration(__r--); }
-
- constexpr duration&
- operator+=(const duration& __d)
- {
-   __r += __d.count();
-   return *this;
- }
-
- constexpr duration&
- operator-=(const duration& __d)
- {
-   __r -= __d.count();
-   return *this;
- }
-
- constexpr duration&
- operator*=(const rep& __rhs)
- {
-   __r *= __rhs;
-   return *this;
- }
-
- constexpr duration&
- operator/=(const rep& __rhs)
- {
-   __r /= __rhs;
-   return *this;
- }
-
-
- template<typename _Rep2 = rep>
-   constexpr
-   typename enable_if<!treat_as_floating_point<_Rep2>::value,
-        duration&>::type
-   operator%=(const rep& __rhs)
-   {
-     __r %= __rhs;
-     return *this;
-   }
-
- template<typename _Rep2 = rep>
-   constexpr
-   typename enable_if<!treat_as_floating_point<_Rep2>::value,
-        duration&>::type
-   operator%=(const duration& __d)
-   {
-     __r %= __d.count();
-     return *this;
-   }
-
-
- static constexpr duration
- zero() noexcept
- { return duration(duration_values<rep>::zero()); }
-
- static constexpr duration
- min() noexcept
- { return duration(duration_values<rep>::min()); }
-
- static constexpr duration
- max() noexcept
- { return duration(duration_values<rep>::max()); }
-
-      private:
- rep __r;
-      };
-
-    template<typename _Rep1, typename _Period1,
-      typename _Rep2, typename _Period2>
-      constexpr typename common_type<duration<_Rep1, _Period1>,
-         duration<_Rep2, _Period2>>::type
-      operator+(const duration<_Rep1, _Period1>& __lhs,
-  const duration<_Rep2, _Period2>& __rhs)
-      {
- typedef duration<_Rep1, _Period1> __dur1;
- typedef duration<_Rep2, _Period2> __dur2;
- typedef typename common_type<__dur1,__dur2>::type __cd;
- return __cd(__cd(__lhs).count() + __cd(__rhs).count());
-      }
-
-    template<typename _Rep1, typename _Period1,
-      typename _Rep2, typename _Period2>
-      constexpr typename common_type<duration<_Rep1, _Period1>,
-         duration<_Rep2, _Period2>>::type
-      operator-(const duration<_Rep1, _Period1>& __lhs,
-  const duration<_Rep2, _Period2>& __rhs)
-      {
- typedef duration<_Rep1, _Period1> __dur1;
- typedef duration<_Rep2, _Period2> __dur2;
- typedef typename common_type<__dur1,__dur2>::type __cd;
- return __cd(__cd(__lhs).count() - __cd(__rhs).count());
-      }
-
-
-
-
-
-    template<typename _Rep1, typename _Rep2,
-      typename _CRep = typename common_type<_Rep1, _Rep2>::type>
-      using __common_rep_t = typename
- enable_if<is_convertible<const _Rep2&, _CRep>::value, _CRep>::type;
-
-    template<typename _Rep1, typename _Period, typename _Rep2>
-      constexpr duration<__common_rep_t<_Rep1, _Rep2>, _Period>
-      operator*(const duration<_Rep1, _Period>& __d, const _Rep2& __s)
-      {
- typedef duration<typename common_type<_Rep1, _Rep2>::type, _Period>
-   __cd;
- return __cd(__cd(__d).count() * __s);
-      }
-
-    template<typename _Rep1, typename _Rep2, typename _Period>
-      constexpr duration<__common_rep_t<_Rep2, _Rep1>, _Period>
-      operator*(const _Rep1& __s, const duration<_Rep2, _Period>& __d)
-      { return __d * __s; }
-
-    template<typename _Rep1, typename _Period, typename _Rep2>
-      constexpr
-      duration<__common_rep_t<_Rep1, __disable_if_is_duration<_Rep2>>, _Period>
-      operator/(const duration<_Rep1, _Period>& __d, const _Rep2& __s)
-      {
- typedef duration<typename common_type<_Rep1, _Rep2>::type, _Period>
-   __cd;
- return __cd(__cd(__d).count() / __s);
-      }
-
-    template<typename _Rep1, typename _Period1,
-      typename _Rep2, typename _Period2>
-      constexpr typename common_type<_Rep1, _Rep2>::type
-      operator/(const duration<_Rep1, _Period1>& __lhs,
-  const duration<_Rep2, _Period2>& __rhs)
-      {
- typedef duration<_Rep1, _Period1> __dur1;
- typedef duration<_Rep2, _Period2> __dur2;
- typedef typename common_type<__dur1,__dur2>::type __cd;
- return __cd(__lhs).count() / __cd(__rhs).count();
-      }
-
-
-    template<typename _Rep1, typename _Period, typename _Rep2>
-      constexpr
-      duration<__common_rep_t<_Rep1, __disable_if_is_duration<_Rep2>>, _Period>
-      operator%(const duration<_Rep1, _Period>& __d, const _Rep2& __s)
-      {
- typedef duration<typename common_type<_Rep1, _Rep2>::type, _Period>
-   __cd;
- return __cd(__cd(__d).count() % __s);
-      }
-
-    template<typename _Rep1, typename _Period1,
-      typename _Rep2, typename _Period2>
-      constexpr typename common_type<duration<_Rep1, _Period1>,
-         duration<_Rep2, _Period2>>::type
-      operator%(const duration<_Rep1, _Period1>& __lhs,
-  const duration<_Rep2, _Period2>& __rhs)
-      {
- typedef duration<_Rep1, _Period1> __dur1;
- typedef duration<_Rep2, _Period2> __dur2;
- typedef typename common_type<__dur1,__dur2>::type __cd;
- return __cd(__cd(__lhs).count() % __cd(__rhs).count());
-      }
-
-
-    template<typename _Rep1, typename _Period1,
-      typename _Rep2, typename _Period2>
-      constexpr bool
-      operator==(const duration<_Rep1, _Period1>& __lhs,
-   const duration<_Rep2, _Period2>& __rhs)
-      {
- typedef duration<_Rep1, _Period1> __dur1;
- typedef duration<_Rep2, _Period2> __dur2;
- typedef typename common_type<__dur1,__dur2>::type __ct;
- return __ct(__lhs).count() == __ct(__rhs).count();
-      }
-
-    template<typename _Rep1, typename _Period1,
-      typename _Rep2, typename _Period2>
-      constexpr bool
-      operator<(const duration<_Rep1, _Period1>& __lhs,
-  const duration<_Rep2, _Period2>& __rhs)
-      {
- typedef duration<_Rep1, _Period1> __dur1;
- typedef duration<_Rep2, _Period2> __dur2;
- typedef typename common_type<__dur1,__dur2>::type __ct;
- return __ct(__lhs).count() < __ct(__rhs).count();
-      }
-
-    template<typename _Rep1, typename _Period1,
-      typename _Rep2, typename _Period2>
-      constexpr bool
-      operator!=(const duration<_Rep1, _Period1>& __lhs,
-   const duration<_Rep2, _Period2>& __rhs)
-      { return !(__lhs == __rhs); }
-
-    template<typename _Rep1, typename _Period1,
-      typename _Rep2, typename _Period2>
-      constexpr bool
-      operator<=(const duration<_Rep1, _Period1>& __lhs,
-   const duration<_Rep2, _Period2>& __rhs)
-      { return !(__rhs < __lhs); }
-
-    template<typename _Rep1, typename _Period1,
-      typename _Rep2, typename _Period2>
-      constexpr bool
-      operator>(const duration<_Rep1, _Period1>& __lhs,
-  const duration<_Rep2, _Period2>& __rhs)
-      { return __rhs < __lhs; }
-
-    template<typename _Rep1, typename _Period1,
-      typename _Rep2, typename _Period2>
-      constexpr bool
-      operator>=(const duration<_Rep1, _Period1>& __lhs,
-   const duration<_Rep2, _Period2>& __rhs)
-      { return !(__lhs < __rhs); }
-# 605 "/usr/include/c++/9/chrono" 3
-    typedef duration<int64_t, nano> nanoseconds;
-
-
-    typedef duration<int64_t, micro> microseconds;
-
-
-    typedef duration<int64_t, milli> milliseconds;
-
-
-    typedef duration<int64_t> seconds;
-
-
-    typedef duration<int64_t, ratio< 60>> minutes;
-
-
-    typedef duration<int64_t, ratio<3600>> hours;
-
-
-
-
-    template<typename _Clock, typename _Dur>
-      struct time_point
-      {
- typedef _Clock clock;
- typedef _Dur duration;
- typedef typename duration::rep rep;
- typedef typename duration::period period;
-
- constexpr time_point() : __d(duration::zero())
- { }
-
- constexpr explicit time_point(const duration& __dur)
- : __d(__dur)
- { }
-
-
- template<typename _Dur2,
-   typename = _Require<is_convertible<_Dur2, _Dur>>>
-   constexpr time_point(const time_point<clock, _Dur2>& __t)
-   : __d(__t.time_since_epoch())
-   { }
-
-
- constexpr duration
- time_since_epoch() const
- { return __d; }
-
-
- constexpr time_point&
- operator+=(const duration& __dur)
- {
-   __d += __dur;
-   return *this;
- }
-
- constexpr time_point&
- operator-=(const duration& __dur)
- {
-   __d -= __dur;
-   return *this;
- }
-
-
- static constexpr time_point
- min() noexcept
- { return time_point(duration::min()); }
-
- static constexpr time_point
- max() noexcept
- { return time_point(duration::max()); }
-
-      private:
- duration __d;
-      };
-
-
-    template<typename _ToDur, typename _Clock, typename _Dur>
-      constexpr typename enable_if<__is_duration<_ToDur>::value,
-       time_point<_Clock, _ToDur>>::type
-      time_point_cast(const time_point<_Clock, _Dur>& __t)
-      {
- typedef time_point<_Clock, _ToDur> __time_point;
- return __time_point(duration_cast<_ToDur>(__t.time_since_epoch()));
-      }
-
-
-    template<typename _ToDur, typename _Clock, typename _Dur>
-      constexpr
-      enable_if_t<__is_duration<_ToDur>::value, time_point<_Clock, _ToDur>>
-      floor(const time_point<_Clock, _Dur>& __tp)
-      {
- return time_point<_Clock, _ToDur>{
-     chrono::floor<_ToDur>(__tp.time_since_epoch())};
-      }
-
-    template<typename _ToDur, typename _Clock, typename _Dur>
-      constexpr
-      enable_if_t<__is_duration<_ToDur>::value, time_point<_Clock, _ToDur>>
-      ceil(const time_point<_Clock, _Dur>& __tp)
-      {
- return time_point<_Clock, _ToDur>{
-     chrono::ceil<_ToDur>(__tp.time_since_epoch())};
-      }
-
-    template<typename _ToDur, typename _Clock, typename _Dur>
-      constexpr enable_if_t<
- __and_<__is_duration<_ToDur>,
-        __not_<treat_as_floating_point<typename _ToDur::rep>>>::value,
- time_point<_Clock, _ToDur>>
-      round(const time_point<_Clock, _Dur>& __tp)
-      {
- return time_point<_Clock, _ToDur>{
-     chrono::round<_ToDur>(__tp.time_since_epoch())};
-      }
-
-
-    template<typename _Clock, typename _Dur1,
-      typename _Rep2, typename _Period2>
-      constexpr time_point<_Clock,
- typename common_type<_Dur1, duration<_Rep2, _Period2>>::type>
-      operator+(const time_point<_Clock, _Dur1>& __lhs,
-  const duration<_Rep2, _Period2>& __rhs)
-      {
- typedef duration<_Rep2, _Period2> __dur2;
- typedef typename common_type<_Dur1,__dur2>::type __ct;
- typedef time_point<_Clock, __ct> __time_point;
- return __time_point(__lhs.time_since_epoch() + __rhs);
-      }
-
-    template<typename _Rep1, typename _Period1,
-      typename _Clock, typename _Dur2>
-      constexpr time_point<_Clock,
- typename common_type<duration<_Rep1, _Period1>, _Dur2>::type>
-      operator+(const duration<_Rep1, _Period1>& __lhs,
-  const time_point<_Clock, _Dur2>& __rhs)
-      {
- typedef duration<_Rep1, _Period1> __dur1;
- typedef typename common_type<__dur1,_Dur2>::type __ct;
- typedef time_point<_Clock, __ct> __time_point;
- return __time_point(__rhs.time_since_epoch() + __lhs);
-      }
-
-    template<typename _Clock, typename _Dur1,
-      typename _Rep2, typename _Period2>
-      constexpr time_point<_Clock,
- typename common_type<_Dur1, duration<_Rep2, _Period2>>::type>
-      operator-(const time_point<_Clock, _Dur1>& __lhs,
-  const duration<_Rep2, _Period2>& __rhs)
-      {
- typedef duration<_Rep2, _Period2> __dur2;
- typedef typename common_type<_Dur1,__dur2>::type __ct;
- typedef time_point<_Clock, __ct> __time_point;
- return __time_point(__lhs.time_since_epoch() -__rhs);
-      }
-
-    template<typename _Clock, typename _Dur1, typename _Dur2>
-      constexpr typename common_type<_Dur1, _Dur2>::type
-      operator-(const time_point<_Clock, _Dur1>& __lhs,
-  const time_point<_Clock, _Dur2>& __rhs)
-      { return __lhs.time_since_epoch() - __rhs.time_since_epoch(); }
-
-    template<typename _Clock, typename _Dur1, typename _Dur2>
-      constexpr bool
-      operator==(const time_point<_Clock, _Dur1>& __lhs,
-   const time_point<_Clock, _Dur2>& __rhs)
-      { return __lhs.time_since_epoch() == __rhs.time_since_epoch(); }
-
-    template<typename _Clock, typename _Dur1, typename _Dur2>
-      constexpr bool
-      operator!=(const time_point<_Clock, _Dur1>& __lhs,
-   const time_point<_Clock, _Dur2>& __rhs)
-      { return !(__lhs == __rhs); }
-
-    template<typename _Clock, typename _Dur1, typename _Dur2>
-      constexpr bool
-      operator<(const time_point<_Clock, _Dur1>& __lhs,
-  const time_point<_Clock, _Dur2>& __rhs)
-      { return __lhs.time_since_epoch() < __rhs.time_since_epoch(); }
-
-    template<typename _Clock, typename _Dur1, typename _Dur2>
-      constexpr bool
-      operator<=(const time_point<_Clock, _Dur1>& __lhs,
-   const time_point<_Clock, _Dur2>& __rhs)
-      { return !(__rhs < __lhs); }
-
-    template<typename _Clock, typename _Dur1, typename _Dur2>
-      constexpr bool
-      operator>(const time_point<_Clock, _Dur1>& __lhs,
-  const time_point<_Clock, _Dur2>& __rhs)
-      { return __rhs < __lhs; }
-
-    template<typename _Clock, typename _Dur1, typename _Dur2>
-      constexpr bool
-      operator>=(const time_point<_Clock, _Dur1>& __lhs,
-   const time_point<_Clock, _Dur2>& __rhs)
-      { return !(__lhs < __rhs); }
-# 821 "/usr/include/c++/9/chrono" 3
-    inline namespace _V2 {
-
-
-
-
-
-
-    struct system_clock
-    {
-      typedef chrono::nanoseconds duration;
-      typedef duration::rep rep;
-      typedef duration::period period;
-      typedef chrono::time_point<system_clock, duration> time_point;
-
-      static_assert(system_clock::duration::min()
-      < system_clock::duration::zero(),
-      "a clock's minimum duration cannot be less than its epoch");
-
-      static constexpr bool is_steady = false;
-
-      static time_point
-      now() noexcept;
-
-
-      static std::time_t
-      to_time_t(const time_point& __t) noexcept
-      {
- return std::time_t(duration_cast<chrono::seconds>
-      (__t.time_since_epoch()).count());
-      }
-
-      static time_point
-      from_time_t(std::time_t __t) noexcept
-      {
- typedef chrono::time_point<system_clock, seconds> __from;
- return time_point_cast<system_clock::duration>
-        (__from(chrono::seconds(__t)));
-      }
-    };
-
-
-
-
-
-
-
-    struct steady_clock
-    {
-      typedef chrono::nanoseconds duration;
-      typedef duration::rep rep;
-      typedef duration::period period;
-      typedef chrono::time_point<steady_clock, duration> time_point;
-
-      static constexpr bool is_steady = true;
-
-      static time_point
-      now() noexcept;
-    };
-# 888 "/usr/include/c++/9/chrono" 3
-    using high_resolution_clock = system_clock;
-
-    }
-  }
-
-
-
-
-
-  inline namespace literals
-  {
-  inline namespace chrono_literals
-  {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wliteral-suffix"
-    template<typename _Dur, char... _Digits>
-      constexpr _Dur __check_overflow()
-      {
- using _Val = __parse_int::_Parse_int<_Digits...>;
- constexpr typename _Dur::rep __repval = _Val::value;
- static_assert(__repval >= 0 && __repval == _Val::value,
-        "literal value cannot be represented by duration type");
- return _Dur(__repval);
-      }
-
-    constexpr chrono::duration<long double, ratio<3600,1>>
-    operator""h(long double __hours)
-    { return chrono::duration<long double, ratio<3600,1>>{__hours}; }
-
-    template <char... _Digits>
-      constexpr chrono::hours
-      operator""h()
-      { return __check_overflow<chrono::hours, _Digits...>(); }
-
-    constexpr chrono::duration<long double, ratio<60,1>>
-    operator""min(long double __mins)
-    { return chrono::duration<long double, ratio<60,1>>{__mins}; }
-
-    template <char... _Digits>
-      constexpr chrono::minutes
-      operator""min()
-      { return __check_overflow<chrono::minutes, _Digits...>(); }
-
-    constexpr chrono::duration<long double>
-    operator""s(long double __secs)
-    { return chrono::duration<long double>{__secs}; }
-
-    template <char... _Digits>
-      constexpr chrono::seconds
-      operator""s()
-      { return __check_overflow<chrono::seconds, _Digits...>(); }
-
-    constexpr chrono::duration<long double, milli>
-    operator""ms(long double __msecs)
-    { return chrono::duration<long double, milli>{__msecs}; }
-
-    template <char... _Digits>
-      constexpr chrono::milliseconds
-      operator""ms()
-      { return __check_overflow<chrono::milliseconds, _Digits...>(); }
-
-    constexpr chrono::duration<long double, micro>
-    operator""us(long double __usecs)
-    { return chrono::duration<long double, micro>{__usecs}; }
-
-    template <char... _Digits>
-      constexpr chrono::microseconds
-      operator""us()
-      { return __check_overflow<chrono::microseconds, _Digits...>(); }
-
-    constexpr chrono::duration<long double, nano>
-    operator""ns(long double __nsecs)
-    { return chrono::duration<long double, nano>{__nsecs}; }
-
-    template <char... _Digits>
-      constexpr chrono::nanoseconds
-      operator""ns()
-      { return __check_overflow<chrono::nanoseconds, _Digits...>(); }
-
-#pragma GCC diagnostic pop
-  }
-  }
-
-  namespace chrono
-  {
-    using namespace literals::chrono_literals;
-  }
-
-
-
-
-
-
-}
-# 8 "/home/fengsc/Desktop/cpp/CppTest/class/src/timeCount.h" 2
-
-# 8 "/home/fengsc/Desktop/cpp/CppTest/class/src/timeCount.h"
-struct Timer
-{
-    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
-
-    std::chrono::duration<float> duration;
-    Timer()
-    {
-        start = std::chrono::high_resolution_clock::now();
-    }
-    ~Timer()
-    {
-        end = std::chrono::high_resolution_clock::now();
-        duration = end - start;
-        std::cout << "Timer took " << duration.count()*1000 << "ms" << std::endl;
-    }
-};
-# 15 "../src/Graph.h" 2
-
-
-
-
-
-
+# 20 "../src/Graph.h"
 using std::cout;
 using std::stack;
 using std::string;
@@ -60668,7 +58959,7 @@ struct Edge
     Te data;
     int weight;
     EType type;
-    Edge(const Te &e = (Te)1, int w = 1) : data(e), weight(w), type(UNDETERMINED) {}
+    Edge(int w=1,const Te &e = (Te)1) : data(e), weight(w), type(UNDETERMINED) {}
 };
 template <typename Tv, typename Te>
 class Graph
@@ -60839,7 +59130,7 @@ void Graph<Tv, Te>::BFS(int v, int &clock, vector<Tv> &path)
 
     }
 }
-# 183 "../src/Graph.h" 2
+# 182 "../src/Graph.h" 2
 # 1 "../src/GraphDfs.h" 1
 
 
@@ -60885,7 +59176,7 @@ void Graph<Tv, Te>::DFS(int v, int &clock, vector<Tv> &path)
     status(v) = VISITED;
     fTime(v) = ++clock;
 }
-# 184 "../src/Graph.h" 2
+# 183 "../src/Graph.h" 2
 # 1 "../src/GraphBcc.h" 1
 
 
@@ -60933,10 +59224,10 @@ void Graph<Tv, Te>::BCC(int v, int &clock, stack<int> &S)
                 (fTime(v)) = std::min((fTime(v)), (fTime(u)));
             else
             {
-                cout << vertex(v);
+                cout << vertex(v)<<' ';
                 while (S.top() != u)
                 {
-                    cout << vertex(S.top());
+                    cout << vertex(S.top())<<' ';
                     S.pop();
                 }
                 cout << vertex(S.top()) << std::endl;
@@ -60953,7 +59244,7 @@ void Graph<Tv, Te>::BCC(int v, int &clock, stack<int> &S)
         }
     status(v) = VISITED;
 }
-# 185 "../src/Graph.h" 2
+# 184 "../src/Graph.h" 2
 # 1 "../src/GraphScc.h" 1
 
 
@@ -61011,7 +59302,7 @@ void Graph<Tv, Te>::SCC(int v, int &clock, stack<int> &S)
 
         while (v != S.top())
         {
-            cout << vertex(S.top());
+            cout << vertex(S.top())<<' ';
             status(S.top()) = VISITED;
             S.pop();
         }
@@ -61057,7 +59348,7 @@ void Graph<Tv, Te>::scc2()
     }
     delete G;
 }
-# 186 "../src/Graph.h" 2
+# 185 "../src/Graph.h" 2
 # 1 "../src/GraphDijkstra.h" 1
 
 
@@ -61096,7 +59387,7 @@ void Graph<Tv, Te>::dijkstra(int s)
     };
     PFS(s, DijkPU);
 }
-# 187 "../src/Graph.h" 2
+# 186 "../src/Graph.h" 2
 # 1 "../src/GraphPfs.h" 1
 
 
@@ -61104,7 +59395,238 @@ void Graph<Tv, Te>::dijkstra(int s)
 
 
        
+# 1 "/home/fengsc/Desktop/cpp/DataStructure/Quene/PrioQueen.h" 1
 
+
+
+
+
+
+using std::pair;
+
+
+
+
+
+template <typename TD, typename TK = int>
+class MinPQ
+{
+private:
+    struct Node
+    {
+        TD data;
+        TK key;
+        Node(TD _data = 0, TK _key = 0) : data(_data), key(_key) {}
+    };
+    int maxN, n;
+    Node **elem;
+    void siftUp(int start)
+    {
+        Node *temp = elem[start];
+        int i = start, j = start;
+        while ((i = ((i - 1) / 1)) > -1)
+        {
+            if (elem[i]->key <= temp->key)
+                break;
+            elem[j] = elem[i];
+            j = i;
+        }
+        elem[j] = temp;
+    }
+    void siftDown(int start, int end)
+    {
+        Node *temp = elem[start];
+        int i = start, j = start;
+        while ((j = ((j << 1) + 1)) < end)
+        {
+            if (j < end - 1 && elem[j]->key > elem[j + 1]->key)
+                j++;
+            if (elem[j]->key >= temp->key)
+                break;
+            elem[i] = elem[j];
+            i = j;
+        }
+        elem[i] = temp;
+    }
+
+public:
+    bool empty() { return n == 0; }
+    void clear()
+    {
+        for (int i = 0; i < n; i++)
+            delete elem[i];
+        n = 0;
+    }
+    MinPQ(int size) : elem((Node **)malloc(size * sizeof(Node *))), maxN(size), n(0) {}
+    MinPQ(const vector<TK> &data)
+    {
+        MinPQ(data.size());
+        n = maxN;
+        for (int i = 0; i < data.size(); i++)
+        {
+            elem[i] = (Node *)malloc(sizeof(Node));
+            elem[i]->data = elem[i]->key = data[i];
+        }
+
+        for (int i = 2 * n - 2; 0; i++)
+            siftDown(i, n - 1);
+    }
+# 84 "/home/fengsc/Desktop/cpp/DataStructure/Quene/PrioQueen.h"
+    ~MinPQ()
+    {
+        for (int i = 0; i < n; i++)
+            free(elem[i]);
+        free(elem);
+    }
+    void enqueue(TD x, TK key)
+    {
+        if (n == maxN)
+        {
+            Node **tmp = elem;
+            try
+            {
+                maxN *= 2;
+                tmp = (Node **)realloc(elem, maxN * sizeof(Node *));
+            }
+            catch (const std::bad_alloc &e)
+            {
+                for (int i = 0; i < n; i++)
+                    free(elem[i]);
+                free(elem);
+                std::cerr << e.what() << std::endl;
+            }
+            elem = tmp;
+        }
+        elem[n++] = new Node(x, key);
+        siftUp(n - 1);
+    }
+    TD dequeue()
+    {
+        if (n == 0)
+            throw std::out_of_range("queue is empty");
+        TD temp = elem[0]->data;
+        delete elem[0];
+        elem[0] = elem[--n];
+        siftDown(0, n);
+        return temp;
+    }
+};
+template <typename T = int>
+class IndexMinPQ
+{
+private:
+    int n, maxN;
+    struct Node
+    {
+        int index;
+        T key;
+        Node(int _index = 0, T _key = (T)0) : index(_index), key(_key) {}
+    };
+    Node **elem;
+    int *contains;
+    void siftUp(int start)
+    {
+        Node *temp = elem[start];
+        int i = start, j = start;
+        while ((i = ((i - 1) / 1)) > -1)
+        {
+            if (elem[i]->key <= temp->key)
+                break;
+            elem[j] = elem[i];
+            contains[elem[i]->index] = j;
+            j = i;
+        }
+        elem[j] = temp;
+        contains[temp->index] = j;
+    }
+    void siftDown(int start, int end)
+    {
+        Node *temp = elem[start];
+        int i = start, j = start;
+        while ((j = ((j << 1) + 1)) < end)
+        {
+            if (j < end - 1 && elem[j]->key > elem[j + 1]->key)
+                j++;
+            if (elem[j]->key >= temp->key)
+                break;
+            contains[elem[j]->index] = i;
+            elem[i] = elem[j];
+            i = j;
+        }
+        elem[i] = temp;
+        contains[temp->index] = i;
+    }
+
+public:
+    IndexMinPQ(int size) : elem(new Node *[size]), maxN(size), n(0), contains(new int[size])
+    {
+        for (int i = 0; i < maxN; i++)
+            contains[i] = -1;
+    }
+    void indexCheck(int index)
+    {
+        if (index < 0)
+            throw std::out_of_range("Index is negative");
+        if (index >= maxN)
+            throw std::out_of_range("Index is out of capacity");
+    }
+    void enqueue(int x, T key)
+    {
+        if (exists(x))
+            throw std::invalid_argument("Index already exists");
+        contains[x] = n;
+        elem[n++] = new Node(x, key);
+        siftUp(n - 1);
+    }
+    int dequeue()
+    {
+        if (n == 0)
+            throw std::out_of_range("queue is empty");
+        int index = elem[0]->index;
+        contains[index] = -1;
+        delete elem[0];
+        if ((--n) > 0)
+        {
+            elem[0] = elem[n];
+            contains[elem[0]->index] = 0;
+            siftDown(0, n);
+        }
+        return index;
+    }
+    bool exists(int x)
+    {
+        indexCheck(x);
+        return contains[x] != -1;
+    }
+    void change(int x, int key)
+    {
+        if (!exists(x))
+            throw std::invalid_argument("Index is not exists");
+        elem[contains[x]]->key = key;
+        siftUp(contains[x]);
+        siftDown(contains[x], n);
+    }
+    void clear()
+    {
+        for (int i = 0; i < n; i++)
+            delete elem[i];
+        std::fill(contains, contains + maxN, -1);
+        n = 0;
+    }
+    bool empty()
+    {
+        return n == 0;
+    }
+    ~IndexMinPQ()
+    {
+
+        for (int i = 0; i < n; i++)
+            delete elem[i];
+        delete[] elem;
+        delete[] contains;
+    }
+};
+# 8 "../src/GraphPfs.h" 2
 template <typename Tv, typename Te>
 template <typename PU>
 void Graph<Tv, Te>::pfs(int s, PU prioUpdater)
@@ -61123,29 +59645,34 @@ void Graph<Tv, Te>::PFS(int v, PU prioUpdater, Graph<Tv, Te> &SPTree)
 {
 
     priority(v) = 0;
-    status(v) = VISITED;
+
     parent(v) = -1;
-    while (1)
+    IndexMinPQ Q(n);
+
+    Q.enqueue(v, priority(v));
+    while (!Q.empty())
     {
+        v = Q.dequeue();
+
+
         for (int w = firstNbr(v); w > -1; w = nextNbr(v, w))
             if (status(w) == UNDISCOVERED)
+            {
                 prioUpdater(this, v, w);
-        for (int shortest = 0x7fffffff, w = 0; w < n; w++)
-        {
-            if (status(w) == UNDISCOVERED)
-                if (shortest > priority(w))
-                {
-                    shortest = priority(w);
-                    v = w;
-                }
-        }
-        if (status(v) == VISITED)
-            break;
+                if (Q.exists(w))
+                    Q.change(w, priority(w));
+                else
+                    Q.enqueue(w, priority(w));
+            }
+# 55 "../src/GraphPfs.h"
         status(v) = VISITED;
         int prt = parent(v);
-        type(prt, v) = TREE;
-        SPTree.insert(prt, v, weight(prt, v), (Te)1);
-        SPTree.parent(v) = prt;
+        if (prt != -1)
+        {
+            type(prt, v) = TREE;
+            SPTree.insert(prt, v, weight(prt, v), (Te)1);
+            SPTree.parent(v) = prt;
+        }
     }
 }
 template <typename Tv, typename Te>
@@ -61156,27 +59683,26 @@ void Graph<Tv, Te>::PFS(int v, PU prioUpdater)
     priority(v) = 0;
     status(v) = VISITED;
     parent(v) = -1;
+    IndexMinPQ<int> Q(n);
     while (1)
     {
         for (int w = firstNbr(v); w > -1; w = nextNbr(v, w))
             if (status(w) == UNDISCOVERED)
+            {
                 prioUpdater(this, v, w);
-        for (int shortest = 0x7fffffff, w = 0; w < n; w++)
-        {
-            if (status(w) == UNDISCOVERED)
-                if (shortest > priority(w))
-                {
-                    shortest = priority(w);
-                    v = w;
-                }
-        }
+                if (Q.exists(w))
+                    Q.change(w, priority(w));
+                else
+                    Q.enqueue(w, priority(w));
+            }
+        v = Q.dequeue();
         if (status(v) == VISITED)
             break;
         status(v) = VISITED;
         type(parent(v), v) = TREE;
     }
 }
-# 188 "../src/Graph.h" 2
+# 187 "../src/Graph.h" 2
 # 1 "../src/GraphPrim.h" 1
 
 
@@ -61215,7 +59741,7 @@ void Graph<Tv, Te>::prim(int s, Graph<Tv, Te> &SPTree)
         SPTree.insert(i);
     PFS(s, primPU, SPTree);
 }
-# 188 "../src/Graph.h" 2
+# 187 "../src/Graph.h" 2
 # 8 "../src/GraphMatrix.h" 2
 # 1 "../src/Matrix.h" 1
 
@@ -61258,10 +59784,35 @@ void Graph<Tv, Te>::prim(int s, Graph<Tv, Te> &SPTree)
 # 39 "/usr/include/c++/9/ctime" 3
        
 # 40 "/usr/include/c++/9/ctime" 3
+# 58 "/usr/include/c++/9/ctime" 3
+
+# 58 "/usr/include/c++/9/ctime" 3
+namespace std
+{
+  using ::clock_t;
+  using ::time_t;
+  using ::tm;
+
+  using ::clock;
+  using ::difftime;
+  using ::mktime;
+  using ::time;
+  using ::asctime;
+  using ::ctime;
+  using ::gmtime;
+  using ::localtime;
+  using ::strftime;
+}
+
+
+
+namespace std
+{
+  using ::timespec;
+  using ::timespec_get;
+}
 # 40 "/usr/include/c++/9/bits/locale_facets_nonio.h" 2 3
 
-
-# 41 "/usr/include/c++/9/bits/locale_facets_nonio.h" 3
 namespace std __attribute__ ((__visibility__ ("default")))
 {
 
@@ -66534,7 +65085,7 @@ std::ostream &operator<<(std::ostream &out, const Matrix<T> &m)
     for (size_t i = 0; i < m.row; i++)
     {
         for (size_t j = 0; j < m.col; j++)
-            out << std::setw(2) << std::setiosflags(std::ios::left) << m.matrix[i][j] << ' ';
+            out << std::setw(3) << std::setiosflags(std::ios::left) << m.matrix[i][j] << ' ';
         out << std::endl;
     }
     return out;
@@ -66552,6 +65103,8 @@ Matrix<int> Matrix<T>::getInt()
 template <typename Tv = char, typename Te = char>
 class GraphMatrix : public Graph<Tv, Te>
 {
+public:
+    using Graph<Tv, Te>::n;
     template <typename Tx, typename Ty>
     friend class GraphAdjacencyList;
 
@@ -66575,7 +65128,7 @@ public:
 
     {
         Tv head = vertexVec[0];
-        for (int i = 0; i < this->n; i++)
+        for (int i = 0; i < n; i++)
             V[i] = new Vertex<Tv>(vertexVec[i]);
         for (int j = 0, v, w; j < this->e; j++)
             if ((v = relate[j].first - head) != (w = relate[j].second - head) && !E[v][w])
@@ -66587,16 +65140,35 @@ public:
                     E[w][v] = new Edge<Te>;
             }
     }
-    GraphMatrix(vector<vector<bool>> m) : Graph<int, Te>(m.size()), V(m.size(), nullptr), E(m.size(), vector<Edge<Te> *>(m.size(), nullptr))
+
+    GraphMatrix(const vector<Tv> &vertexVec, const vector<pair<Tv, Tv>> &relate, const vector<int> &weight, Direct dir = DIRECTED) : Graph<Tv, Te>(vertexVec.size(), relate.size(), dir), V(vertexVec.size(), nullptr),
+                                                                                                                                     E(vertexVec.size(), vector<Edge<Te> *>(vertexVec.size(), nullptr))
+
     {
-        Matrix<bool> M(m);
-        for (int i = 0; i < this->n; i++)
+        Tv head = vertexVec[0];
+        for (int i = 0; i < n; i++)
+            V[i] = new Vertex<Tv>(vertexVec[i]);
+        for (int j = 0, v, w; j < this->e; j++)
+            if ((v = relate[j].first - head) != (w = relate[j].second - head) && !E[v][w])
+            {
+                E[v][w] = new Edge<Te>(weight[j]);
+                V[v]->outDegree++;
+                V[w]->inDegree++;
+                if (this->direct == UNDIRECTED)
+                    E[w][v] = new Edge<Te>(weight[j]);
+            }
+    }
+
+    GraphMatrix(vector<vector<int>> m) : Graph<int, Te>(m.size()), V(m.size(), nullptr), E(m.size(), vector<Edge<Te> *>(m.size(), nullptr))
+    {
+        Matrix<int> M(m);
+        for (int i = 0; i < n; i++)
             V[i] = new Vertex<int>(i);
-        for (int i = 0; i < this->n; i++)
-            for (int j = 0; j < this->n; j++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
                 if (M[i][j] && i != j)
                 {
-                    E[i][j] = new Edge<Te>;
+                    E[i][j] = new Edge<Te>(M[i][j]);
                     V[i]->outDegree++;
                     V[j]->inDegree++;
                     this->e++;
@@ -66606,16 +65178,16 @@ public:
 
     ~GraphMatrix()
     {
-        for (int i = 0; i < this->n; i++)
+        for (int i = 0; i < n; i++)
         {
             delete V[i];
-            for (int j = 0; j < this->n; j++)
+            for (int j = 0; j < n; j++)
                 delete E[i][j];
         }
     }
     virtual int loc(const Tv &v) override
     {
-        int i = this->n;
+        int i = n;
         while (--i > -1 && V[i]->data != v)
             ;
         return i;
@@ -66623,7 +65195,7 @@ public:
     virtual Tv &vertex(int i) override { return V[i]->data; }
     virtual int inDegree(int i) override { return V[i]->inDegree; }
     virtual int outDegree(int i) override { return V[i]->outDegree; }
-    virtual int firstNbr(int i) override { return nextNbr(i, this->n); }
+    virtual int firstNbr(int i) override { return nextNbr(i, n); }
     virtual int nextNbr(int i, int j) override
     {
         while ((-1) < j && (!exists(i, --j)))
@@ -66636,12 +65208,12 @@ public:
     virtual int &fTime(int i) override { return V[i]->fTime; }
     virtual int &parent(int i) override { return V[i]->parent; }
     virtual int &priority(int i) override { return V[i]->priority; }
-    virtual bool exists(int i) override { return i > -1 && i < this->n; }
+    virtual bool exists(int i) override { return i > -1 && i < n; }
     virtual int insert(const Tv &vertex) override;
     virtual void remove(int i) override;
     virtual bool exists(int i, int j) override
     {
-        return i > -1 && i < this->n && j > -1 && j < this->n && E[i][j];
+        return i > -1 && i < n && j > -1 && j < n && E[i][j];
     }
     virtual EType &type(int i, int j) override { return E[i][j]->type; }
     virtual Te &edge(int i, int j) override { return E[i][j]->data; }
@@ -66665,12 +65237,12 @@ int GraphMatrix<Tv, Te>::insert(const Tv &vertex)
 {
     if (exists(loc(vertex)))
         return -1;
-    for (int i = 0; i < this->n; i++)
+    for (int i = 0; i < n; i++)
         E[i].emplace_back(nullptr);
-    this->n++;
-    E.emplace_back((vector<Edge<Te> *>(this->n, nullptr)));
+    n++;
+    E.emplace_back((vector<Edge<Te> *>(n, nullptr)));
     V.emplace_back(new Vertex<Tv>(vertex));
-    return this->n - 1;
+    return n - 1;
 }
 template <typename Tv, typename Te>
 void GraphMatrix<Tv, Te>::remove(int i)
@@ -66678,14 +65250,14 @@ void GraphMatrix<Tv, Te>::remove(int i)
     if (!exists(i))
     {
         fprintf(
-# 137 "../src/GraphMatrix.h" 3 4
+# 158 "../src/GraphMatrix.h" 3 4
        stderr
-# 137 "../src/GraphMatrix.h"
-       , "\033[1;35m  LOG(%s:%s:%d):\t\033[32m" "error loc to remove vertex at index %d", "../src/GraphMatrix.h", __func__, 137, i);
+# 158 "../src/GraphMatrix.h"
+       , "\033[1;35m  LOG(%s:%s:%d):\t\033[32m" "error loc to remove vertex at index %d\n", "../src/GraphMatrix.h", __func__, 158, i);
         return;
     }
 
-    for (int j = 0; j < this->n; j++)
+    for (int j = 0; j < n; j++)
     {
         remove(i, j);
         if (this->direct == DIRECTED)
@@ -66695,28 +65267,28 @@ void GraphMatrix<Tv, Te>::remove(int i)
         }
     }
     E.erase(E.begin() + i);
-    this->n--;
+    n--;
     delete V[i];
     V.erase(V.begin() + i);
 }
 template <typename Tv, typename Te>
 void GraphMatrix<Tv, Te>::insert(int i, int j, int weight, const Te &edge)
 {
-    if (exists(i, j) || !exists(i) || !exists(j))
+    if (exists(i, j) || !exists(i) || !exists(j) || i == j)
     {
         fprintf(
-# 160 "../src/GraphMatrix.h" 3 4
+# 181 "../src/GraphMatrix.h" 3 4
        stderr
-# 160 "../src/GraphMatrix.h"
-       , "\033[1;35m  LOG(%s:%s:%d):\t\033[32m" "error loc to insert edge from index %d to %d\n", "../src/GraphMatrix.h", __func__, 160, i, j);
+# 181 "../src/GraphMatrix.h"
+       , "\033[1;35m  LOG(%s:%s:%d):\t\033[32m" "error loc to insert edge from index %d to %d\n", "../src/GraphMatrix.h", __func__, 181, i, j);
         return;
     }
-    E[i][j] = new Edge<Te>(edge, weight);
+    E[i][j] = new Edge<Te>(weight);
     this->e++;
     V[j]->inDegree++;
     V[i]->outDegree++;
     if (this->direct == UNDIRECTED)
-        E[j][i] = new Edge<Te>(edge, weight);
+        E[j][i] = new Edge<Te>(weight);
 }
 template <typename Tv, typename Te>
 Te GraphMatrix<Tv, Te>::remove(int i, int j)
@@ -66739,9 +65311,9 @@ Te GraphMatrix<Tv, Te>::remove(int i, int j)
 template <typename Tv, typename Te>
 Matrix<bool> GraphMatrix<Tv, Te>::adjacentMatrix()
 {
-    Matrix<bool> ans(this->n, this->n);
-    for (int i = 0; i < this->n; i++)
-        for (int j = 0; j < this->n; j++)
+    Matrix<bool> ans(n, n);
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
             if (E[i][j])
                 ans[i][j] = true;
     return ans;
@@ -66749,9 +65321,9 @@ Matrix<bool> GraphMatrix<Tv, Te>::adjacentMatrix()
 template <typename Tv, typename Te>
 Matrix<int> GraphMatrix<Tv, Te>::adjacentMatrixWithWeight()
 {
-    Matrix<int> ans(this->n, this->n);
-    for (int i = 0; i < this->n; i++)
-        for (int j = 0; j < this->n; j++)
+    Matrix<int> ans(n, n);
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
             if (E[i][j])
                 ans.matrix[i][j] = E[i][j]->weight;
     return ans;
@@ -66760,9 +65332,9 @@ template <typename Tv, typename Te>
 Matrix<bool> GraphMatrix<Tv, Te>::Warshall()
 {
     Matrix<bool> ans = adjacentMatrix();
-    for (int k = 0; k < this->n; k++)
-        for (int i = 0; i < this->n; i++)
-            for (int j = 0; j < this->n; j++)
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
                 ans[i][j] = ans[i][j] | (ans[i][k] & ans[k][j]);
     return ans;
 }
@@ -66774,7 +65346,7 @@ Matrix<bool> GraphMatrix<Tv, Te>::reachabilityMatrix()
 
 
 
-    return Warshall() | Matrix<bool>(this->n);
+    return Warshall() | Matrix<bool>(n);
 }
 template <typename Tv, typename Te>
 int GraphMatrix<Tv, Te>::minDistance(const Tv &v, const Tv &w)
@@ -66787,10 +65359,10 @@ int GraphMatrix<Tv, Te>::minDistance(const Tv &v, const Tv &w)
     if (exists(i, j))
         return 1;
     Matrix<bool> m = adjacentMatrix();
-    for (k = 2; k < this->n; k++)
+    for (k = 2; k < n; k++)
         if (m.power(k)[i][j] == true)
             break;
-    return (k == this->n) ? 0x7fffffff : k;
+    return (k == n) ? 0x7fffffff : k;
 }
 template <typename Tv, typename Te>
 int GraphMatrix<Tv, Te>::LengthOfLoop(const Tv &v)
@@ -66799,10 +65371,10 @@ int GraphMatrix<Tv, Te>::LengthOfLoop(const Tv &v)
     if (i < 0)
         return 0x7fffffff;
     Matrix<bool> m = adjacentMatrix();
-    for (k = 2; k <= this->n; k++)
+    for (k = 2; k <= n; k++)
         if (m.power(k)[i][i] == true)
             break;
-    return (k == this->n + 1) ? 0x7fffffff : k;
+    return (k == n + 1) ? 0x7fffffff : k;
 }
 template <typename Tv, typename Te>
 int GraphMatrix<Tv, Te>::numOfPath(const Tv &v, const Tv &w, int len)
@@ -66814,7 +65386,7 @@ int GraphMatrix<Tv, Te>::numOfPath(const Tv &v, const Tv &w, int len)
     if (len)
         return m.power(len)[i][j];
     else
-        for (int k = 1; k <= this->n; k++)
+        for (int k = 1; k <= n; k++)
             len += m.power(k)[i][j];
     return len;
 }
@@ -66825,7 +65397,7 @@ struct ENode
     Edge<Te> edge;
     ENode *link;
     int desk;
-    ENode(int _desk = -1, ENode *_link = nullptr, int w = 1, const Te &e = (Te)1) : edge(e, w), desk(_desk), link(_link) {}
+    ENode(int _desk = -1, ENode *_link = nullptr, int w = 1, const Te &e = (Te)1) : edge(w, e), desk(_desk), link(_link) {}
 };
 template <typename Tv, typename Te>
 struct VNode
@@ -66842,26 +65414,29 @@ private:
     static ENode<Te> *nPtr;
 
 public:
-
+    using Graph<Tv, Te>::n;
+    using Graph<Tv, Te>::e;
+    using Graph<Tv, Te>::direct;
     ALGraph(int n = 0, Direct dir = DIRECTED) : Graph<Tv, Te>(0, 0, dir) { VList.reserve(n); }
 
     ALGraph(const vector<vector<Tv>> &relateList, Direct dir = DIRECTED) : Graph<Tv, Te>(relateList.size(), 0, dir), VList(relateList.size())
     {
         Tv head = relateList[0][0];
-        for (int i = 0; i < this->n; i++)
+        for (int i = 0; i < n; i++)
         {
             VList[i].vertex = Vertex<Tv>(relateList[i][0]);
-            for (int j = 1; j < relateList[i].size(); j++, this->e++, VList[i].vertex.outDegree++, VList[i].vertex.inDegree++)
+            for (int j = 1; j < relateList[i].size(); j++, e++, VList[i].vertex.outDegree++, VList[i].vertex.inDegree++)
                 VList[i].adj = new ENode<Te>(relateList[i][j] - head, VList[i].adj);
         }
     }
+
     ALGraph(const vector<Tv> &vertexVec, const vector<pair<Tv, Tv>> &relate, const vector<int> &weight, Direct dir = DIRECTED) : Graph<Tv, Te>(vertexVec.size(), relate.size(), dir), VList(vertexVec.size())
     {
-        for (int i = 0; i < this->n; i++)
+        for (int i = 0; i < n; i++)
             VList[i].vertex = Vertex<Tv>(vertexVec[i]);
         ENode<Te> *p, *q;
         Tv head = vertexVec[0];
-        for (int j = 0, v, w; j < this->e; j++)
+        for (int j = 0, v, w; j < e; j++)
         {
             v = relate[j].first - head;
             w = relate[j].second - head;
@@ -66869,9 +65444,9 @@ public:
             {
                 p = VList[v].adj;
                 while (p != 
-# 56 "../src/GraphAdjacencyList.h" 3 4
+# 59 "../src/GraphAdjacencyList.h" 3 4
                            __null 
-# 56 "../src/GraphAdjacencyList.h"
+# 59 "../src/GraphAdjacencyList.h"
                                 && p->desk != w)
                     p = p->link;
                 if (!p)
@@ -66879,8 +65454,39 @@ public:
                     VList[v].adj = new ENode<Te>(w, VList[v].adj, weight[j]);
                     VList[v].vertex.outDegree++;
                     VList[v].vertex.inDegree++;
-                    if (this->direct == UNDIRECTED)
+                    if (direct == UNDIRECTED)
                         VList[w].adj = new ENode<Te>(v, VList[w].adj, weight[j]);
+                }
+            }
+        }
+    }
+
+    ALGraph(const vector<Tv> &vertexVec, const vector<pair<Tv, Tv>> &relate, Direct dir = DIRECTED) : Graph<Tv, Te>(vertexVec.size(), relate.size(), dir), VList(vertexVec.size())
+    {
+        for (int i = 0; i < n; i++)
+            VList[i].vertex = Vertex<Tv>(vertexVec[i]);
+        ENode<Te> *p, *q;
+        Tv head = vertexVec[0];
+        for (int j = 0, v, w; j < e; j++)
+        {
+            v = relate[j].first - head;
+            w = relate[j].second - head;
+            if (v != w)
+            {
+                p = VList[v].adj;
+                while (p != 
+# 86 "../src/GraphAdjacencyList.h" 3 4
+                           __null 
+# 86 "../src/GraphAdjacencyList.h"
+                                && p->desk != w)
+                    p = p->link;
+                if (!p)
+                {
+                    VList[v].adj = new ENode<Te>(w, VList[v].adj);
+                    VList[v].vertex.outDegree++;
+                    VList[v].vertex.inDegree++;
+                    if (direct == UNDIRECTED)
+                        VList[w].adj = new ENode<Te>(v, VList[w].adj);
                 }
             }
         }
@@ -66888,7 +65494,7 @@ public:
     ~ALGraph()
     {
         ENode<Te> *p, *q;
-        for (int i = 0; i < this->n; i++)
+        for (int i = 0; i < n; i++)
         {
             p = VList[i].adj;
             while (p)
@@ -66899,6 +65505,23 @@ public:
             }
         }
     }
+    void clear()
+    {
+        ENode<Te> *p, *q;
+        for (int i = 0; i < n; i++)
+        {
+            p = VList[i].adj;
+            while (p)
+            {
+                q = p->link;
+                delete p;
+                p = q;
+            }
+        }
+        VList.clear();
+        this->n = this->e = 0;
+    }
+
     static vector<pair<Tv, Tv>> getPair(const string &s)
     {
         return GraphMatrix<Tv, Te>::getPair(s);
@@ -66924,7 +65547,7 @@ public:
     }
     virtual int loc(const Tv &v) override
     {
-        int i = this->n;
+        int i = n;
         while (--i > -1 && VList[i].vertex.data != v)
             ;
         return i;
@@ -66960,37 +65583,37 @@ public:
     virtual int &fTime(int i) override { return VList[i].vertex.fTime; }
     virtual int &parent(int i) override { return VList[i].vertex.parent; }
     virtual int &priority(int i) override { return VList[i].vertex.priority; }
-    virtual bool exists(int i) override { return i > -1 && i < this->n; }
+    virtual bool exists(int i) override { return i > -1 && i < n; }
     virtual int insert(const Tv &vertex) override
     {
         if (exists(loc(vertex)))
             return -1;
         VList.push_back(VNode<Tv, Te>(vertex));
-        this->n++;
-        return this->n - 1;
+        n++;
+        return n - 1;
     }
     virtual void remove(int v) override
     {
         if (!exists(v))
         {
             fprintf(
-# 157 "../src/GraphAdjacencyList.h" 3 4
+# 204 "../src/GraphAdjacencyList.h" 3 4
            stderr
-# 157 "../src/GraphAdjacencyList.h"
-           , "\033[1;35m  LOG(%s:%s:%d):\t\033[32m" "error loc to insert vertex at index %d\n", "../src/GraphAdjacencyList.h", __func__, 157, v);
+# 204 "../src/GraphAdjacencyList.h"
+           , "\033[1;35m  LOG(%s:%s:%d):\t\033[32m" "error loc to insert vertex at index %d\n", "../src/GraphAdjacencyList.h", __func__, 204, v);
             return;
         }
 
-        for (int i = 0; i < this->n; i++)
+        for (int i = 0; i < n; i++)
         {
             remove(i, v);
-            if (this->direct = DIRECTED)
+            if (direct = DIRECTED)
                 remove(v, i);
         }
-        VList.erase(VList.begin(), VList.begin() + 1);
-        this->n--;
+        VList.erase(VList.begin() + v);
+        n--;
         ENode<Te> *p;
-        for (int i = 0; i < this->n; i++)
+        for (int i = 0; i < n; i++)
         {
             p = VList[i].adj;
             while (p)
@@ -67009,21 +65632,21 @@ public:
     virtual int &weight(int i, int j) override { return _edge(i, j)->edge.weight; }
     virtual void insert(int i, int j, int weight = 1, const Te &edge = Te(1)) override
     {
-        if (exists(i, j) || !exists(i) || !exists(j))
+        if (exists(i, j) || !exists(i) || !exists(j) || i == j)
         {
             fprintf(
-# 191 "../src/GraphAdjacencyList.h" 3 4
+# 238 "../src/GraphAdjacencyList.h" 3 4
            stderr
-# 191 "../src/GraphAdjacencyList.h"
-           , "\033[1;35m  LOG(%s:%s:%d):\t\033[32m" "error loc to insert edge from index %d to %d\n", "../src/GraphAdjacencyList.h", __func__, 191, i, j);
+# 238 "../src/GraphAdjacencyList.h"
+           , "\033[1;35m  LOG(%s:%s:%d):\t\033[32m" "error loc to insert edge from index %d to %d\n", "../src/GraphAdjacencyList.h", __func__, 238, i, j);
             return;
         }
         VList[i].adj = new ENode<Te>(j, VList[i].adj, weight);
         VList[i].vertex.outDegree++;
         VList[j].vertex.inDegree++;
-        this->e++;
-        if (this->direct == UNDIRECTED)
-            VList[j].adj = new ENode<Te>(i, VList[j].adj,weight);
+        e++;
+        if (direct == UNDIRECTED)
+            VList[j].adj = new ENode<Te>(i, VList[j].adj, weight);
     }
     virtual Te remove(int i, int j) override
     {
@@ -67040,14 +65663,29 @@ public:
     }
     Matrix<bool> adjacentMatrix()
     {
-        Matrix<bool> ans(this->n, this->n);
+        Matrix<bool> ans(n, n);
         ENode<Te> *p;
-        for (int i = 0; i < this->n; i++)
+        for (int i = 0; i < n; i++)
         {
             p = VList[i].adj;
             while (p)
             {
                 ans[i][p->desk] = true;
+                p = p->link;
+            }
+        }
+        return ans;
+    }
+    Matrix<int> adjacentMatrixWithWeight()
+    {
+        Matrix<int> ans(n, n);
+        ENode<Te> *p;
+        for (int i = 0; i < n; i++)
+        {
+            p = VList[i].adj;
+            while (p)
+            {
+                ans[i][p->desk] = weight(i, p->desk);
                 p = p->link;
             }
         }

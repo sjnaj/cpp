@@ -52,7 +52,9 @@
         "bit": "cpp",
         "iomanip": "cpp",
         "ctime": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "stack": "cpp",
+        "graph.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-12-03 22:25:21
- * @LastEditTime: 2021-12-04 19:52:56
+ * @LastEditTime: 2021-12-10 01:28:39
  */
 template <typename Tv, typename Te>
 void Graph<Tv, Te>::bcc()
@@ -44,10 +44,10 @@ void Graph<Tv, Te>::BCC(int v, int &clock, stack<int> &S)
                 hca(v) = std::min(hca(v), hca(u)); //更新hca[v]
             else //子女的hca不可能大于祖先
             { //*弹出当前BCC中（除关节点v外）的所有节点,v可能是其它连通域的成员，不能退栈
-                cout << vertex(v);//输出关节点
+                cout << vertex(v)<<' ';//输出关节点
                 while (S.top() != u)//*v,u在栈中不一定连续，要用u作为终止条件
                 {
-                    cout << vertex(S.top());
+                    cout << vertex(S.top())<<' ';
                     S.pop();
                 }
                 cout << vertex(S.top()) << std::endl;

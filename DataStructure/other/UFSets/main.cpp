@@ -1,19 +1,17 @@
 /*
  * @Author: fengsc
  * @Date: 2021-11-12 14:29:23
- * @LastEditTime: 2021-11-12 19:33:26
+ * @LastEditTime: 2021-12-10 12:47:37
  */
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include "/home/fengsc/Desktop/cpp/CppTest/class/src/timeCount.h"
 using namespace std;
 #define SIZE 100
 struct UFSets
 {
 private:
     vector<int> fa;
-    Timer timer;
 public:
     size_t size() { return fa.size(); }
     UFSets(size_t size = SIZE)

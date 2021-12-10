@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-11-18 11:39:10
- * @LastEditTime: 2021-12-08 02:17:06
+ * @LastEditTime: 2021-12-10 00:41:14
  */
 #pragma once
 #include "Graph.h"
@@ -9,6 +9,8 @@
 template <typename Tv = char, typename Te = char> //值类型都默认c
 class GraphMatrix : public Graph<Tv, Te>
 {
+public:
+    using Graph<Tv, Te>::n;
     template <typename Tx, typename Ty>
     friend class GraphAdjacencyList;
 
@@ -19,7 +21,7 @@ private:
 
 public:
     GraphMatrix() : Graph<Tv, Te>() {}
-    GraphMatrix(int _n = 0, Direct dir = DIRECTED) : Graph<Tv, Te>(0, 0, dir)//预分配空间
+    GraphMatrix(int _n = 0, Direct dir = DIRECTED) : Graph<Tv, Te>(0, 0, dir) //预分配空间,注意n,e没有改变
     {
         V.reserve(_n);
         E.reserve(_n);
@@ -32,7 +34,7 @@ public:
 
     {
         Tv head = vertexVec[0]; //用于确定位置，用loc时间耗费较高
-        for (int i = 0; i < this->n; i++)
+        for (int i = 0; i < n; i++)
             V[i] = new Vertex<Tv>(vertexVec[i]);
         for (int j = 0, v, w; j < this->e; j++)
             if ((v = relate[j].first - head) != (w = relate[j].second - head) && !E[v][w]) //消除自反关系和重复对
@@ -44,16 +46,35 @@ public:
                     E[w][v] = new Edge<Te>;
             }
     }
-    GraphMatrix(vector<vector<bool>> m) : Graph<int, Te>(m.size()), V(m.size(), nullptr), E(m.size(), vector<Edge<Te> *>(m.size(), nullptr))
+    //带权图
+    GraphMatrix(const vector<Tv> &vertexVec, const vector<pair<Tv, Tv>> &relate, const vector<int> &weight, Direct dir = DIRECTED) : Graph<Tv, Te>(vertexVec.size(), relate.size(), dir), V(vertexVec.size(), nullptr),
+                                                                                                                                     E(vertexVec.size(), vector<Edge<Te> *>(vertexVec.size(), nullptr))
+
     {
-        Matrix<bool> M(m);
-        for (int i = 0; i < this->n; i++)
+        Tv head = vertexVec[0]; //用于确定位置，用loc时间耗费较高
+        for (int i = 0; i < n; i++)
+            V[i] = new Vertex<Tv>(vertexVec[i]);
+        for (int j = 0, v, w; j < this->e; j++)
+            if ((v = relate[j].first - head) != (w = relate[j].second - head) && !E[v][w]) //消除自反关系和重复对
+            {
+                E[v][w] = new Edge<Te>(weight[j]);
+                V[v]->outDegree++;
+                V[w]->inDegree++;
+                if (this->direct == UNDIRECTED)
+                    E[w][v] = new Edge<Te>(weight[j]);
+            }
+    }
+    //用二维数组初始化
+    GraphMatrix(vector<vector<int>> m) : Graph<int, Te>(m.size()), V(m.size(), nullptr), E(m.size(), vector<Edge<Te> *>(m.size(), nullptr))
+    {
+        Matrix<int> M(m);
+        for (int i = 0; i < n; i++)
             V[i] = new Vertex<int>(i);
-        for (int i = 0; i < this->n; i++)
-            for (int j = 0; j < this->n; j++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
                 if (M[i][j] && i != j)
                 {
-                    E[i][j] = new Edge<Te>;
+                    E[i][j] = new Edge<Te>(M[i][j]);
                     V[i]->outDegree++;
                     V[j]->inDegree++;
                     this->e++;
@@ -63,16 +84,16 @@ public:
 
     ~GraphMatrix()
     {
-        for (int i = 0; i < this->n; i++)
+        for (int i = 0; i < n; i++)
         {
             delete V[i];
-            for (int j = 0; j < this->n; j++)
+            for (int j = 0; j < n; j++)
                 delete E[i][j];
         }
     }
     virtual int loc(const Tv &v) override //没有找到返回-1
     {
-        int i = this->n;
+        int i = n;
         while (--i > -1 && V[i]->data != v)
             ;
         return i;
@@ -80,7 +101,7 @@ public:
     virtual Tv &vertex(int i) override { return V[i]->data; }
     virtual int inDegree(int i) override { return V[i]->inDegree; }
     virtual int outDegree(int i) override { return V[i]->outDegree; }
-    virtual int firstNbr(int i) override { return nextNbr(i, this->n); }
+    virtual int firstNbr(int i) override { return nextNbr(i, n); }
     virtual int nextNbr(int i, int j) override
     {
         while ((-1) < j && (!exists(i, --j))) //从j开始，倒序遍历，找不到返回-1,正序要多加一个return语句
@@ -93,12 +114,12 @@ public:
     virtual int &fTime(int i) override { return V[i]->fTime; }
     virtual int &parent(int i) override { return V[i]->parent; }
     virtual int &priority(int i) override { return V[i]->priority; }
-    virtual bool exists(int i) override { return i > -1 && i < this->n; }
+    virtual bool exists(int i) override { return i > -1 && i < n; }
     virtual int insert(const Tv &vertex) override;
     virtual void remove(int i) override;
     virtual bool exists(int i, int j) override
     {
-        return i > -1 && i < this->n && j > -1 && j < this->n && E[i][j];
+        return i > -1 && i < n && j > -1 && j < n && E[i][j];
     }
     virtual EType &type(int i, int j) override { return E[i][j]->type; }
     virtual Te &edge(int i, int j) override { return E[i][j]->data; }
@@ -122,23 +143,23 @@ int GraphMatrix<Tv, Te>::insert(const Tv &vertex)
 {
     if (exists(loc(vertex)))
         return -1;
-    for (int i = 0; i < this->n; i++)
+    for (int i = 0; i < n; i++)
         E[i].emplace_back(nullptr); //扩充一个列向量
-    this->n++;                      //递增n，使新生成的行向量长度扩大1
-    E.emplace_back((vector<Edge<Te> *>(this->n, nullptr)));
+    n++;                            //递增n，使新生成的行向量长度扩大1
+    E.emplace_back((vector<Edge<Te> *>(n, nullptr)));
     V.emplace_back(new Vertex<Tv>(vertex));
-    return this->n - 1; //返回结点标号
+    return n - 1; //返回结点标号
 }
 template <typename Tv, typename Te>
 void GraphMatrix<Tv, Te>::remove(int i)
 {
     if (!exists(i))
     {
-        LOG("error loc to remove vertex at index %d", i);
+        LOG("error loc to remove vertex at index %d\n", i);
         return;
     }
 
-    for (int j = 0; j < this->n; j++) //删除出边(行),无向图双向的都删除
+    for (int j = 0; j < n; j++) //删除出边(行),无向图双向的都删除
     {
         remove(i, j);
         if (this->direct == DIRECTED)
@@ -148,24 +169,24 @@ void GraphMatrix<Tv, Te>::remove(int i)
         }
     }
     E.erase(E.begin() + i); //删除空行
-    this->n--;              //递减n
+    n--;                    //递减n
     delete V[i];
     V.erase(V.begin() + i);
 }
 template <typename Tv, typename Te>
 void GraphMatrix<Tv, Te>::insert(int i, int j, int weight, const Te &edge)
 {
-    if (exists(i, j) || !exists(i) || !exists(j))
+    if (exists(i, j) || !exists(i) || !exists(j) || i == j)
     {
         LOG("error loc to insert edge from index %d to %d\n", i, j);
         return;
     }
-    E[i][j] = new Edge<Te>(edge, weight);
+    E[i][j] = new Edge<Te>(weight);
     this->e++;
     V[j]->inDegree++;
     V[i]->outDegree++;
     if (this->direct == UNDIRECTED)
-        E[j][i] = new Edge<Te>(edge, weight);
+        E[j][i] = new Edge<Te>(weight);
 }
 template <typename Tv, typename Te>
 Te GraphMatrix<Tv, Te>::remove(int i, int j)
@@ -188,9 +209,9 @@ Te GraphMatrix<Tv, Te>::remove(int i, int j)
 template <typename Tv, typename Te>
 Matrix<bool> GraphMatrix<Tv, Te>::adjacentMatrix() //01邻接矩阵
 {
-    Matrix<bool> ans(this->n, this->n);
-    for (int i = 0; i < this->n; i++)
-        for (int j = 0; j < this->n; j++)
+    Matrix<bool> ans(n, n);
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
             if (E[i][j])
                 ans[i][j] = true;
     return ans;
@@ -198,20 +219,20 @@ Matrix<bool> GraphMatrix<Tv, Te>::adjacentMatrix() //01邻接矩阵
 template <typename Tv, typename Te>
 Matrix<int> GraphMatrix<Tv, Te>::adjacentMatrixWithWeight()
 {
-    Matrix<int> ans(this->n, this->n);
-    for (int i = 0; i < this->n; i++)
-        for (int j = 0; j < this->n; j++)
+    Matrix<int> ans(n, n);
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
             if (E[i][j])
-                ans.matrix[i][j] = E[i][j]->weight; //权重作为邻接矩阵元素，在这里等于边数
+                ans.matrix[i][j] = E[i][j]->weight; //权重作为邻接矩阵元素
     return ans;
 }
 template <typename Tv, typename Te>
 Matrix<bool> GraphMatrix<Tv, Te>::Warshall()
 {
     Matrix<bool> ans = adjacentMatrix();
-    for (int k = 0; k < this->n; k++)
-        for (int i = 0; i < this->n; i++)
-            for (int j = 0; j < this->n; j++)
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
                 ans[i][j] = ans[i][j] | (ans[i][k] & ans[k][j]); //注意vector<bool>没有重载各种=(*=,+=)
     return ans;
 }
@@ -219,11 +240,11 @@ template <typename Tv, typename Te>
 Matrix<bool> GraphMatrix<Tv, Te>::reachabilityMatrix()
 {
     /* Matrix<bool> boolMatrix = adjacentMatrix();//O(n^4)
-        Matrix<bool> ans(this->n, this->n);
-        for (int i = 0; i < this->n; i++) //原矩阵加自反性加1步到n-1步
+        Matrix<bool> ans(n, n);
+        for (int i = 0; i < n; i++) //原矩阵加自反性加1步到n-1步
             ans += boolMatrix.power(i);   //ans|=
         return ans;*/
-    return Warshall() | Matrix<bool>(this->n); //O(n^3)
+    return Warshall() | Matrix<bool>(n); //O(n^3)
 }
 template <typename Tv, typename Te>
 int GraphMatrix<Tv, Te>::minDistance(const Tv &v, const Tv &w)
@@ -236,10 +257,10 @@ int GraphMatrix<Tv, Te>::minDistance(const Tv &v, const Tv &w)
     if (exists(i, j))
         return 1;
     Matrix<bool> m = adjacentMatrix();
-    for (k = 2; k < this->n; k++)
+    for (k = 2; k < n; k++)
         if (m.power(k)[i][j] == true)
             break;
-    return (k == this->n) ? INT_MAX : k;
+    return (k == n) ? INT_MAX : k;
 }
 template <typename Tv, typename Te>
 int GraphMatrix<Tv, Te>::LengthOfLoop(const Tv &v)
@@ -248,10 +269,10 @@ int GraphMatrix<Tv, Te>::LengthOfLoop(const Tv &v)
     if (i < 0)
         return INT_MAX;
     Matrix<bool> m = adjacentMatrix();
-    for (k = 2; k <= this->n; k++) //2到n
+    for (k = 2; k <= n; k++) //2到n
         if (m.power(k)[i][i] == true)
             break;
-    return (k == this->n + 1) ? INT_MAX : k;
+    return (k == n + 1) ? INT_MAX : k;
 }
 template <typename Tv, typename Te>
 int GraphMatrix<Tv, Te>::numOfPath(const Tv &v, const Tv &w, int len)
@@ -263,7 +284,7 @@ int GraphMatrix<Tv, Te>::numOfPath(const Tv &v, const Tv &w, int len)
     if (len)
         return m.power(len)[i][j];
     else
-        for (int k = 1; k <= this->n; k++) //1到n
+        for (int k = 1; k <= n; k++) //1到n
             len += m.power(k)[i][j];
     return len;
 }

@@ -44910,7 +44910,7 @@ std::ostream &operator<<(std::ostream &out, const Matrix<T> &m)
     for (size_t i = 0; i < m.row; i++)
     {
         for (size_t j = 0; j < m.col; j++)
-            out << std::setw(2) << std::setiosflags(std::ios::left) << m.matrix[i][j] << ' ';
+            out << std::setw(3) << std::setiosflags(std::ios::left) << m.matrix[i][j] << ' ';
         out << std::endl;
     }
     return out;

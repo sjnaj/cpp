@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-11-18 20:38:23
- * @LastEditTime: 2021-12-08 01:36:14
+ * @LastEditTime: 2021-12-08 19:57:01
  */
 #pragma once
 #include <iostream>
@@ -11,7 +11,6 @@
 #include <queue>
 #include <stack>
 #include <algorithm>
-#include "/home/fengsc/Desktop/cpp/CppTest/class/src/timeCount.h"
 #ifdef _DEBUG //DEBUG模式下插删失败提示(针对返回为void的操作函数)
 #define LOG(format, ...) fprintf(stderr, "\033[1;35m  LOG(%s:%s:%d):\t\033[32m" format, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 #else
@@ -61,7 +60,7 @@ struct Edge
     Te data;
     int weight;
     EType type;
-    Edge(const Te &e = (Te)1, int w = 1) : data(e), weight(w), type(UNDETERMINED) {}
+    Edge(int w=1,const Te &e = (Te)1) : data(e), weight(w), type(UNDETERMINED) {}
 };
 template <typename Tv, typename Te> //  顶点元素类型，边元素类型
 class Graph

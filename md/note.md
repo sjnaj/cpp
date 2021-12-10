@@ -5142,13 +5142,26 @@ if(shared_ptr<int>np=wp.lock())//不能直接访问，必须调用lock返回一�
 
 模板形参不能为空。
 
+templates: parent class member variables not visible in inherited class
+
 模板的派生类访问基类成员必须显式调用，因为编译第一阶段会忽视与模板相关的，于是会找不到派生类中使用的基类成员变量
 
 ```cpp
 SeqList<T>::m_array = space;  //法1
 //父类是模板可以用this来调用父类成员
-        this->length = 0;//法2，这个较为简便
+        this->length = 0;//法2，较为简便
         //把查找延迟到第二阶段，注意两个都不能用在初始化列表里
+    //对于类成员需要用法1，且要加typename关键字区别与函数
+    typename Foo<T>::bar;//struct bar{};
+   // 基类函数也是一样的
+//确保没有与父类同名的标识符时可以用using简便的使用基类成员
+using MinPQ<int, T>::siftDown;
+    using MinPQ<int, T>::siftUp;
+    using MinPQ<int, T>::n;
+    using MinPQ<int, T>::maxN;
+    using MinPQ<int, T>::elem;
+    using typename MinPQ<int, T>::Node;
+    //要想被外部访问还要在using前加public，关键字只能加更严格的
 ```
 
 ### 函数模板

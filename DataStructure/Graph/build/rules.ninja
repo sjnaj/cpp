@@ -22,6 +22,25 @@ rule CUSTOM_COMMAND
 #############################################
 # Rule for compiling CXX files.
 
+rule CXX_COMPILER__mainshell
+  depfile = $DEP_FILE
+  deps = gcc
+  command = /bin/x86_64-linux-gnu-g++-9  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking CXX executable.
+
+rule CXX_EXECUTABLE_LINKER__mainshell
+  command = $PRE_LINK && /bin/x86_64-linux-gnu-g++-9  $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  description = Linking CXX executable $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling CXX files.
+
 rule CXX_COMPILER__mainRelation
   depfile = $DEP_FILE
   deps = gcc
@@ -60,6 +79,25 @@ rule CXX_EXECUTABLE_LINKER__mainMXGraph
 #############################################
 # Rule for compiling CXX files.
 
+rule CXX_COMPILER__mainALGraph
+  depfile = $DEP_FILE
+  deps = gcc
+  command = /bin/x86_64-linux-gnu-g++-9  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking CXX executable.
+
+rule CXX_EXECUTABLE_LINKER__mainALGraph
+  command = $PRE_LINK && /bin/x86_64-linux-gnu-g++-9  $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  description = Linking CXX executable $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling CXX files.
+
 rule CXX_COMPILER__mainMin
   depfile = $DEP_FILE
   deps = gcc
@@ -79,6 +117,44 @@ rule CXX_EXECUTABLE_LINKER__mainMin
 #############################################
 # Rule for compiling CXX files.
 
+rule CXX_COMPILER__mainx
+  depfile = $DEP_FILE
+  deps = gcc
+  command = /bin/x86_64-linux-gnu-g++-9  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking CXX executable.
+
+rule CXX_EXECUTABLE_LINKER__mainx
+  command = $PRE_LINK && /bin/x86_64-linux-gnu-g++-9  $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  description = Linking CXX executable $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling CXX files.
+
+rule CXX_COMPILER__main
+  depfile = $DEP_FILE
+  deps = gcc
+  command = /bin/x86_64-linux-gnu-g++-9  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking CXX executable.
+
+rule CXX_EXECUTABLE_LINKER__main
+  command = $PRE_LINK && /bin/x86_64-linux-gnu-g++-9  $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  description = Linking CXX executable $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling CXX files.
+
 rule CXX_COMPILER__mainProject
   depfile = $DEP_FILE
   deps = gcc
@@ -90,25 +166,6 @@ rule CXX_COMPILER__mainProject
 # Rule for linking CXX executable.
 
 rule CXX_EXECUTABLE_LINKER__mainProject
-  command = $PRE_LINK && /bin/x86_64-linux-gnu-g++-9  $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
-  description = Linking CXX executable $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__mainALGraph
-  depfile = $DEP_FILE
-  deps = gcc
-  command = /bin/x86_64-linux-gnu-g++-9  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX executable.
-
-rule CXX_EXECUTABLE_LINKER__mainALGraph
   command = $PRE_LINK && /bin/x86_64-linux-gnu-g++-9  $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT

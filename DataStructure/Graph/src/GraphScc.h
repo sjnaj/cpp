@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-12-04 19:30:52
- * @LastEditTime: 2021-12-04 20:00:57
+ * @LastEditTime: 2021-12-10 01:27:31
  */
 template <typename Tv, typename Te>
 void Graph<Tv, Te>::scc()
@@ -54,7 +54,7 @@ void Graph<Tv, Te>::SCC(int v, int &clock, stack<int> &S)
 
         while (v != S.top())
         {
-            cout << vertex(S.top());
+            cout << vertex(S.top())<<' ';
             status(S.top()) = VISITED; //出栈输出宣告访问结束
             S.pop();
         }
