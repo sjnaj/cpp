@@ -1,0 +1,53 @@
+ALGraph with 8 vertexs was initialized successfully
+vertexname:西安 degree:3
+edge 西安 to 哈尔滨 : weight: 3000
+edge 西安 to 重庆 : weight: 700
+edge 西安 to 北京 : weight: 1200
+
+vertexname:哈尔滨 degree:3
+edge 哈尔滨 to 沈阳 : weight: 500
+edge 哈尔滨 to 北京 : weight: 1500
+edge 哈尔滨 to 西安 : weight: 3000
+
+vertexname:沈阳 degree:3
+edge 沈阳 to 上海 : weight: 1300
+edge 沈阳 to 北京 : weight: 500
+edge 沈阳 to 哈尔滨 : weight: 500
+
+vertexname:上海 degree:4
+edge 上海 to 广州 : weight: 1500
+edge 上海 to 北京 : weight: 600
+edge 上海 to 武汉 : weight: 694
+edge 上海 to 沈阳 : weight: 1300
+
+vertexname:广州 degree:3
+edge 广州 to 重庆 : weight: 1200
+edge 广州 to 武汉 : weight: 845
+edge 广州 to 上海 : weight: 1500
+
+vertexname:重庆 degree:4
+edge 重庆 to 武汉 : weight: 750
+edge 重庆 to 北京 : weight: 1200
+edge 重庆 to 广州 : weight: 1200
+edge 重庆 to 西安 : weight: 700
+
+vertexname:北京 degree:6
+edge 北京 to 武汉 : weight: 1500
+edge 北京 to 重庆 : weight: 1200
+edge 北京 to 上海 : weight: 600
+edge 北京 to 沈阳 : weight: 500
+edge 北京 to 哈尔滨 : weight: 1500
+edge 北京 to 西安 : weight: 1200
+
+vertexname:武汉 degree:4
+edge 武汉 to 北京 : weight: 1500
+edge 武汉 to 重庆 : weight: 750
+edge 武汉 to 广州 : weight: 845
+edge 武汉 to 上海 : weight: 694
+
+DFS based on 武汉:
+武汉 北京 重庆 广州 上海 沈阳 哈尔滨 西安 
+spaning tree based on 上海 was created successfully
+shrotest path from 重庆 to 哈尔滨 is: 重庆 北京 沈阳 哈尔滨
+distance is 2200
+BYE

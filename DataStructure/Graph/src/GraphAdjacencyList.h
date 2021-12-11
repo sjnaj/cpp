@@ -1,9 +1,9 @@
 /*
  * @Author: fengsc
  * @Date: 2021-12-01 12:13:03
- * @LastEditTime: 2021-12-10 01:43:27
+ * @LastEditTime: 2021-12-11 08:20:59
  */
-#include "GraphMatrix.h"
+#include "GraphMatrix.h"//需要使用GraphMatrix里的矩阵输出函数，同时包含了Graph.h
 template <typename Te>
 struct ENode
 {

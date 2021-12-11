@@ -1,16 +1,14 @@
 /*
  * @Author: fengsc
  * @Date: 2021-12-07 16:04:52
- * @LastEditTime: 2021-12-10 13:43:33
+ * @LastEditTime: 2021-12-11 08:27:26
  */
 #include "src/GraphAdjacencyList.h"
-#include "../../CppTest/class/src/timeCount.h"
 #include <cstring>
 #define STRLEN 32
 using namespace std;
 int main()
 {
-    Timer timer;
     char command[STRLEN];
     vector<int> path;
     int vertex, v, w, n, weight;
@@ -18,7 +16,7 @@ int main()
         printf("please input \"CREATE vertexNum\" to create a graph first\n");
     ALGraph<int> G(n, UNDIRECTED);
     ALGraph<int> SPTree(n);                             //每一时刻只有一棵生成树
-    char **names = (char **)malloc(n * sizeof(char *)); //预留插入余量
+    char **names = (char **)malloc(n * sizeof(char *));
     for (int i = 0; i < n; i++)
         names[i] = (char *)malloc(STRLEN * sizeof(char));
     int base = -1; //最小生成数的源结点，避免重复生成当前的生成树，集中求到某个特定顶点的最短路径可发挥最大作用(一般情况下作用不大)
@@ -106,7 +104,7 @@ int main()
         }
         else
         {
-            printf("bad command \"%s\"\n", s);
+            printf("bad command \"%s\"\n", command);
             while (getchar() != '\n')
                 ;
         }

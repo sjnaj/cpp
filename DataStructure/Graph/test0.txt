@@ -1,0 +1,25 @@
+ALGraph with 4 vertexs was initialized successfully
+vertexname:A degree:2
+edge A to C : weight: 7
+edge A to B : weight: 2
+
+vertexname:B degree:3
+edge B to D : weight: 3
+edge B to C : weight: 1
+edge B to A : weight: 2
+
+vertexname:C degree:3
+edge C to D : weight: 1
+edge C to B : weight: 1
+edge C to A : weight: 7
+
+vertexname:D degree:2
+edge D to C : weight: 1
+edge D to B : weight: 3
+
+DFS based on A:
+A C D B 
+spaning tree based on A was created successfully
+shrotest path from A to D is: A B C D
+distance is 4
+BYE
