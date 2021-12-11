@@ -1,7 +1,6 @@
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/rebuild_cache.dir
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/test.dir
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/package_source.dir
-/home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/mainshell.dir
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/mainRelation.dir
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/mainMXGraph.dir
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/mainALGraph.dir
@@ -19,7 +18,6 @@
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/ExperimentalSubmit.dir
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/Experimental.dir
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/ContinuousCoverage.dir
-/home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/mainx.dir
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/ExperimentalConfigure.dir
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/Continuous.dir
 /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CMakeFiles/NightlyTest.dir

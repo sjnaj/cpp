@@ -66,40 +66,6 @@ build CMakeFiles/package_source.util: CUSTOM_COMMAND
 build package_source: phony CMakeFiles/package_source.util
 
 # =============================================================================
-# Object build statements for EXECUTABLE target mainshell
-
-
-#############################################
-# Order-only phony target for mainshell
-
-build cmake_object_order_depends_target_mainshell: phony || CMakeFiles/mainshell.dir
-
-build CMakeFiles/mainshell.dir/mainshell.cpp.o: CXX_COMPILER__mainshell ../mainshell.cpp || cmake_object_order_depends_target_mainshell
-  DEFINES = -D_DEBUG
-  DEP_FILE = CMakeFiles/mainshell.dir/mainshell.cpp.o.d
-  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
-  INCLUDES = -I.
-  OBJECT_DIR = CMakeFiles/mainshell.dir
-  OBJECT_FILE_DIR = CMakeFiles/mainshell.dir
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target mainshell
-
-
-#############################################
-# Link the executable mainshell
-
-build mainshell: CXX_EXECUTABLE_LINKER__mainshell CMakeFiles/mainshell.dir/mainshell.cpp.o
-  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
-  LINK_FLAGS = -rdynamic
-  OBJECT_DIR = CMakeFiles/mainshell.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  TARGET_FILE = mainshell
-  TARGET_PDB = mainshell.dbg
-
-# =============================================================================
 # Object build statements for EXECUTABLE target mainRelation
 
 
@@ -317,40 +283,6 @@ build Experimental: phony CMakeFiles/Experimental
 # Utility command for ContinuousCoverage
 
 build ContinuousCoverage: phony CMakeFiles/ContinuousCoverage
-
-# =============================================================================
-# Object build statements for EXECUTABLE target mainx
-
-
-#############################################
-# Order-only phony target for mainx
-
-build cmake_object_order_depends_target_mainx: phony || CMakeFiles/mainx.dir
-
-build CMakeFiles/mainx.dir/mainx.cpp.o: CXX_COMPILER__mainx ../mainx.cpp || cmake_object_order_depends_target_mainx
-  DEFINES = -D_DEBUG
-  DEP_FILE = CMakeFiles/mainx.dir/mainx.cpp.o.d
-  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
-  INCLUDES = -I.
-  OBJECT_DIR = CMakeFiles/mainx.dir
-  OBJECT_FILE_DIR = CMakeFiles/mainx.dir
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target mainx
-
-
-#############################################
-# Link the executable mainx
-
-build mainx: CXX_EXECUTABLE_LINKER__mainx CMakeFiles/mainx.dir/mainx.cpp.o
-  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
-  LINK_FLAGS = -rdynamic
-  OBJECT_DIR = CMakeFiles/mainx.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  TARGET_FILE = mainx
-  TARGET_PDB = mainx.dbg
 
 
 #############################################
@@ -763,7 +695,7 @@ build CMakeFiles/ContinuousSubmit: CUSTOM_COMMAND
 #############################################
 # Folder: /home/fengsc/Desktop/cpp/DataStructure/Graph/build
 
-build all: phony mainshell mainRelation mainMXGraph mainALGraph mainMin mainx main mainProject
+build all: phony mainRelation mainMXGraph mainALGraph mainMin main mainProject
 
 # =============================================================================
 # Unknown Build Time Dependencies.

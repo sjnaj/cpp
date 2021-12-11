@@ -47,9 +47,7 @@
 						30,
 						31,
 						32,
-						33,
-						34,
-						35
+						33
 					]
 				}
 			],
@@ -97,9 +95,7 @@
 						30,
 						31,
 						32,
-						33,
-						34,
-						35
+						33
 					]
 				}
 			],
@@ -341,20 +337,6 @@
 					"id" : "mainRelation::@6890427a1f51a3e7e1df",
 					"jsonFile" : "target-mainRelation-Debug-fc17fc9fb19492c617dc.json",
 					"name" : "mainRelation",
-					"projectIndex" : 0
-				},
-				{
-					"directoryIndex" : 0,
-					"id" : "mainshell::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-mainshell-Debug-3537f8066876892c5f94.json",
-					"name" : "mainshell",
-					"projectIndex" : 0
-				},
-				{
-					"directoryIndex" : 0,
-					"id" : "mainx::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-mainx-Debug-92996c79b736d43df8fb.json",
-					"name" : "mainx",
 					"projectIndex" : 0
 				}
 			]
