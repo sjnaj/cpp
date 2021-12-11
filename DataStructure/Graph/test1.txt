@@ -1,0 +1,41 @@
+ALGraph with 7 vertexs was initialized successfully
+vertexname:V0 degree:2
+edge V0 to V2 : weight: 60
+edge V0 to V1 : weight: 50
+
+vertexname:V1 degree:3
+edge V1 to V4 : weight: 40
+edge V1 to V3 : weight: 65
+edge V1 to V0 : weight: 50
+
+vertexname:V2 degree:3
+edge V2 to V3 : weight: 52
+edge V2 to V6 : weight: 45
+edge V2 to V0 : weight: 60
+
+vertexname:V3 degree:5
+edge V3 to V5 : weight: 30
+edge V3 to V2 : weight: 52
+edge V3 to V6 : weight: 42
+edge V3 to V4 : weight: 50
+edge V3 to V1 : weight: 65
+
+vertexname:V4 degree:3
+edge V4 to V5 : weight: 70
+edge V4 to V3 : weight: 50
+edge V4 to V1 : weight: 40
+
+vertexname:V5 degree:2
+edge V5 to V3 : weight: 30
+edge V5 to V4 : weight: 70
+
+vertexname:V6 degree:2
+edge V6 to V3 : weight: 42
+edge V6 to V2 : weight: 45
+
+DFS based on V0:
+V0 V2 V3 V5 V4 V1 V6 
+spaning tree based on V0 was created successfully
+shrotest path from V0 to V5 is: V0 V2 V3 V5
+distance is 142
+BYE
