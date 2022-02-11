@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-11-02 22:32:41
- * @LastEditTime: 2021-11-09 20:44:06
+ * @LastEditTime: 2021-12-28 23:30:29
  */
 /*
  * @Author: fengsc
@@ -50,7 +50,7 @@ HFTree createHFTree(DataType val[], double w[], int n)
     for (int i = HF.leafNum; i < HF.totalNum; i++)
     {
         select(HF, i, s1, s2);  //查找最小的两个，在当前位置之前的非子树中
-        HF.elem[i].lchild = s1; //设定左比右小，唯一确定
+        HF.elem[i].lchild = s1; //设定左比右小且优先链接左子树，唯一确定
         HF.elem[i].rchild = s2;
         HF.elem[s1].parent = HF.elem[s2].parent = i;
         HF.elem[i].weight = HF.elem[s1].weight + HF.elem[s2].weight;

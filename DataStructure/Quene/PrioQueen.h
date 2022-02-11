@@ -1,34 +1,40 @@
 /*
  * @Author: fengsc
  * @Date: 2021-12-08 11:44:02
- * @LastEditTime: 2021-12-09 20:28:44
+ * @LastEditTime: 2021-12-26 22:18:54
  */
 #include <iostream>
-using std::pair;
+#include <vector>
+#include <cstring>
 //注意左移右移的优先级很低
 #define LC(x) ((x << 1) + 1) //LChild
 #define RC(x) ((x + 1) << 1) //RChild
 #define PRT(x) ((x - 1) / 1) //Parent
 
-template <typename TD, typename TK = int> //元素和键值类型，键值默认int
-class MinPQ                               //优先队列，基于小根堆
+template <typename TD, typename TK = int, typename Comp = std::less<TK>> //元素和键值类型，键值默认int
+class PQueen                                                             //优先队列，基于二叉堆
 {
+    template <typename X, typename Y> //堆排序函数的友元声明
+    friend void heapSort(std::vector<X> &,Y);
+
 private:
+    Comp comp; //比较函数(结构体)
     struct Node
     {
         TD data;
         TK key;
-        Node(TD _data = 0, TK _key = 0) : data(_data), key(_key) {}
+        Node():data("lala"),key("haha"){}
     };
-    int maxN, n;           //容量和大小
-    Node **elem;           //存储指针，动态分配,可扩容,类里面只能写作指针形式
+    int maxN, n; //容量和大小
+    Node **elem; //存储指针，动态分配,可扩容,类里面只能写作指针形式
+    //上滤下滤的比较部分的注释基于小根堆
     void siftUp(int start) //自底向上筛选调整(上滤)
     {
         Node *temp = elem[start];
         int i = start, j = start;
         while ((i = PRT(i)) > -1) //迭代上行
         {
-            if (elem[i]->key <= temp->key) //双亲键值小，不调整
+            if (!comp(temp->key, elem[i]->key)) //子女键值不小于双亲，不调整
                 break;
             elem[j] = elem[i]; //双亲结点下沉
             j = i;
@@ -41,9 +47,9 @@ private:
         int i = start, j = start;
         while ((j = LC(j)) < end) //*迭代下行，注意赋值运算优先级较低
         {
-            if (j < end - 1 && elem[j]->key > elem[j + 1]->key)
-                j++;                       //右子女更小，移动到右子女
-            if (elem[j]->key >= temp->key) //子女键值大，不调整
+            if (j < end - 1 && comp(elem[j + 1]->key, elem[j]->key))
+                j++;                            //右子女更小，移动到右子女
+            if (!comp(elem[j]->key, temp->key)) //子女键值不小于双亲，不调整
                 break;
             elem[i] = elem[j]; //子女上行
             i = j;
@@ -59,20 +65,21 @@ public:
             delete elem[i];
         n = 0;
     }
-    MinPQ(int size) : elem((Node **)malloc(size * sizeof(Node *))), maxN(size), n(0) {} //预分配空间
-    MinPQ(const vector<TK> &data)                                                       //自下而上下滤建堆，n,Folid提出,"合理的税收政策",简化起见只输入一个数组，使data等同与key
+    PQueen(int size) : elem((Node **)malloc(size * sizeof(Node *))), maxN(size), n(0) {} //预分配空间
+    PQueen(const std::vector<TK> &data)                                                  //自下而上下滤建堆，n,Folid提出,"合理的税收政策",简化起见只输入一个数组，使data等同与key
     {
-        MinPQ(data.size());
-        n = maxN;
-        for (int i = 0; i < data.size(); i++)
+        n = maxN = data.size();
+        elem = (Node **)malloc(n * sizeof(Node *));
+        int a;
+        for (int i = 0; i < n; i++)
         {
             elem[i] = (Node *)malloc(sizeof(Node));
-            elem[i]->data = elem[i]->key = data[i];
+            elem[i]->data = elem[i]->key = data[i]; //默认键值即数据
         }
-        // elem[i] = new Node(data[i], data[i]);
-        for (int i = 2 * n - 2; 0; i++) //从最后的局部子树根开始
-            siftDown(i, n - 1);
+        for (int i = n / 2 - 1; i >= 0; i--) //从最后的局部子树根开始
+            siftDown(i, n);
     }
+
     /*PQueen(const vector<T> &data) //自上而下上滤建堆,大于nlogn,复杂度太高，已经足够做全排序了，"颠倒的税收政策"
     {
      elem.resize(data.size());
@@ -81,7 +88,7 @@ public:
         for (int i = 1; i <n; i++) //从1号结点开始
             siftUp(i);
     }*/
-    ~MinPQ()
+    ~PQueen()
     {
         for (int i = 0; i < n; i++) //析构数组里的指针指向的空间
             free(elem[i]);
@@ -119,9 +126,15 @@ public:
         siftDown(0, n);
         return temp;
     }
+    TD front()
+    {
+        if (n == 0)
+            throw std::out_of_range("queue is empty");
+        return elem[0]->data;
+    }
 };
 template <typename T = int> //键值类型默认int
-class IndexMinPQ            //下标优先队列,容量固定，data域存储下标
+class IndexPQueen           //基于小根堆的下标优先队列,容量固定，data域存储下标
 {
 private:
     int n, maxN;
@@ -167,7 +180,7 @@ private:
     }
 
 public:
-    IndexMinPQ(int size) : elem(new Node *[size]), maxN(size), n(0), contains(new int[size]) //初始化容量，size应大于最大下标
+    IndexPQueen(int size) : elem(new Node *[size]), maxN(size), n(0), contains(new int[size]) //初始化容量，size应大于最大下标
     {
         for (int i = 0; i < maxN; i++) //初始值为-1
             contains[i] = -1;
@@ -226,7 +239,7 @@ public:
     {
         return n == 0;
     }
-    ~IndexMinPQ()
+    ~IndexPQueen()
     {
 
         for (int i = 0; i < n; i++) //析构数组里的指针指向的空间

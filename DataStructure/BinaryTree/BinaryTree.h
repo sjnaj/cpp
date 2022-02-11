@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-20 22:59:05
- * @LastEditTime: 2021-11-06 20:17:42
+ * @LastEditTime: 2022-01-03 18:12:56
  */
 #pragma once
 //各种二叉树所需头文件
@@ -66,8 +66,10 @@ void GoAlongLeftBranch(BinTree &T, stack<BinTree> &S); //沿左分支遍历并�
 BinTree GetParent(BinTree &T, BinTree &p);
 BinTree GetParent(BinTree &T, char c);
 int CountNode(BinTree &T, int degree);   //统计度为degree的结点数
-int Count(BinTree &T);                   //统计结点总数
-bool IsBalance(BinTree &T, int &height); //判断是否平衡
+template <typename Tree>
+int Count(Tree &T);                   //统计结点总数
+template<typename Tree>
+bool IsBalance(Tree &T, int &height); //判断是否平衡
 bool IsComplete(BinTree &T);             //判断完全二叉树
 bool IsSameTree(BinTree p, BinTree q);
 int MaxEle(BinTree &T);

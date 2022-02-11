@@ -6,7 +6,7 @@
         "request": "launch",
         "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",//可执行文件地址，出问题找不到文件时可以删除json内容再复制回来或重写
         //"args": ["<","test.txt",">","result.txt"],
-        "args": ["<","test4.txt"],
+        //"args": ["<","test4.txt"],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",
         "preLaunchTask": "build",

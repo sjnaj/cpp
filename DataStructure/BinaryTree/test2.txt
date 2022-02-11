@@ -1,0 +1,9 @@
+Verify:OK  14225 nodes  height:17
+search 30042:Node-30042-Hello-World
+okVerify:OK  3253 nodes  height:14
+search 660:Node-640
+search 28897:Node-28887
+search 24458:Node-21534
+search 99999:<Not Found>
+Verify:OK  0 nodes  height:0
+bye

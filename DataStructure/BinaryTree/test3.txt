@@ -1,0 +1,8 @@
+Verify:OK  11 nodes  height:4
+search 98:Node-98
+search 1131:<Not Found>
+Verify:OK  10 nodes  height:4
+search 98:<Not Found>
+Verify:OK  5 nodes  height:3
+okVerify:OK  0 nodes  height:0
+bye

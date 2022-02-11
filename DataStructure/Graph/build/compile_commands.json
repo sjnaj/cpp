@@ -19,6 +19,12 @@
 
 {
   "directory": "/home/fengsc/Desktop/cpp/DataStructure/Graph/build",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -o CMakeFiles/main1.dir/main1.cpp.o -c /home/fengsc/Desktop/cpp/DataStructure/Graph/main1.cpp",
+  "file": "/home/fengsc/Desktop/cpp/DataStructure/Graph/main1.cpp"
+},
+
+{
+  "directory": "/home/fengsc/Desktop/cpp/DataStructure/Graph/build",
   "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -o CMakeFiles/mainMin.dir/mainMin.cpp.o -c /home/fengsc/Desktop/cpp/DataStructure/Graph/mainMin.cpp",
   "file": "/home/fengsc/Desktop/cpp/DataStructure/Graph/mainMin.cpp"
 },

@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-08-21 17:41:34
- * @LastEditTime: 2021-11-09 20:42:04
+ * @LastEditTime: 2021-12-28 23:48:59
  */
 #ifndef _BinaryTree_h
 #include "BinaryTree.h"
@@ -465,16 +465,18 @@ int CountNode(BinTree &T, int degree)
         return 0;
     if ((T->lchild && T->rchild && degree == 2) | (((T->lchild && !T->rchild) || (T->rchild && !T->lchild)) && degree == 1) || (!T->lchild && !T->rchild && degree == 0))
         return CountNode(T->lchild, degree) + CountNode(T->rchild, degree) + 1;
-    else
+    else//本结点不计入
         return CountNode(T->lchild, degree) + CountNode(T->rchild, degree);
 }
-int Count(BinTree &T)
+template <typename Tree>
+int Count(Tree &T)
 {
     if (!T)
         return 0;
-    return Count(T->lchild) + Count(T->rchild) + 1;
+    return Count(T->lchild) + Count(T->rchild) + 1;//不用中间变量
 }
-bool IsBalance(BinTree &T, int &height)
+template <typename Tree>
+bool IsBalance(Tree &T, int &height)
 {
     if (!T)
     {

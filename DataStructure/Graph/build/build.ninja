@@ -53,18 +53,6 @@ build CMakeFiles/test.util: CUSTOM_COMMAND
 
 build test: phony CMakeFiles/test.util
 
-
-#############################################
-# Utility command for package_source
-
-build CMakeFiles/package_source.util: CUSTOM_COMMAND
-  COMMAND = cd /home/fengsc/Desktop/cpp/DataStructure/Graph/build && /usr/bin/cpack --config ./CPackSourceConfig.cmake /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CPackSourceConfig.cmake
-  DESC = Run CPack packaging tool for source...
-  pool = console
-  restat = 1
-
-build package_source: phony CMakeFiles/package_source.util
-
 # =============================================================================
 # Object build statements for EXECUTABLE target mainRelation
 
@@ -166,6 +154,52 @@ build mainALGraph: CXX_EXECUTABLE_LINKER__mainALGraph CMakeFiles/mainALGraph.dir
   PRE_LINK = :
   TARGET_FILE = mainALGraph
   TARGET_PDB = mainALGraph.dbg
+
+
+#############################################
+# Utility command for package_source
+
+build CMakeFiles/package_source.util: CUSTOM_COMMAND
+  COMMAND = cd /home/fengsc/Desktop/cpp/DataStructure/Graph/build && /usr/bin/cpack --config ./CPackSourceConfig.cmake /home/fengsc/Desktop/cpp/DataStructure/Graph/build/CPackSourceConfig.cmake
+  DESC = Run CPack packaging tool for source...
+  pool = console
+  restat = 1
+
+build package_source: phony CMakeFiles/package_source.util
+
+# =============================================================================
+# Object build statements for EXECUTABLE target main1
+
+
+#############################################
+# Order-only phony target for main1
+
+build cmake_object_order_depends_target_main1: phony || CMakeFiles/main1.dir
+
+build CMakeFiles/main1.dir/main1.cpp.o: CXX_COMPILER__main1 ../main1.cpp || cmake_object_order_depends_target_main1
+  DEFINES = -D_DEBUG
+  DEP_FILE = CMakeFiles/main1.dir/main1.cpp.o.d
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
+  INCLUDES = -I.
+  OBJECT_DIR = CMakeFiles/main1.dir
+  OBJECT_FILE_DIR = CMakeFiles/main1.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target main1
+
+
+#############################################
+# Link the executable main1
+
+build main1: CXX_EXECUTABLE_LINKER__main1 CMakeFiles/main1.dir/main1.cpp.o
+  FLAGS = -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g
+  LINK_FLAGS = -rdynamic
+  OBJECT_DIR = CMakeFiles/main1.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = main1
+  TARGET_PDB = main1.dbg
 
 
 #############################################
@@ -695,7 +729,7 @@ build CMakeFiles/ContinuousSubmit: CUSTOM_COMMAND
 #############################################
 # Folder: /home/fengsc/Desktop/cpp/DataStructure/Graph/build
 
-build all: phony mainRelation mainMXGraph mainALGraph mainMin main mainProject
+build all: phony mainRelation mainMXGraph mainALGraph main1 mainMin main mainProject
 
 # =============================================================================
 # Unknown Build Time Dependencies.

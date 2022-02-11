@@ -1,0 +1,9 @@
+digraph graphname {
+    a [label="北京"];
+    b [label="上海"];
+    c [label="天津"];
+    d [label="哈尔滨"];
+    a -> b [label="1000km"];
+    b -> c [label="50km"];
+    b -> d [label="500km"];
+}

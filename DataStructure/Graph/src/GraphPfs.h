@@ -1,7 +1,7 @@
 /*
  * @Author: fengsc
  * @Date: 2021-12-07 14:15:32
- * @LastEditTime: 2021-12-09 20:42:12
+ * @LastEditTime: 2021-12-26 11:42:31
  */
 #pragma once
 #include "/home/fengsc/Desktop/cpp/DataStructure/Quene/PrioQueen.h"
@@ -26,7 +26,7 @@ void Graph<Tv, Te>::PFS(int v, PU prioUpdater, Graph<Tv, Te> &SPTree)
                      // status(v) = VISITED;
     parent(v) = -1;
     IndexMinPQ Q(n); //创建容量为n的下标优先队列
-    //MinPQ<int> Q(n); //普通优先级队列
+    //PQueen<int> Q(n); //普通优先级队列
     Q.enqueue(v, priority(v));
     while (!Q.empty())
     {
@@ -42,7 +42,6 @@ void Graph<Tv, Te>::PFS(int v, PU prioUpdater, Graph<Tv, Te> &SPTree)
                 else
                     Q.enqueue(w, priority(w));
             }
-
         /*for (int shortest = INT_MAX, w = 0; w < n; w++) //查找剩余集合中优先级最高(数值最低)的顶点(最短边)
         {
             if (status(w) == UNDISCOVERED)

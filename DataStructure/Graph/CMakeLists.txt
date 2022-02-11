@@ -12,7 +12,7 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 
 
-set(THREADS_PREFER_PTHREAD_FLAG ON)#设置链接thread
+##set(THREADS_PREFER_PTHREAD_FLAG ON)#设置链接thread
 find_package(Threads REQUIRED)
 
 include_directories("${PROJECT_BINARY_DIR}")
@@ -22,13 +22,13 @@ get_filename_component(mainname ${mainfile} NAME_WE)#转换生成mainname，NAME
 add_executable(${mainname} ${mainfile})
 ##target_link_libraries( ${mainname} LINK Threads::Threads)	# 添加链接库，LINK是在src目录的CMakeLists中定义的，Threads来自上面引入的包
 endforeach()
-if (CMAKE_BUILD_TYPE STREQUAL Debug)##添加_DEBUG宏
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=leak")
-##不适用于release 模式
 ##-fno-omit-frame-pointer 保留栈帧指针，获取详细信息，运行默认关闭，调试时默认打开
-    add_definitions(
-        -D_DEBUG
-    )
+if (CMAKE_BUILD_TYPE STREQUAL Debug)##debug模式下
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=leak")##不适用于release 模式
+
+        add_definitions(
+            -D_DEBUG
+        )##添加_DEBUG宏
 endif ()
 #aux_source_directory(. ALL_SRCS)			# 添加当前目录下所有的源文件
 #add_executable( ${PROJECT_NAME} ${ALL_SRCS})//默认projectname就是main

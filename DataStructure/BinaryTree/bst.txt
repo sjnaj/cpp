@@ -1,0 +1,31 @@
+insert 63 NODE-63
+insert 90 Node-90
+insert 70 Node-70
+insert 55 Node-55
+insert 67 Node-67
+insert 42 Node-42
+insert 98 Node-98
+insert 83 Node-83
+insert 10 Node-10
+insert 45 Node-45
+insert 58 Node-58
+status
+search 98 
+search 1131
+delete 98
+status
+search 98
+delete 70 
+delete 58 
+delete 42 
+delete 55 
+delete 98 
+delete 63 
+status
+delete 83 
+delete 90
+delete 10
+delete 67 
+delete 45 
+status
+bye

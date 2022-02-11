@@ -1,0 +1,23 @@
+             63                              
+     42              70              
+ 10      55      67      90      
+        45  58          83  98  
+                                                
+Verify:OK  11 nodes  height:4
+search 98:Node-98
+search 1131:<Not Found>
+             63                              
+     42              70              
+ 10      55      67      90      
+        45  58          83      
+                                                
+Verify:OK  10 nodes  height:4
+search 98:<Not Found>
+     67              
+ 45      83      
+10          90  
+                        
+Verify:OK  5 nodes  height:3
+   
+Verify:OK  0 nodes  height:0
+bye

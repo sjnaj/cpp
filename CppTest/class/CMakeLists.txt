@@ -28,5 +28,11 @@ add_subdirectory(src)						# 添加src子目录
 #add_executable( ${PROJECT_NAME} ${ALL_SRCS})//默认projectname就是main
 #target_link_libraries( ${PROJECT_NAME} LINK)	# 添加链接库，LINK是在src目录的CMakeLists中定义的
 
-
+if (CMAKE_BUILD_TYPE STREQUAL Debug)##debug模式下
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=leak")
+        add_definitions(
+            -D_DEBUG
+        )##添加_DEBUG宏
+    
+endif ()
 include(CPack)

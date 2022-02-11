@@ -1,12 +1,11 @@
 /*
  * @Author: fengsc
  * @Date: 2021-10-23 14:49:58
- * @LastEditTime: 2021-10-28 22:18:14
+ * @LastEditTime: 2022-02-11 14:00:53
  */
 #include <iostream>
 #include <bitset>
-#define _DEBUG 0 //#define _DEBUG
-#if _DEBUG == 1  //#ifdef _DEBUG
+#ifdef _DEBUG 
 
 #define LOG(format, ...) printf("LOG:" format, ##__VA_ARGS__)
 #define LOG_M(format, ...) fprintf(stderr, "\033[1;35m  LOG_G(%s:%d):\t\033[0m" format, __func__, __LINE__, ##__VA_ARGS__)
