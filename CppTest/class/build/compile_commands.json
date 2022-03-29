@@ -1,43 +1,43 @@
 [
 {
   "directory": "/home/fengsc/Desktop/cpp/CppTest/class/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I.   -save-temps=obj -std=c++17 -O3 -DNDEBUG   -pthread -o CMakeFiles/maintest.dir/maintest.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/maintest.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -pthread -o CMakeFiles/maintest.dir/maintest.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/maintest.cpp",
   "file": "/home/fengsc/Desktop/cpp/CppTest/class/maintest.cpp"
 },
 
 {
   "directory": "/home/fengsc/Desktop/cpp/CppTest/class/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I.   -save-temps=obj -std=c++17 -O3 -DNDEBUG   -pthread -o CMakeFiles/main3.dir/main3.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/main3.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -pthread -o CMakeFiles/main3.dir/main3.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/main3.cpp",
   "file": "/home/fengsc/Desktop/cpp/CppTest/class/main3.cpp"
 },
 
 {
   "directory": "/home/fengsc/Desktop/cpp/CppTest/class/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I.   -save-temps=obj -std=c++17 -O3 -DNDEBUG   -pthread -o CMakeFiles/main2.dir/main2.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/main2.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -pthread -o CMakeFiles/main2.dir/main2.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/main2.cpp",
   "file": "/home/fengsc/Desktop/cpp/CppTest/class/main2.cpp"
 },
 
 {
   "directory": "/home/fengsc/Desktop/cpp/CppTest/class/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I.   -save-temps=obj -std=c++17 -O3 -DNDEBUG   -pthread -o CMakeFiles/mainptrtest.dir/mainptrtest.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/mainptrtest.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -pthread -o CMakeFiles/mainptrtest.dir/mainptrtest.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/mainptrtest.cpp",
   "file": "/home/fengsc/Desktop/cpp/CppTest/class/mainptrtest.cpp"
 },
 
 {
   "directory": "/home/fengsc/Desktop/cpp/CppTest/class/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I.   -save-temps=obj -std=c++17 -O3 -DNDEBUG   -pthread -o CMakeFiles/main.dir/main.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/main.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -pthread -o CMakeFiles/main.dir/main.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/main.cpp",
   "file": "/home/fengsc/Desktop/cpp/CppTest/class/main.cpp"
 },
 
 {
   "directory": "/home/fengsc/Desktop/cpp/CppTest/class/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I.   -save-temps=obj -std=c++17 -O3 -DNDEBUG   -pthread -o CMakeFiles/maintest1.dir/maintest1.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/maintest1.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9  -D_DEBUG -I.   -save-temps=obj -std=c++17 -fsanitize=address -fsanitize=leak -g   -pthread -o CMakeFiles/maintest1.dir/maintest1.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/maintest1.cpp",
   "file": "/home/fengsc/Desktop/cpp/CppTest/class/maintest1.cpp"
 },
 
 {
   "directory": "/home/fengsc/Desktop/cpp/CppTest/class/build",
-  "command": "/bin/x86_64-linux-gnu-g++-9   -I.   -save-temps=obj -std=c++17 -O3 -DNDEBUG   -o src/CMakeFiles/LINK.dir/func.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/src/func.cpp",
+  "command": "/bin/x86_64-linux-gnu-g++-9   -I.   -save-temps=obj -std=c++17 -g   -o src/CMakeFiles/LINK.dir/func.cpp.o -c /home/fengsc/Desktop/cpp/CppTest/class/src/func.cpp",
   "file": "/home/fengsc/Desktop/cpp/CppTest/class/src/func.cpp"
 }
 ]
