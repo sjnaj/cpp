@@ -8,7 +8,7 @@ using namespace std;
 #include <string>
 void func() {}
 int main()
-idi{
+{
     string str1="Hello";
     string str2="elh";
     int i=1;

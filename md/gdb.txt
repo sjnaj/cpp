@@ -1,0 +1,94 @@
+https://mp.weixin.qq.com/s/XxPIfrQ3E0GR88UsmQNggg
+
+设置断点的命令分为以下几类：
+
+breakpoint
+watchpoint
+catchpoint
+
+run arglist	以arglist为参数列表运行程序
+set args arglist	指定启动命令行参数
+set args	指定空的参数列表
+show args	打印命令行列表
+
+backtrace [n]	打印栈帧
+frame [n]	选择第n个栈帧，如果不存在，则打印当前栈帧
+up n	选择当前栈帧编号+n的栈帧
+down n	选择当前栈帧编号-n的栈帧
+info frame [addr]	描述当前选择的栈帧
+info args	当前栈帧的参数列表
+info locals	当前栈帧的局部变量
+
+
+GDB在调试多进程程序（程序含fork调用）时，默认只追踪父进程。
+可以通过命令设置，实现只追踪父进程或子进程，或者同时调试父进程和子进程。
+
+命令	作用
+info inferiors	查看进程列表
+attach pid	绑定进程id
+inferior num	切换到指定进程上进行调试
+print $_exitcode	显示程序退出时的返回值
+set follow-fork-mode child	追踪子进程
+set follow-fork-mode parent	追踪父进程
+set detach-on-fork on	fork调用时只追踪其中一个进程
+set detach-on-fork off	fork调用时会同时追踪父子进程
+
+如果需要在调试当前进程的时候，其他进程也能正常执行，那么通过设置set schedule-multiple on
+
+多线程开发在日常开发工作中很常见，所以多线程的调试技巧非常有必要掌握。
+
+默认调试多线程时，一旦程序中断，所有线程都将暂停。如果此时再继续执行当前线程，其他线程也会同时执行。
+
+命令	作用
+info threads	查看线程列表
+print $_thread	显示当前正在调试的线程编号
+set scheduler-locking on	调试一个线程时，其他线程暂停执行
+set scheduler-locking off	调试一个线程时，其他线程同步执行
+set scheduler-locking step	仅用step调试线程时其他线程不执行，用其他命令如next调试时仍执行
+
+命令	作用
+whatis variable	查看变量的类型
+ptype variable	查看变量详细的类型信息
+info variables var	查看定义该变量的文件，不支持局部变量
+
+命令	作用
+print *array@10	打印从数组开头连续10个元素的值
+print array[60]@10	打印array数组下标从60开始的10个元素，即第60~69个元素
+set print array-indexes on	打印数组元素时，同时打印数组的下标
+
+print *(struct xxx *)ptr	查看指向的结构体的内容
+
+
+使用x命令来打印内存的值，格式为x/nfu addr，以f格式打印从addr开始的n个长度单元为u的内存值。
+
+n：输出单元的个数
+f：输出格式，如x表示以16进制输出，o表示以8进制输出，默认为x
+u：一个单元的长度，b表示1个byte，h表示2个byte（half word），w表示4个byte，g表示8个byte（giant word）
+命令	作用
+x/8xb array	以16进制打印数组array的前8个byte的值
+x/8xw array	以16进制打印数组array的前16个word的值
+
+info locals	打印当前函数局部变量的值
+backtrace full	打印当前栈帧各个函数的局部变量值，命令可缩写为bt
+
+tui为terminal user interface的缩写，在启动时候指定-tui参数，或者调试时使用ctrl+x+a组合键，可进入或退出图形化界面。
+
+命令	含义
+layout src	显示源码窗口
+layout asm	显示汇编窗口
+layout split	显示源码 + 汇编窗口
+layout regs	显示寄存器 + 源码或汇编窗口
+
+调试和保存core文件
+命令	含义
+file exec_file  *# *	加载可执行文件的符号表信息
+core core_file	加载core-dump文件
+gcore core_file	生成core-dump文件，记录当前进程的状态
+
+gdb filename: 调试可执行程序
+gdb attach pid: 通过”绑定“进程ID来调试正在运行的进程
+gdb filename -c coredump_file: 调试可执行文件
+
+info vtbl object
+
+

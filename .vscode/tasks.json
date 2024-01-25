@@ -7,8 +7,33 @@
             "args": [
                 "-g",
                 "${file}",
+                "-std=c++20",
+                // "`pkg-config","--cflags" ,"--libs", "gtest`",
+                // "`pkg-config","--cflags","--libs" ,"folly`",
+                // "`pkg-config","--cflags","--libs" ,"gflags`",
+                // "`pkg-config","--cflags","--libs" ,"glog`",
+
+
+                "-I","/usr/local/include",
+                "-I","/usr/include/libiberty",
+                
+                "-I","/usr/local/include/fmt/include",
+                "-I","/usr/local/include/googletest/include",
+                "-L","/usr/local/include/googletest/lib",
+                "-L","/usr/local/lib",
+                "-lpthread",
+                "-lgflags",
+                "-lglog",
+                "-lgtest",
+                "-lfolly",
+                "-lfmt",
+
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${fileDirname}/${fileBasenameNoExtension}",
+
+                "/usr/local/lib/libfollybenchmark.a",
+                "/usr/local/lib/libfolly_test_util.a",
+                "/usr/local/lib/libfolly.a",
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

@@ -291,7 +291,7 @@ void PreOrderUnrecur(BinTree &T)
         S.pop();
     }
 }
-void PreOrderUnrecur1(BinTree &T) //先序遍历较简便非递归算法，但不通用
+void PreOrderUnrecur1(BinTree &T) //先序遍历较简便非递归算法，调换加入栈的次序再逆置最终结果可以得到后续序列
 {
     stack<BinTree> S;
     BinTree t;

@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/fengsc/cpp/folly-study/demo02.cpp
+folly/Benchmark.h
+-
+algorithm
+-
+iostream
+-
+numeric
+-
+random
+-
+vector
+-
+folly/String.h
+-
+folly/container/Foreach.h
+-
+

@@ -11,7 +11,7 @@ bool EnQueue(CircQueue &Q, DataType x)
     if (IsFull(Q))
         return false;
     Q.elem[Q.back] = x;
-    Q.back = (Q.back + 1) % Q.maxSize;
+    Q.back = (Q.back + 1) % Q.maxSize;//指向队尾元素的后一个位置
     return true;
 }
 int DeQueue(CircQueue &Q)
