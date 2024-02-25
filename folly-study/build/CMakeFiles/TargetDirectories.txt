@@ -1,0 +1,8 @@
+/home/fengsc/cpp/folly-study/build/CMakeFiles/edit_cache.dir
+/home/fengsc/cpp/folly-study/build/CMakeFiles/ahmTest.dir
+/home/fengsc/cpp/folly-study/build/CMakeFiles/H4.dir
+/home/fengsc/cpp/folly-study/build/CMakeFiles/H3.dir
+/home/fengsc/cpp/folly-study/build/CMakeFiles/H2.dir
+/home/fengsc/cpp/folly-study/build/CMakeFiles/H1.dir
+/home/fengsc/cpp/folly-study/build/CMakeFiles/rebuild_cache.dir
+/home/fengsc/cpp/folly-study/build/CMakeFiles/HelloWorld.dir

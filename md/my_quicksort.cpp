@@ -3,7 +3,7 @@
 #include <iostream>
 
 template <typename It,typename Comp=std::less<typename It::value_type>>
-void quickSort(const It &lowerIt, const It &upperIt,Comp comp=std::less<typename It::value_type>())
+void quickSort(const It &lowerIt, const It &upperIt,Comp comp={})
 {
     if (upperIt - lowerIt < 2)
         return;

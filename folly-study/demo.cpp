@@ -41,6 +41,8 @@ int bar(int x) {
 }
 
 int main() {
+  std::cout<<HELLO<<std::endl;
+  
   LoggingExecutor le;
   auto executor = folly::Executor::getKeepAliveToken(le);
   folly::coro::Baton baton;

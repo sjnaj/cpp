@@ -3,14 +3,14 @@ void *my_memcpy(void *dst, const void *src, size_t count)
 {
     size_t c4 = count / 4;
     size_t c1 = count % 4;
-    int *t_dst = dst;
-    const int *t_src = src;
+    auto t_dst = (int *)dst;
+    auto t_src = (const int *)src;
     while (c4--)
     {
         *(t_dst++) = *(t_src++);
     }
-    char *t_dst1 = dst;
-    const char *t_src1 = src;
+    auto t_dst1 = (char *)dst;
+    auto t_src1 = (const char *)src;
     while (c1--)
     {
         *(t_dst1++) = *(t_src1++);

@@ -39,7 +39,7 @@
 
 #define FOLLY_HAVE_LIBGLOG 1
 
-/* #undef FOLLY_USE_JEMALLOC */
+#define FOLLY_USE_JEMALLOC 1
 
 #if __has_include(<features.h>)
 #include <features.h>

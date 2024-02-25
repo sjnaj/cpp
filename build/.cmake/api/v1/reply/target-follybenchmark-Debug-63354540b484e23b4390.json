@@ -1,0 +1,293 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "folly/libfollybenchmark.a"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"install",
+			"target_link_libraries",
+			"add_compile_options",
+			"target_compile_options",
+			"apply_folly_compile_options_to_target",
+			"set_property",
+			"target_compile_definitions"
+		],
+		"files" : 
+		[
+			"folly/CMakeLists.txt",
+			"CMakeLists.txt",
+			"CMake/FollyCompilerUnix.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 15,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 22,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 20,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 255,
+				"parent" : 4
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 21,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 26,
+				"parent" : 6
+			},
+			{
+				"command" : 6,
+				"file" : 1,
+				"line" : 157,
+				"parent" : 4
+			},
+			{
+				"command" : 7,
+				"file" : 2,
+				"line" : 21,
+				"parent" : 6
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -g -Wall -Wextra"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fcoroutines"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-finput-charset=UTF-8"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-fsigned-char"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-Wno-deprecated"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-Wno-deprecated-declarations"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-Wno-sign-compare"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-Wno-unused"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-Wuninitialized"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-Wunused-label"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-Wunused-result"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-Wshadow-compatible-local"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-Wno-noexcept-type"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-faligned-new"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "-fopenmp"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-pthread"
+				},
+				{
+					"fragment" : "-std=gnu++2a"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 3,
+					"define" : "BOOST_ALL_NO_LIB"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "BOOST_ATOMIC_DYN_LINK"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "BOOST_CONTEXT_DYN_LINK"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "BOOST_FILESYSTEM_DYN_LINK"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "BOOST_PROGRAM_OPTIONS_DYN_LINK"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "BOOST_REGEX_DYN_LINK"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "BOOST_SYSTEM_DYN_LINK"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "BOOST_THREAD_DYN_LINK"
+				},
+				{
+					"backtrace" : 8,
+					"define" : "FOLLY_XLOG_STRIP_PREFIXES=\"/home/fengsc/cpp/folly:/home/fengsc/cpp/build\""
+				},
+				{
+					"backtrace" : 3,
+					"define" : "GFLAGS_IS_A_DLL=0"
+				},
+				{
+					"backtrace" : 9,
+					"define" : "_GNU_SOURCE"
+				},
+				{
+					"backtrace" : 9,
+					"define" : "_REENTRANT"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 3,
+					"path" : "/home/fengsc/cpp/folly"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/fengsc/cpp/build"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/usr/local/include/fmt/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/usr/include/libiberty"
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "folly::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "follybenchmark::@d93474e94fd6150ea302",
+	"install" : 
+	{
+		"destinations" : 
+		[
+			{
+				"backtrace" : 2,
+				"path" : "lib"
+			}
+		],
+		"prefix" : 
+		{
+			"path" : "/usr/local"
+		}
+	},
+	"name" : "follybenchmark",
+	"nameOnDisk" : "libfollybenchmark.a",
+	"paths" : 
+	{
+		"build" : "folly",
+		"source" : "folly"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "folly/Benchmark.cpp",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

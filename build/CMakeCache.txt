@@ -58,29 +58,32 @@ Backtrace_INCLUDE_DIR:PATH=/usr/include
 //Library providing backtrace(3), empty for default set of libraries
 Backtrace_LIBRARY:FILEPATH=
 
-Boost_CONTEXT_LIBRARY_RELEASE:STRING=/home/fengsc/anaconda3/lib/libboost_context.so.1.73.0
+Boost_CONTEXT_LIBRARY_RELEASE:STRING=/usr/lib/x86_64-linux-gnu/libboost_context.so.1.71.0
 
 //The directory containing a CMake configuration file for Boost.
 Boost_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0
 
-Boost_FILESYSTEM_LIBRARY_RELEASE:STRING=/home/fengsc/anaconda3/lib/libboost_filesystem.so.1.73.0
+Boost_FILESYSTEM_LIBRARY_RELEASE:STRING=/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
 
 //Path to a file.
-Boost_INCLUDE_DIR:PATH=/home/fengsc/anaconda3/include
+Boost_INCLUDE_DIR:PATH=/usr/include
 
-Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:STRING=/home/fengsc/anaconda3/lib/libboost_program_options.so.1.73.0
+Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:STRING=/usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.71.0
 
-Boost_REGEX_LIBRARY_RELEASE:STRING=/home/fengsc/anaconda3/lib/libboost_regex.so.1.73.0
+Boost_REGEX_LIBRARY_RELEASE:STRING=/usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
 
-Boost_SYSTEM_LIBRARY_RELEASE:STRING=/home/fengsc/anaconda3/lib/libboost_system.so.1.73.0
+Boost_SYSTEM_LIBRARY_RELEASE:STRING=/usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
 
-Boost_THREAD_LIBRARY_RELEASE:STRING=/home/fengsc/anaconda3/lib/libboost_thread.so.1.73.0
+Boost_THREAD_LIBRARY_RELEASE:STRING=/usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
 
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
 
 //Path to a program.
 CMAKE_AR:FILEPATH=/usr/bin/ar
+
+//ASM compiler
+CMAKE_ASM_COMPILER:FILEPATH=/usr/bin/gcc
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -477,12 +480,6 @@ ZSTD_LIBRARY_DEBUG:FILEPATH=ZSTD_LIBRARY_DEBUG-NOTFOUND
 //Path to a library.
 ZSTD_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libzstd.so
 
-//Path to a file.
-_event_h:PATH=/home/fengsc/anaconda3/include
-
-//Path to a library.
-_event_lib:FILEPATH=/home/fengsc/anaconda3/lib/libevent_pthreads.so
-
 //The directory containing a CMake configuration file for boost_atomic.
 boost_atomic_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/boost_atomic-1.71.0
 
@@ -529,9 +526,6 @@ follybenchmark_LIB_DEPENDS:STATIC=general;folly;
 gflags_DIR:PATH=/usr/local/lib/cmake/gflags
 
 //Dependencies for the target
-logging_example_LIB_DEPENDS:STATIC=general;logging_example_lib;general;folly;general;fmt::fmt;
-
-//Dependencies for the target
 logging_example_lib_LIB_DEPENDS:STATIC=general;folly;
 
 //Path to a library.
@@ -565,6 +559,8 @@ Boost_DIR-ADVANCED:INTERNAL=1
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_COMPILER
+CMAKE_ASM_COMPILER-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ASM_COMPILER_AR
 CMAKE_ASM_COMPILER_AR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ASM_COMPILER_RANLIB
@@ -876,7 +872,7 @@ FOLLY_STDLIB_LIBSTDCXX:INTERNAL=1
 //Test FOLLY_STDLIB_LIBSTDCXX_GE_9
 FOLLY_STDLIB_LIBSTDCXX_GE_9:INTERNAL=1
 //Have include jemalloc/jemalloc.h
-FOLLY_USE_JEMALLOC:INTERNAL=
+FOLLY_USE_JEMALLOC:INTERNAL=1
 //Test GFLAGS_NAMESPACE_IS_GFLAGS
 GFLAGS_NAMESPACE_IS_GFLAGS:INTERNAL=1
 //ADVANCED property for variable: GLOG_INCLUDE_DIR

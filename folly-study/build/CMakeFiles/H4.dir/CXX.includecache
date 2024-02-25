@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/fengsc/cpp/folly-study/demo04.cpp
+folly/ThreadLocal.h
+-
+sys/types.h
+-
+array
+-
+atomic
+-
+condition_variable
+-
+map
+-
+mutex
+-
+set
+-
+thread
+-
+boost/thread/tss.hpp
+-
+glog/logging.h
+-
+folly/Benchmark.h
+-
+folly/experimental/io/FsUtil.h
+-
+folly/portability/GFlags.h
+-
+

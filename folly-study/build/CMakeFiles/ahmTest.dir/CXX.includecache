@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/fengsc/cpp/folly-study/ahmTest.cpp
+folly/AtomicHashMap.h
+-
+atomic
+-
+memory
+-
+thread
+-
+glog/logging.h
+-
+folly/Benchmark.h
+-
+folly/Conv.h
+-
+folly/portability/Atomic.h
+-
+folly/portability/GTest.h
+-
+folly/portability/SysTime.h
+-
+

@@ -13,27 +13,21 @@
                 // "`pkg-config","--cflags","--libs" ,"gflags`",
                 // "`pkg-config","--cflags","--libs" ,"glog`",
 
-
-                "-I","/usr/local/include",
-                "-I","/usr/include/libiberty",
-                
-                "-I","/usr/local/include/fmt/include",
-                "-I","/usr/local/include/googletest/include",
-                "-L","/usr/local/include/googletest/lib",
-                "-L","/usr/local/lib",
+                // "-I","/usr/local/include",                
+                // "-L","/usr/local/lib",
                 "-lpthread",
-                "-lgflags",
-                "-lglog",
-                "-lgtest",
-                "-lfolly",
-                "-lfmt",
-
+                // "-lgflags",
+                // "-lglog",
+                // "-lgtest",
+                // "-lfolly",
+                // "-lfmt",
+                // "/usr/local/lib/libfollybenchmark.a",
+                // "/usr/local/lib/libfolly_test_util.a",
+                // "/usr/local/lib/libfolly.a",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
 
-                "/usr/local/lib/libfollybenchmark.a",
-                "/usr/local/lib/libfolly_test_util.a",
-                "/usr/local/lib/libfolly.a",
+               
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

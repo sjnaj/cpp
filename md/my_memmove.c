@@ -12,7 +12,7 @@ void *my_memmove(void *dst, void const *src, size_t count)
     else
     {
         while (count--)
-            *(t_dst++) = *(t_src);
+            *(t_dst++) = *(t_src++);
     }
     return dst;
 }
